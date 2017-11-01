@@ -1,10 +1,111 @@
 package Mojolicious::Plugin::StaticShare;
 use Mojo::Base 'Mojolicious::Plugin';
+use Mojo::Asset::File;
+use Mojo::Util qw (url_unescape decode );
+use Mojolicious::Types;
 
 our $VERSION = '0.01';
+my $CONFIG;
+my $mime = Mojolicious::Types->new;
 
 sub register {
   my ($self, $app, $args) = @_;
+  $CONFIG = $args;
+  
+  # Append class
+  push @{$app->renderer->classes}, __PACKAGE__
+    unless $args->{render_index} || $args->{render_markdown};
+  #~ push @{$app->static->classes},   __PACKAGE__;
+  
+  my $route = $args->{route} || '/*path';
+  die "Your config route doesnt match *path placeholder"
+    unless $route =~ /\*path/;
+  my $r = $app->routes;
+  $r->get($route)->to(cb => \&get);
+  $r->post($route)->to(cb => \&post);
+  
+  return $self;
+}
+
+sub get {
+  my $c = shift;
+  
+  $c->stash('url_path', decode 'UTF-8',  url_unescape  $c->stash('path'));
+  my $file_path = ($CONFIG->{root_dir} || './') . $c->stash('url_path');
+  
+  
+  return dir($c, $file_path)
+    if -d $file_path;
+  return file($c, $path)
+    if -e $file_path;
+  
+  $c->reply->not_found;
+}
+
+sub post {
+  my $c = shift;
+  
+}
+
+sub dir {
+  my ($c, $path) = @_;
+  
+  #~ path($path)->list
+  #~ return Mojo::Collection->new unless -d $$self;
+  opendir(my $dir, $path)
+    or return $c->reply->exception(qq{Can't open directory [$path]: $!});
+  
+  $c->stash('files', []);
+  $c->stash('dirs', []);
+  
+  while (readdir $dir) {
+    next
+      if $_ eq '.' || $_ eq '..';
+    next
+      if /^\./; # unless $CONFIG->{hidden};
+    
+    push @{$c->stash('dirs')}, $_
+      and next
+      if -d "$path/$_";
+    
+    my @stat = stat "$path/$_";
+    
+    push @{$c->stash('files')}, {
+      name  => $_,
+      size  => $stat[7] || 0,
+      type  => $mime->type(  (/\.([0-9a-zA-Z]+)$/)[0] || 'txt' ) || 'application/octet-stream',
+      mtime => Mojo::Date->new( $stat[9] )->to_string(),
+    };
+  }
+  closedir $dir;
+  #~ return Mojo::Collection->new(map { $self->new($_) } sort @files);
+  return $CONFIG->{render_index}
+    ? $c->render(ref $CONFIG->{render_index} ? %{$CONFIG->{render_index}} : $CONFIG->{render_index},)
+    : $c->render('.plugin/.static/.share/index',);
+  
+}
+
+sub file {
+  my ($c, $path) = @_;
+  
+  my $filename = path($path)->basename;
+  
+  $c->res->headers->content_disposition("attachment; filename=$filename;")
+    if $c->param('attachment');
+  #~ $c->res->headers->content_type('text/plain');
+  $c->reply->asset(Mojo::Asset::File->new(path => $path));
+  
+}
+
+sub markdown {
+  my $c = shift;
+  
+  my $content;
+  
+  return $CONFIG->{render_markdown}
+    ? $c->render(ref $CONFIG->{render_markdown} ? %{$CONFIG->{render_markdown}} : $CONFIG->{render_markdown}, content=>$content,)
+    : $c->render('.plugin/.static/.share/markdown', content=>$content,);
+  
 }
 
 1;
@@ -34,7 +135,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
 
 This plugin for share static files/dirs and has two interfaces: public and admin:
 
-=head2 Public interfaces
+=head2 Public interface
 
 Can browse and put files if name not exists.
 
@@ -119,3 +220,50 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut
+
+__DATA__
+
+@@ layouts/.plugin/.static/.share/index.html.ep
+<!DOCTYPE html>
+<html>
+<head>
+<title><%= (stash('title') || stash('header-title'))  %></title>
+
+
+%# http://realfavicongenerator.net
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+
+
+%# Материализные стили внутри main.css после слияния: sass --watch sass:css
+%= stylesheet '/css/main.css'
+
+<meta name="app:version" content="<%= stash('version') // 1 %>">
+
+</head>
+<body>
+<header><div class="header clearfix"><%= stash('path')   %></div></header>
+<main><div class="header clearfix"><%= content %></div></main>
+
+%= javascript '/js/main.js'
+%= javascript begin
+
+$( document ).ready(function() {
+  // console.log('Всем привет!');
+});
+
+% end
+
+</body>
+</html>
+
+@@ .static/.share/index.html.ep
+% layout '.plugin/.static/.share/index';
+
+@@ .static/.share/markdown.html.ep
+% layout '.plugin/.static/.share/index';
+
