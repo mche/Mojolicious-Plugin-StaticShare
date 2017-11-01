@@ -1,54 +1,65 @@
 package Mojolicious::Plugin::StaticShare;
 use Mojo::Base 'Mojolicious::Plugin';
+use Mojo::File qw(path);
 use Mojo::Asset::File;
-use Mojo::Util qw (url_unescape decode );
+use Mojo::Util qw (url_unescape decode encode );
 use Mojolicious::Types;
+use Mojo::Path;
 
 our $VERSION = '0.01';
-my $CONFIG;
-my $mime = Mojolicious::Types->new;
+
+has qw(config);
+has 'mime' => sub { Mojolicious::Types->new };
 
 sub register {
   my ($self, $app, $args) = @_;
-  $CONFIG = $args;
+  $self->config($args);
   
   # Append class
-  push @{$app->renderer->classes}, __PACKAGE__
-    unless $args->{render_index} || $args->{render_markdown};
+  push @{$app->renderer->classes}, __PACKAGE__;
+    #~ unless $args->{render_index} || $args->{render_markdown};
   #~ push @{$app->static->classes},   __PACKAGE__;
   
   my $route = $args->{route} || '/*path';
-  die "Your config route doesnt match *path placeholder"
+  die __PACKAGE__.": Your config route doesnt match *path placeholder"
     unless $route =~ /\*path/;
   my $r = $app->routes;
-  $r->get($route)->to(cb => \&get);
-  $r->post($route)->to(cb => \&post);
+  $r->get('/')->to(cb => sub { $self->get(@_) }, path=>'',)->name('get static root')
+    unless $args->{route};
+  $r->get($route)->to(cb => sub { $self->get(@_) } )->name('get static path');
+  $r->post($route)->to(cb => sub { $self->post(@_) } )->name('post static path');
   
-  return $self;
+  return $app;
 }
 
 sub get {
-  my $c = shift;
+  my ($self,$c) = @_;
   
-  $c->stash('url_path', decode 'UTF-8',  url_unescape  $c->stash('path'));
-  my $file_path = ($CONFIG->{root_dir} || './') . $c->stash('url_path');
+  #~ warn Mojo::Path->new(encode('UTF-8',  url_unescape($c->stash('path') || '')))->parse;
+  
+  $c->stash('url_path', encode('UTF-8',  url_unescape('/'.$c->stash('path'))));
+  my $file_path = ($self->config->{root_dir} || '.') . $c->stash('url_path');
+  #~ push @{ $file_path->parts }, $c->stash('url_path')
+    #~ if $c->stash('path');
+  $c->stash('file_path', $file_path);
+  #~ warn "$file_path";
   
   
-  return dir($c, $file_path)
+  return $self->dir($c, $file_path)
     if -d $file_path;
-  return file($c, $path)
+  return $self->file($c, $file_path)
     if -e $file_path;
   
   $c->reply->not_found;
 }
 
 sub post {
-  my $c = shift;
+  my ($self,$c) = @_;
   
 }
 
 sub dir {
-  my ($c, $path) = @_;
+  my ($self, $c, $path) = @_;
   
   #~ path($path)->list
   #~ return Mojo::Collection->new unless -d $$self;
@@ -57,6 +68,7 @@ sub dir {
   
   $c->stash('files', []);
   $c->stash('dirs', []);
+  $c->stash('parent_dir', decode('UTF-8', path($c->stash('url_path'))->dirname));
   
   while (readdir $dir) {
     next
@@ -64,29 +76,29 @@ sub dir {
     next
       if /^\./; # unless $CONFIG->{hidden};
     
-    push @{$c->stash('dirs')}, $_
+    push @{$c->stash('dirs')}, decode('UTF-8', $_)
       and next
       if -d "$path/$_";
     
     my @stat = stat "$path/$_";
     
     push @{$c->stash('files')}, {
-      name  => $_,
+      name  => decode('UTF-8', $_),
       size  => $stat[7] || 0,
-      type  => $mime->type(  (/\.([0-9a-zA-Z]+)$/)[0] || 'txt' ) || 'application/octet-stream',
+      #~ type  => $self->mime->type(  (/\.([0-9a-zA-Z]+)$/)[0] || 'txt' ) || 'application/octet-stream',
       mtime => Mojo::Date->new( $stat[9] )->to_string(),
     };
   }
   closedir $dir;
   #~ return Mojo::Collection->new(map { $self->new($_) } sort @files);
-  return $CONFIG->{render_index}
-    ? $c->render(ref $CONFIG->{render_index} ? %{$CONFIG->{render_index}} : $CONFIG->{render_index},)
-    : $c->render('.plugin/.static/.share/index',);
+  return $self->config->{render_index}
+    ? $c->render(ref $self->config->{render_index} ? %{$self->config->{render_index}} : $self->config->{render_index},)
+    : $c->render('.plugin/.static/.share/dir',);
   
 }
 
 sub file {
-  my ($c, $path) = @_;
+  my ($self, $c, $path) = @_;
   
   my $filename = path($path)->basename;
   
@@ -98,12 +110,12 @@ sub file {
 }
 
 sub markdown {
-  my $c = shift;
+  my ($self, $c) = @_;
   
   my $content;
   
-  return $CONFIG->{render_markdown}
-    ? $c->render(ref $CONFIG->{render_markdown} ? %{$CONFIG->{render_markdown}} : $CONFIG->{render_markdown}, content=>$content,)
+  return $self->config->{render_markdown}
+    ? $c->render(ref $self->config->{render_markdown} ? %{$self->config->{render_markdown}} : $self->config->{render_markdown}, content=>$content,)
     : $c->render('.plugin/.static/.share/markdown', content=>$content,);
   
 }
@@ -130,6 +142,10 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
 
   # Mojolicious::Lite
   plugin 'StaticShare', <options>;
+  
+  # oneliner
+  > perl -Mojo -E 'a->plugin("StaticShare")->start' daemon
+
 
 =head1 DESCRIPTION
 
@@ -246,7 +262,7 @@ __DATA__
 
 </head>
 <body>
-<header><div class="header clearfix"><%= stash('path')   %></div></header>
+<header><div class="header clearfix"><%= $path   %></div></header>
 <main><div class="header clearfix"><%= content %></div></main>
 
 %= javascript '/js/main.js'
@@ -261,9 +277,46 @@ $( document ).ready(function() {
 </body>
 </html>
 
-@@ .static/.share/index.html.ep
+@@ .plugin/.static/.share/dir.html.ep
 % layout '.plugin/.static/.share/index';
+<h1>Index of <%= $path %></h1>
+<hr />
 
-@@ .static/.share/markdown.html.ep
+<div class="row">
+
+<div class="col s6">
+<h2>Dirs</h2>
+
+<h3>Parent <%= $parent_dir %></h3>
+
+<ul>
+  % for my $dir (sort  @$dirs) {
+  <li class="dir"><a href='<%= $path.'/'.$dir %>'><%== $dir %></a></li>
+  % }
+</ul>
+
+</div>
+
+<div class="col s6">
+<h2>Files</h2>
+
+<table>
+  <tr>
+    <th class='name'>Name</th>
+    <th class='size'>Size</th>
+    <!--th class='type'>Type</th-->
+    <th class='mtime'>Last Modified</th>
+  </tr>
+  % for my $file (sort { $a->{name} cmp $b->{name} } @$files) {
+  <tr>
+    <td class='name'><a href='<%= $path.'/'.$file->{name} %>'><%== $file->{name} %></a></td>
+    <td class='size'><%= $file->{size} %></td>
+    <!--td class='type'><%= $file->{type} %></td-->
+    <td class='mtime'><%= $file->{mtime} %></td>
+  </tr>
+  % }
+</table>
+
+@@ plugin/.static/.share/markdown.html.ep
 % layout '.plugin/.static/.share/index';
 

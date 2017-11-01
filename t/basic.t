@@ -6,10 +6,10 @@ use Test::Mojo;
 
 plugin 'StaticShare';
 
-get '/' => sub {
-  my $c = shift;
-  $c->render(text => 'Hello Mojo!');
-};
+#~ get '/' => sub {
+  #~ my $c = shift;
+  #~ $c->render(text => 'Hello Mojo!');
+#~ };
 
 my $t = Test::Mojo->new;
 $t->get_ok('/')->status_is(200)->content_is('Hello Mojo!');
