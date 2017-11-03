@@ -221,27 +221,28 @@ See L<Mojolicious::Guides::Routing#Wildcard-placeholders>.
 
 =head2 admin_pass
 
-Admin password (be sure https). None defaults.
+Admin password (be sure https) for admin tasks. None defaults.
 
-  # any url like  https://myhost/my/share/foo/bar?admin=$%^!!9nes--
   admin_pass => '$%^!!9nes--', # 
+
+Signin to admin interface C< https://myhost/my/share/foo/bar?admin=$%^!!9nes-- >
 
 =head2 render_dir
 
-Template path, format, handler, etc  which render directory index. Defaults builtin things.
+Template path, format, handler, etc  which render directory index. Defaults to builtin things.
 
-  render_dir => 'foo/bar'
-  render_dir => {template => 'foo/bar'},
-  render_dir => {template => 'foo/bar', handler=>'cgi.pl'},
-
+  render_dir => 'foo/dir_index', 
+  render_dir => {template => 'foo/my_directory_index', foo=>...},
   # Disable directory index
   render_dir => 0,
   
 
 =head2 render_markdown
 
-Same as render_dir but for markdown files. Defaults builtin things.
+Same as >B<render_dir> but for markdown files. Defaults to builtin things.
 
+  render_markdown =>  'foo/markdown',
+  render_markdown => {template => 'foo/markdown', foo=>...},
   # Disable markdown
   render_markdown => 0,
 
