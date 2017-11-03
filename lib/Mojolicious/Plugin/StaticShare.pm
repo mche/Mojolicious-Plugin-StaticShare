@@ -183,7 +183,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
   plugin 'StaticShare', <options>;
   
   # oneliner
-  > perl -Mojo -E 'a->plugin("StaticShare")->start' daemon
+  > perl -MMojolicious::Lite -E 'plugin("StaticShare", root_url=>"/my/share",)->start' daemon
 
 
 =head1 DESCRIPTION
@@ -198,7 +198,7 @@ Can browse and put files if name not exists.
 
 Can copy, move, delete files/dirs
 
-Place param 'admin=<admin_pass option>' to any http url for plugin route option (see below).
+Place param C<< admin=<admin_pass option> >> to any url inside B<root_url> option (see below).
 
 =head1 OPTIONS
 
@@ -239,7 +239,7 @@ Template path, format, handler, etc  which render directory index. Defaults to b
 
 =head2 render_markdown
 
-Same as >B<render_dir> but for markdown files. Defaults to builtin things.
+Same as B<render_dir> but for markdown files. Defaults to builtin things.
 
   render_markdown =>  'foo/markdown',
   render_markdown => {template => 'foo/markdown', foo=>...},
