@@ -12,6 +12,6 @@ plugin 'StaticShare';
 #~ };
 
 my $t = Test::Mojo->new;
-$t->get_ok('/')->status_is(200)->content_is('Hello Mojo!');
+$t->get_ok('/')->status_is(200);#->content_is('Hello Mojo!');
 
 done_testing();
