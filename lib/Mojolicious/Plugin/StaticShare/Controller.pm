@@ -31,12 +31,9 @@ sub post {
   my ($c) = @_;
   #~ $c->req->max_message_size(0);
   # Check file size
-  warn "post!";
-  return $c->render(json=>{error=>'file is too big'}, status=>200)
+  return $c->render(json=>{error=>$c->лок('file is too big')}, status=>417)
     if $c->req->is_limit_exceeded;
-  
-  warn "post!";
-  
+
   $c->_stash();
   
    
@@ -46,9 +43,9 @@ sub post {
   my $file_path = $c->stash('file_path');
   my $to = $file_path->child(encode('UTF-8', $name));
   
-  return $c->render(json=>{error=>'path is not directory'})
+  return $c->render(json=>{error=>$c->лок('path is not directory')})
     unless -d $file_path;
-  return $c->render(json=>{error=>'file already exists'})
+  return $c->render(json=>{error=>$c->лок('file already exists')})
     if -f $to;
   
   $file->asset->move_to($to);

@@ -49,12 +49,18 @@ my %loc = (
     'Add uploads'=>'Добавить файлы',
     'root path'=>"корень",
     'Uploading'=>'Загружается',
+    'file is too big'=>'слишком большой файл',
+    'path is not directory'=>"нет такого каталога/папки",
+    'file already exists' => "такой файл уже есть",
+    
     
   },
 );
 sub лок {# helper
   my ($c, $str, $lang) = @_;
   #~ $lang //= $c->stash('language');
+  return $str
+    unless $c->stash('language');
   my $loc;
   for ($c->stash('language')->languages) {
     return $str
