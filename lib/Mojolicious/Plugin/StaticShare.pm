@@ -47,7 +47,7 @@ my %loc = (
     'Last Modified'=>'Дата изменения',
     'Up'=>'Выше',
     'Add uploads'=>'Добавить файлы',
-    'root path'=>"корень",
+    'root'=>"корень",
     'Uploading'=>'Загружается',
     'file is too big'=>'слишком большой файл',
     'path is not directory'=>"нет такого каталога/папки",
@@ -98,7 +98,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
   plugin 'StaticShare', <options>;
   
   # oneliner
-  > perl -MMojolicious::Lite -E 'plugin("StaticShare", root_url=>"/my/share",)->start' daemon
+  > MOJO_MAX_MESSAGE_SIZE=0 perl -MMojolicious::Lite -E 'plugin("StaticShare", root_url=>"/my/share",)->start' daemon
 
 
 =head1 DESCRIPTION

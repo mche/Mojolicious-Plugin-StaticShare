@@ -51,7 +51,10 @@ __DATA__
 % layout 'Mojolicious-Plugin-StaticShare/main';
 
 <h1><%= лок 'Index of'%>
-%#<span class="chip maroon-text maroon lighten-5" ><%= $url_path || лок 'root path' %></span>
+% unless (@{$url_path->parts}) {
+  <a href="<%= $url_path %>" class="chip maroon-text maroon lighten-5"><%= лок 'root' %></a>
+
+% }
 % my $con;
 % for my $part (@{$url_path->parts}) {
 %   $con .="/$part";
@@ -128,9 +131,9 @@ __DATA__
     <td class="action">
       <a href="<%= $url_path.'/'.$file->{name} %>?attachment=1" class="btn-flat000" style="padding:0.1rem;"><svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:download" /></a>
     </td>
-    <td class="size right-align"><%= $file->{size} %></td>
+    <td class="size right-align fs8" ><%= $file->{size} %></td>
     <!--td class="type"><%= $file->{type} %></td-->
-    <td class="mtime right-align"><%= $file->{mtime} %></td>
+    <td class="mtime right-align fs8"><%= $file->{mtime} %></td>
   </tr>
   % }
 </tbody>
