@@ -11,6 +11,8 @@ WriteMakefile(
   AUTHOR       => q{Михаил Че (Mikhail Che) <mche[-at-]cpan.org>},
   PREREQ_PM    => {
     'Mojolicious' => '7.36',
+    'HTTP::AcceptLanguage'=>'0.02',
+    'Time::Piece'=>'1.31',
     
   },
   test         => {TESTS => 't/*.t'},
