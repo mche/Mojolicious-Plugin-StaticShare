@@ -35,15 +35,13 @@ sub post {
     if $c->req->is_limit_exceeded;
 
   $c->_stash();
-  
-   
-  
+
   my $file = $c->req->upload('file');
   my $name = url_unescape($c->param('name') || $file->filename);
   my $file_path = $c->stash('file_path');
   my $to = $file_path->child(encode('UTF-8', $name));
   
-  return $c->render(json=>{error=>$c->лок('path is not directory')})
+  return $c->render(json=>{error=>$c->лок('path is not a directory')})
     unless -d $file_path;
   return $c->render(json=>{error=>$c->лок('file already exists')})
     if -f $to;
@@ -62,10 +60,10 @@ sub _stash {
   my $lang = HTTP::AcceptLanguage->new($c->req->headers->accept_language || 'en;q=0.5');
   $c->stash('language' => $lang);
   $c->stash('title' => $c->лок('Share'));
-  $c->stash('pth' => Mojo::Path->new('/'.$c->stash('pth')) =~ s|/$||r ) #  
+  $c->stash('pth' => Mojo::Path->new($c->stash('pth'))->leading_slash(1)->trailing_slash(0))
     if $c->stash('pth');
   $c->stash('url_path' => Mojo::Path->new(encode('UTF-8', ($c->plugin->config->{root_url} // '')) . ($c->stash('pth') // '')));
-  $c->stash('file_path' => path(url_unescape(($c->plugin->config->{root_dir} // '.') . ($c->stash('pth') // ''))));#encode('UTF-8',  url_unescape($c->stash('path'))))
+  $c->stash('file_path' => path(url_unescape(($c->plugin->config->{root_dir} // '.') . ($c->stash('pth') // ''))));
 }
 
 sub dir {
@@ -81,7 +79,7 @@ sub dir {
     next
       if $_ eq '.' || $_ eq '..';
     next
-      if /^\./; # unless $CONFIG->{hidden};
+      if /^\./;
     
     push @$dirs, decode('UTF-8', $_)
       and next
@@ -111,8 +109,6 @@ sub dir {
   
   $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,)
     or $c->reply->exception;
-
-  
 }
 
 sub file {
@@ -130,7 +126,7 @@ sub file {
 sub markdown {
   my ($c) = @_;
   
-  my $content;
+  my $content;# TODO
   
   return $c->plugin->config->{render_markdown}
     ? $c->render(ref $c->plugin->config->{render_markdown} ? %{$c->plugin->config->{render_markdown}} : $c->plugin->config->{render_markdown}, content=>$content,)

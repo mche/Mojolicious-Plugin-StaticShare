@@ -41,6 +41,7 @@ __DATA__
 
 %= javascript begin
 // Доброго всем
+// ALL GLORY TO GLORIA
 
 % end
 
@@ -51,15 +52,21 @@ __DATA__
 % layout 'Mojolicious-Plugin-StaticShare/main';
 
 <h1><%= лок 'Index of'%>
-% unless (@{$url_path->parts}) {
-  <a href="<%= $url_path %>" class="chip maroon-text maroon lighten-5"><%= лок 'root' %></a>
-
+% my $pc = @{$url_path->parts};
+% unless ($pc) {
+  <a href="<%= $url_path %>" class="chip grey-text grey lighten-4"><%= лок 'root' %></a>
 % }
 % my $con;
 % for my $part (@{$url_path->parts}) {
 %   $con .="/$part";
   <a href="<%= $con %>" class="chip maroon-text maroon lighten-5"><%= $part %></a>
+% }
 
+% if ($pc gt 1 || !$c->plugin->config->{'root_url'} && $pc) {
+  <a href="<%= $url_path->to_dir %>" class="btn-flat ">
+    <svg class="icon icon15 maroon-fill"><use xlink:href="#svg:up-left-round" />
+    <span class="maroon-text"><%= лок 'Up'%></span>
+  </a>
 % }
 
 </h1>
@@ -68,20 +75,23 @@ __DATA__
 <div class="row">
 <div class="col s6">
 
-<h2><%= лок 'Dirs'%> <span class="chip blue-text blue lighten-5" style=""><%= scalar @$dirs %></span>
-% if (@{$url_path->parts}) {
-  <a href="<%= $url_path->to_dir %>" class="btn-flat dir right">
-    <svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:up-left-round" />
-    <span><%= лок 'Up'%></span>
-  </a>
-% }
+<h2 class="lime-text text-darken-4">
+  <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:folder"></svg>
+  <%= лок 'Dirs'%>
+  <span class="chip lime lighten-5" style=""><%= scalar @$dirs %></span>
 </h2>
 
 
 
 <ul class="collection dirs">
   % for my $dir (sort  @$dirs) {
-    <li class="collection-item dir"><a href='<%= $url_path.'/'.$dir %>'><%== $dir %></a></li>
+    <li class="collection-item dir lime lighten-5">
+      <a href="<%= $url_path.'/'.$dir %>" class="lime-text text-darken-4" style="display:block;">
+        <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:folder"></svg>
+        <%== $dir %>
+      </a>
+      
+    </li>
   % }
 </ul>
 
@@ -89,28 +99,26 @@ __DATA__
 
 <div class="col s6">
 
+<div class="right" style="padding:1rem 0;">
+  <label for="fileupload" class="btn-flat">
+    <svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:add-file" /></svg>
+    <span class="blue-text"><%= лок 'Add uploads'%></span>
+  </label>
+  <input id="fileupload" style="display:none;" type="file" name="file" data-url="<%= $url_path %>" multiple>
+  
+</div>
 
-
-<h2>
+<h2 class="light-blue-text text-darken-2">
   <%= лок 'Files'%>
-  <span class="chip blue-text blue lighten-5" style=""><%= scalar @$files %></span>
+  <span class="chip light-blue lighten-5" style=""><%= scalar @$files %></span>
 </h2>
 
 
-<div id="fileupload" class="right-align input-field"  style="position: relative;">
-  <div style000="position: absolute; right:0;" >
-    <label for="file" style="cursor:pointer;">
-      <svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:add-file" /></svg>
-      <span class="blue-text"><%= лок 'Add uploads'%></span>
-    </label>
-    <input  class="btn-flat000 white-text" type="file" id="file" name="file" data-url="<%= $url_path %>" multiple>
-    
-  </div>
-  
-  <div class="progress grey lighten-3">
-      <div class="determinate" style="height: 18px; width: 0%"></div>
-  </div>
+
+<div class="progress grey lighten-3">
+    <div class="determinate" style="height: 18px; width: 0%"></div>
 </div>
+
 
 <table class="striped files">
 <thead>
@@ -193,6 +201,10 @@ __DATA__
   
   <symbol id="svg:upload" viewBox="0 0 26 26">
     <path style=" " d="M 12.96875 0.3125 C 12.425781 0.3125 11.882813 0.867188 10.78125 1.96875 L 4.21875 8.5625 C 3.011719 9.773438 3.414063 10 4.6875 10 L 8 10 L 8 18 C 8 19.65625 9.34375 21 11 21 L 15 21 C 16.65625 21 18 19.65625 18 18 L 18 10 L 21.25 10 C 22.660156 10 22.957031 9.773438 21.75 8.5625 L 15.15625 1.96875 C 14.054688 0.867188 13.511719 0.3125 12.96875 0.3125 Z M 0 19 L 0 23 C 0 24.65625 1.34375 26 3 26 L 23 26 C 24.65625 26 26 24.65625 26 23 L 26 19 L 24 19 L 24 23 C 24 23.550781 23.550781 24 23 24 L 3 24 C 2.449219 24 2 23.550781 2 23 L 2 19 Z "></path>
+  </symbol>
+  
+  <symbol id="svg:folder" viewBox="0 0 30 30">
+    <path d="M 4 3 C 2.895 3 2 3.895 2 5 L 2 8 L 13 8 L 28 8 L 28 7 C 28 5.895 27.105 5 26 5 L 11.199219 5 L 10.582031 3.9707031 C 10.221031 3.3687031 9.5701875 3 8.8671875 3 L 4 3 z M 3 10 C 2.448 10 2 10.448 2 11 L 2 23 C 2 24.105 2.895 25 4 25 L 26 25 C 27.105 25 28 24.105 28 23 L 28 11 C 28 10.448 27.552 10 27 10 L 3 10 z"></path>
   </symbol>
   
 </svg>

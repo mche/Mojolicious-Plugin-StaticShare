@@ -3,6 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::File qw(path);
 
 our $VERSION = '0.01';
+my $PKG = __PACKAGE__;
 
 has qw(config);
 
@@ -11,23 +12,20 @@ sub register {
   $self->config($args);
   
   require Mojolicious::Plugin::StaticShare::Templates
-    and push @{$app->renderer->classes}, __PACKAGE__."::Templates"
-    and push @{$app->static->paths}, path(__FILE__)->sibling('StaticShare')->child('static')  #->dirname.'/StaticShare/static' # #__PACKAGE__."::Static"
+    and push @{$app->renderer->classes}, "$PKG\::Templates"
+    and push @{$app->static->paths}, path(__FILE__)->sibling('StaticShare')->child('static') 
     unless defined($args->{render_dir}) && $args->{render_dir} eq 0
           && defined($args->{render_markdown}) && $args->{render_markdown} eq 0;
-  #~ warn path(__FILE__)->dirname.'/StaticShare/static';
-  #~ warn "$_ => $INC{$_}" for sort keys %INC;
   
   $args->{root_url} ||= '';
   $args->{root_url}  =~ s|/$||;
-  #~ utf8::decode($args->{root_url});
   
   my $route = "$args->{root_url}/*pth";
   my $r = $app->routes;
-  $r->get($args->{root_url})->to(namespace=>__PACKAGE__, controller=>"Controller", action=>'get', pth=>'', plugin=>$self)->name('Plugin-StaticShare-ROOT');#cb => sub { $self->get(@_) },
-  $r->post($args->{root_url})->to(namespace=>__PACKAGE__, controller=>"Controller", action=>'post', pth=>'', plugin=>$self)->name('Plugin-StaticShare-ROOT-POST');
-  $r->get($route)->to(namespace=>__PACKAGE__, controller=>"Controller", action=>'get', plugin=>$self )->name('Plugin-StaticShare-GET');
-  $r->post($route)->to(namespace=>__PACKAGE__, controller=>"Controller", action=>'post', plugin=>$self )->name('Plugin-StaticShare-POST');
+  $r->get($args->{root_url})->to(namespace=>$PKG, controller=>"Controller", action=>'get', pth=>'', plugin=>$self)->name("$PKG ROOT");
+  $r->post($args->{root_url})->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self)->name("$PKG ROOT POST");
+  $r->get($route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self )->name("$PKG GET");
+  $r->post($route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self )->name("$PKG POST");
 
   $app->helper(лок => sub { &лок(@_) });
   
@@ -150,7 +148,11 @@ Template path, format, handler, etc  which render directory index. Defaults to b
   render_dir => {template => 'foo/my_directory_index', foo=>...},
   # Disable directory index
   render_dir => 0,
-  
+
+=head3 Usefull stash variables
+
+
+
 
 =head2 render_markdown
 
