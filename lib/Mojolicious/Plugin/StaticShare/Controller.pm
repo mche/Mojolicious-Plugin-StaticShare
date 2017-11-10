@@ -29,16 +29,19 @@ sub get {
 
 sub post {
   my ($c) = @_;
+  $c->_stash();
+  my $file_path = $c->stash('file_path');
+  return $c->render(json=>{error=>$c->лок('Cant open directory')})
+    unless -w $file_path;
   #~ $c->req->max_message_size(0);
   # Check file size
   return $c->render(json=>{error=>$c->лок('file is too big')}, status=>417)
     if $c->req->is_limit_exceeded;
 
-  $c->_stash();
+  
 
   my $file = $c->req->upload('file');
   my $name = url_unescape($c->param('name') || $file->filename);
-  my $file_path = $c->stash('file_path');
   my $to = $file_path->child(encode('UTF-8', $name));
   
   return $c->render(json=>{error=>$c->лок('path is not a directory')})
@@ -69,8 +72,10 @@ sub _stash {
 sub dir {
   my ($c, $path) = @_;
   
+  my $ex = Mojo::Exception->new($c->лок(qq{Cant open directory}));
   opendir(my $dir, $path)
-    or return $c->reply->exception(qq{Can't open directory [$path]: $!});
+    or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500, exception=>$ex) #qq{Can't open directory [$path]: $!})
+      || $c->reply->exception($ex);
   
   my $files = $c->stash('files' => [])->stash('files');
   my $dirs = $c->stash('dirs' => [])->stash('dirs');
@@ -83,7 +88,10 @@ sub dir {
     
     push @$dirs, decode('UTF-8', $_)
       and next
-      if -d "$path/$_";
+      if -d "$path/$_" && -w _;
+    
+    next
+      unless -f _;
     
     my @stat = stat "$path/$_";
     
@@ -92,6 +100,7 @@ sub dir {
       size  => $stat[7] || 0,
       #~ type  => $c->plugin->mime->type(  (/\.([0-9a-zA-Z]+)$/)[0] || 'txt' ) || 'application/octet-stream',
       mtime => decode 'UTF-8', localtime( $stat[9] )->strftime, #->to_datetime, #to_string(),
+      #~ mode=> $stat[2] & 07777, #-r _,
     };
   }
   closedir $dir;
@@ -107,12 +116,17 @@ sub dir {
     return $c->render('Mojolicious-Plugin-StaticShare/en/dir',);
   }
   
-  $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,)
-    or $c->reply->exception;
+  $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>Mojo::Exception->new(qq{Template rendering for path content not found}))
+    or $c->reply->exception();
 }
 
 sub file {
   my ($c, $path) = @_;
+  
+  my $ex = Mojo::Exception->new($c->лок(qq{Permission denied}));
+  return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>$ex)
+    || $c->reply->exception($ex)
+    unless -r $path;
   
   my $filename = $path->basename;
   

@@ -35,7 +35,9 @@ sub register {
 my %loc = (
   'ru-ru'=>{
     'Not found'=>"Не найдено",
-    'Disabled index of'=>"Заблокирован вывод содержания",
+    'Error on path'=>"Ошибка в",
+    'Permission denied'=>"Нет доступа",
+    'Cant open directory'=>"Нет доступа в папку",
     'Share'=>'Обзор',
     'Index of'=>'Содержание',
     'Dirs'=>'Каталоги',
@@ -96,7 +98,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
   plugin 'StaticShare', <options>;
   
   # oneliner
-  > MOJO_MAX_MESSAGE_SIZE=0 perl -MMojolicious::Lite -E 'plugin("StaticShare", root_url=>"/my/share",)->start' daemon
+  $ MOJO_MAX_MESSAGE_SIZE=0 perl -MMojolicious::Lite -E 'plugin("StaticShare", root_url=>"/my/share",)->secrets([rand])->start' daemon
 
 
 =head1 DESCRIPTION
@@ -111,7 +113,7 @@ Can browse and put files if name not exists.
 
 Can copy, move, delete files/dirs
 
-Place param C<< admin=<admin_pass option> >> to any url inside B<root_url> option (see below).
+Append param C<< admin=<admin_pass> option >> to any url inside B<root_url> requests (see below).
 
 =head1 OPTIONS
 
@@ -126,9 +128,9 @@ Absolute or relative file system path root directory. Defaults to '.'.
 
 This prefix to url path. Defaults to '/'.
 
-  root_url => '/', # mean route '/*path'
-  root_url => '', # mean also route '/*path'
-  root_url => '/my/share', # mean route '/my/share/*path'
+  root_url => '/', # mean route '/*pth'
+  root_url => '', # mean also route '/*pth'
+  root_url => '/my/share', # mean route '/my/share/*pth'
 
 See L<Mojolicious::Guides::Routing#Wildcard-placeholders>.
 
@@ -151,8 +153,27 @@ Template path, format, handler, etc  which render directory index. Defaults to b
 
 =head3 Usefull stash variables
 
+C<pth>, C<url_path>, C<file_path>, C<language>, C<dirs>, C<files>
 
+=head4 pth
 
+Path of request exept C<root_url> option, as L<Mojo::Path> object.
+
+=head4 url_path
+
+Path of request with C<root_url> option, as L<Mojo::Path> object.
+
+=head4 language
+
+Req header AcceptLanguage as L<HTTP::AcceptLanguage> object.
+
+=head4 dirs
+
+List of scalars dirnames. Not sorted.
+
+=head4 files
+
+List of hashrefs (C<name, size, mtime> keys) files. Not sorted.
 
 =head2 render_markdown
 

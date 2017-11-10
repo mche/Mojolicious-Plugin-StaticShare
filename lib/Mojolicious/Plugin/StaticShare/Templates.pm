@@ -115,12 +115,12 @@ __DATA__
 
 
 
-<div class="progress grey lighten-3">
-    <div class="determinate" style="height: 18px; width: 0%"></div>
+<div class="progress white" style="margin:0; padding:0;">
+    <div class="determinate blue" style="height: 18px; width: 0%"></div>
 </div>
 
 
-<table class="striped files">
+<table class="striped files light-blue lighten-5">
 <thead>
   <tr>
     <th class="name"><%= лок 'Name'%></th>
@@ -137,7 +137,9 @@ __DATA__
       <a href="<%= $url_path.'/'.$file->{name} %>"><%== $file->{name} %></a>
     </td>
     <td class="action">
-      <a href="<%= $url_path.'/'.$file->{name} %>?attachment=1" class="btn-flat000" style="padding:0.1rem;"><svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:download" /></a>
+%# if ($file->{mode}) {
+        <a href="<%= $url_path.'/'.$file->{name} %>?attachment=1" class="" style="padding:0.1rem;"><svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:download" /></a>
+%# }
     </td>
     <td class="size right-align fs8" ><%= $file->{size} %></td>
     <!--td class="type"><%= $file->{type} %></td-->
@@ -153,6 +155,7 @@ __DATA__
 @@ Mojolicious-Plugin-StaticShare/not_found.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
 <h1 class="red-text">404</h1>
+<hr />
 <h2><%= лок 'Not found'%>
 %#<span class="chip maroon-text maroon lighten-5" ><%= $url_path || лок 'root path' %></span>
 % my $con;
@@ -162,7 +165,7 @@ __DATA__
 % }
 
 % if (@{$url_path->parts}) {
-  <a href="<%= $url_path->to_dir %>" class="btn-flat dir bold"><svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:up-left-round" /></svg> <%= лок 'Up'%></a>
+  <a href="<%= $url_path->to_dir %>" class="btn-flat dir maroon-text"><svg class="icon icon15 maroon-fill"><use xlink:href="#svg:up-left-round" /></svg> <%= лок 'Up'%></a>
 % }
 
 </h2>
@@ -170,7 +173,9 @@ __DATA__
 @@ Mojolicious-Plugin-StaticShare/exception.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
 <h1 class="red-text">500</h1>
-<h2><%= лок 'Disabled index of'%>
+<hr />
+
+<h2><%= лок 'Error on path'%>
 % my $con;
 % for my $part (@{$url_path->parts}) {
 %   $con .="/$part";
@@ -178,10 +183,17 @@ __DATA__
 % }
 
 % if (@{$url_path->parts}) {
-  <a href="<%= $url_path->to_dir %>" class="btn-flat dir bold"><svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:up-left-round" /></svg> <%= лок 'Up'%></a>
+  <a href="<%= $url_path->to_dir %>" class="btn-flat dir maroon-text"><svg class="icon icon15 maroon-fill fill-darken-1"><use xlink:href="#svg:up-left-round" /></svg> <%= лок 'Up'%></a>
 % }
 
 </h2>
+
+% if(my $msg = $exception && $exception->message) {
+%   utf8::decode($msg);
+    <h3 id="error" style="white-space:pre;"><%= $msg %></h3>
+% }
+
+
 
 @@ Mojolicious-Plugin-StaticShare/svg.html.ep
 
