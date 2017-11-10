@@ -109,11 +109,11 @@ sub dir {
     if $c->plugin->config->{render_dir}; 
   
   unless (defined($c->plugin->config->{render_dir}) && $c->plugin->config->{render_dir} eq 0) {
-    $c->render_maybe("Mojolicious-Plugin-StaticShare/$_/dir")
+    $c->render_maybe("Mojolicious-Plugin-StaticShare/$_/dir", handler=>'ep',)
       and return
       for $c->stash('language')->languages;
     
-    return $c->render('Mojolicious-Plugin-StaticShare/en/dir',);
+    return $c->render('Mojolicious-Plugin-StaticShare/en/dir', handler=>'ep',);
   }
   
   $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>Mojo::Exception->new(qq{Template rendering for path content not found}))
@@ -144,7 +144,7 @@ sub markdown {
   
   return $c->plugin->config->{render_markdown}
     ? $c->render(ref $c->plugin->config->{render_markdown} ? %{$c->plugin->config->{render_markdown}} : $c->plugin->config->{render_markdown}, content=>$content,)
-    : $c->render('Mojolicious-Plugin-StaticShare/markdown', content=>$content,);
+    : $c->render('Mojolicious-Plugin-StaticShare/markdown', content=>$content, handler=>'ep',);
   
 }
 

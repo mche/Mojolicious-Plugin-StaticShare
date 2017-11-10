@@ -99,7 +99,7 @@ __DATA__
 
 <div class="col s6">
 
-<div class="right" style="padding:1rem 0;">
+<div class="right" style="padding:0.7rem 0;">
   <label for="fileupload" class="btn-flat">
     <svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:add-file" /></svg>
     <span class="blue-text"><%= лок 'Add uploads'%></span>
