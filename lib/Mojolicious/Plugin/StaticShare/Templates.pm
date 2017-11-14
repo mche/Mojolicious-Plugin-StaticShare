@@ -37,7 +37,7 @@ __DATA__
 %#<script src="/js/dmuploader.min.js"></script>
 <script src="/js/jquery.ui.widget.js"></script>
 <script src="/js/jquery.fileupload.js"></script>
-<script src="/js/main.js"></script>
+<script src="/js/plugin-static-share.js"></script>
 
 %= javascript begin
 // Доброго всем

@@ -275,9 +275,9 @@ TO_INST_PM = README.pod \
 	lib/Mojolicious/Plugin/StaticShare/static/js/dmuploader.min.js \
 	lib/Mojolicious/Plugin/StaticShare/static/js/jquery.fileupload.js \
 	lib/Mojolicious/Plugin/StaticShare/static/js/jquery.ui.widget.js \
-	lib/Mojolicious/Plugin/StaticShare/static/js/main.js \
 	lib/Mojolicious/Plugin/StaticShare/static/js/materialize.js \
 	lib/Mojolicious/Plugin/StaticShare/static/js/materialize.min.js \
+	lib/Mojolicious/Plugin/StaticShare/static/js/plugin-static-share.js \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_buttons.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_chips.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_color.scss \
@@ -1080,9 +1080,9 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/jquery.fileupload.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/jquery.fileupload.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/jquery.ui.widget.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/jquery.ui.widget.js' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/js/main.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/main.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/materialize.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/materialize.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/materialize.min.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/materialize.min.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/js/plugin-static-share.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/plugin-static-share.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_buttons.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_buttons.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_chips.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_chips.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_color.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_color.scss' \
