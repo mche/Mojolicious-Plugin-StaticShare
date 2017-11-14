@@ -4,13 +4,14 @@ use HTTP::AcceptLanguage;
 use Mojo::Path;
 use Mojo::File qw(path);
 #~ use Mojo::Home;
-use Mojo::Util qw ( decode encode url_unescape);#encode 
+use Mojo::Util qw ( decode encode url_unescape xml_escape);#encode 
 use Time::Piece;# module replaces the standard localtime and gmtime functions with implementations that return objects
 use Mojolicious::Types;
 use Mojo::Asset::File;
 
 has qw(plugin);
 has mime => sub { Mojolicious::Types->new };
+has is_markdown => sub { qr{[.]m(?:d(?:own)?|kdn?|arkdown)$}i };
 
 sub get {
   my ($c) = @_;
@@ -37,8 +38,6 @@ sub post {
   # Check file size
   return $c->render(json=>{error=>$c->лок('file is too big')}, status=>417)
     if $c->req->is_limit_exceeded;
-
-  
 
   my $file = $c->req->upload('file');
   my $name = url_unescape($c->param('name') || $file->filename);
@@ -104,7 +103,16 @@ sub dir {
     };
   }
   closedir $dir;
-
+  
+  for my $index (qw(README.md INDEX.md)) {
+    my $md_file = $path->child($index);
+    next
+      unless -f $md_file;
+    
+    $c->_stash_markdown($md_file);
+    last;
+  }
+  
   return $c->render(ref $c->plugin->config->{render_dir} ? %{$c->plugin->config->{render_dir}} : $c->plugin->config->{render_dir},)
     if $c->plugin->config->{render_dir}; 
   
@@ -129,6 +137,8 @@ sub file {
     unless -r $path;
   
   my $filename = $path->basename;
+  return $c->_markdown($path)
+    unless ($c->plugin->config->{render_markdown} || '') eq 0 || $c->param('attachment') || $filename !~ $c->is_markdown;
   
   $c->res->headers->content_disposition($c->param('attachment') ? "attachment; filename=$filename;" : "inline");
   my $type  =$c->mime->type(  ( $path =~ /\.([0-9a-zA-Z]+)$/)[0] || 'txt' ) || $c->mime->type('txt');#'application/octet-stream';
@@ -137,15 +147,34 @@ sub file {
   
 }
 
-sub markdown {
-  my ($c) = @_;
-  
-  my $content;# TODO
+sub _markdown {
+  my ($c, $path) = @_;
+
+  my $ex = Mojo::Exception->new($c->лок(qq{Please install module markdown with parse method}));
+
+  $c->_stash_markdown($path)
+    or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>$ex)
+        || $c->reply->exception($ex);
   
   return $c->plugin->config->{render_markdown}
-    ? $c->render(ref $c->plugin->config->{render_markdown} ? %{$c->plugin->config->{render_markdown}} : $c->plugin->config->{render_markdown}, content=>$content,)
-    : $c->render('Mojolicious-Plugin-StaticShare/markdown', content=>$content, handler=>'ep',);
+    ? $c->render(ref $c->plugin->config->{render_markdown} ? %{$c->plugin->config->{render_markdown}} : $c->plugin->config->{render_markdown},)
+    : $c->render('Mojolicious-Plugin-StaticShare/markdown', handler=>'ep',);
   
+}
+
+sub _stash_markdown {
+  my ($c, $path) = @_;
+  my $md = $c->plugin->markdown
+    || return; # not installed
+  my $content = Mojo::DOM->new($md->parse(decode 'UTF-8', Mojo::Asset::File->new(path => $path)->slurp));
+  $content->find('script')->each(\&_sanitize_script);
+  $c->stash(markdown => $content->at('body') || $content);
+}
+
+sub _sanitize_script {# for markdown
+  my $el = shift;
+  my $text = xml_escape $el->text;
+  $el->replace("<code class=script>$text</code>");
 }
 
 1;

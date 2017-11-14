@@ -51,26 +51,7 @@ __DATA__
 @@ Mojolicious-Plugin-StaticShare/en/dir.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
 
-<h1><%= лок 'Index of'%>
-% my $pc = @{$url_path->parts};
-% unless ($pc) {
-  <a href="<%= $url_path %>" class="chip grey-text grey lighten-4"><%= лок 'root' %></a>
-% }
-% my $con;
-% for my $part (@{$url_path->parts}) {
-%   $con .="/$part";
-  <a href="<%= $con %>" class="chip maroon-text maroon lighten-5"><%= $part %></a>
-% }
-
-% if ($pc gt 1 || !$c->plugin->config->{'root_url'} && $pc) {
-  <a href="<%= $url_path->to_dir %>" class="btn-flat ">
-    <svg class="icon icon15 maroon-fill"><use xlink:href="#svg:up-left-round" />
-    <span class="maroon-text"><%= лок 'Up'%></span>
-  </a>
-% }
-
-</h1>
-<hr />
+%= include 'Mojolicious-Plugin-StaticShare/header';
 
 <div class="row">
 <div class="col s6">
@@ -149,8 +130,38 @@ __DATA__
 </tbody>
 </table>
 
+</div><!-- col 2 -->
+</div><!-- row -->
+
+<div class="markdown"><%== stash('markdown') || '' %></div>
+
+@@ Mojolicious-Plugin-StaticShare/header.html.ep
+
+<h1><%= лок 'Index of'%>
+% my $pc = @{$url_path->parts};
+% unless ($pc) {
+  <a href="<%= $url_path %>" class="chip grey-text grey lighten-4"><%= лок 'root' %></a>
+% }
+% my $con;
+% for my $part (@{$url_path->parts}) {
+%   $con .="/$part";
+  <a href="<%= $con %>" class="chip maroon-text maroon lighten-5"><%= $part %></a>
+% }
+
+% if ($pc gt 1 || !$c->plugin->config->{'root_url'} && $pc) {
+  <a href="<%= $url_path->to_dir %>" class="btn-flat ">
+    <svg class="icon icon15 maroon-fill"><use xlink:href="#svg:up-left-round" />
+    <span class="maroon-text"><%= лок 'Up'%></span>
+  </a>
+% }
+
+</h1>
+<hr />
+
 @@ Mojolicious-Plugin-StaticShare/markdown.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
+%= include 'Mojolicious-Plugin-StaticShare/header';
+<%== stash('markdown') || stash('content') || 'none content' %>
 
 @@ Mojolicious-Plugin-StaticShare/not_found.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
@@ -172,7 +183,8 @@ __DATA__
 
 @@ Mojolicious-Plugin-StaticShare/exception.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
-<h1 class="red-text">500</h1>
+% title лок 'Error';
+<h1 class="red-text text-darken-2 bold">500</h1>
 <hr />
 
 <h2><%= лок 'Error on path'%>
@@ -190,7 +202,7 @@ __DATA__
 
 % if(my $msg = $exception && $exception->message) {
 %   utf8::decode($msg);
-    <h3 id="error" style="white-space:pre;"><%= $msg %></h3>
+    <h3 id="error" style="white-space:pre;" class="red-text"><%= $msg %></h3>
 % }
 
 

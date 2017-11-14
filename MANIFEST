@@ -72,3 +72,4 @@ t/pod.t
 t/basic.t
 t/тест/тест2.txt
 t/тест/тест.txt
+t/тест/README.md

@@ -5,11 +5,16 @@ use Mojo::File qw(path);
 our $VERSION = '0.01';
 my $PKG = __PACKAGE__;
 
-has qw(config);
+has [qw(app config)];
+has markdown => sub {
+  my $self = shift;
+   __internal__::Markdown->new(@_);
+};
 
 sub register {
   my ($self, $app, $args) = @_;
   $self->config($args);
+  $self->app($app);
   
   require Mojolicious::Plugin::StaticShare::Templates
     and push @{$app->renderer->classes}, "$PKG\::Templates"
@@ -36,6 +41,7 @@ my %loc = (
   'ru-ru'=>{
     'Not found'=>"Не найдено",
     'Error on path'=>"Ошибка в",
+    'Error'=>"Ошибка",
     'Permission denied'=>"Нет доступа",
     'Cant open directory'=>"Нет доступа в папку",
     'Share'=>'Обзор',
@@ -73,6 +79,17 @@ sub лок {# helper
   return $str;
 }
 
+##############################################
+package __internal__::Markdown;
+sub new {
+  my $class  = shift;
+  my $md_pkg = 'Text::Markdown::Hoedown';
+  return
+    unless eval "require $md_pkg; $md_pkg->import; $md_pkg->can('markdown'); 1";#
+  bless {@_} => $class;
+}
+
+sub parse {  shift; markdown(@_); }
 
 1;
 =pod
