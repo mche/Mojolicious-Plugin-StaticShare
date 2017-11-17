@@ -21,6 +21,27 @@ __DATA__
 
 <link href="/css/main.css" rel="stylesheet">
 
+% if (stash('pod')) {
+<style>
+
+pre {
+  background-color: #fafafa;
+  border: 1px solid #c1c1c1;
+  border-radius: 3px;
+  font: 100% Consolas, Menlo, Monaco, Courier, monospace;
+  padding: 1em;
+}
+
+:not(pre) > code {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 3px;
+  font: 0.9em Consolas, Menlo, Monaco, Courier, monospace;
+  padding: 0.3em;
+}
+
+</style>
+% }
+
 
 <meta name="app:name" content="<%= stash('app:name') // 'Mojolicious::Plugin::StaticShare' %>">
 <meta name="app:version" content="<%= stash('app:version') // 0.01 %>">
@@ -67,7 +88,7 @@ __DATA__
 <ul class="collection dirs">
   % for my $dir (sort  @$dirs) {
     <li class="collection-item dir lime lighten-5">
-      <a href="<%= $url_path.'/'.$dir %>" class="lime-text text-darken-4" style="display:block;">
+      <a href="<%= $url_path->clone->merge($dir) %>" class="lime-text text-darken-4" style="display:block;">
         <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:folder"></svg>
         <%== $dir %>
       </a>
@@ -85,7 +106,7 @@ __DATA__
     <svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:add-file" /></svg>
     <span class="blue-text"><%= лок 'Add uploads'%></span>
   </label>
-  <input id="fileupload" style="display:none;" type="file" name="file" data-url="<%= $url_path %>" multiple>
+  <input id="fileupload" style="display:none;" type="file" name="file" data-url="<%= $url_path->clone->trailing_slash(0) %>" multiple>
   
 </div>
 
@@ -115,11 +136,11 @@ __DATA__
   % for my $file (sort { $a->{name} cmp $b->{name} } @$files) {
   <tr>
     <td class="name">
-      <a href="<%= $url_path.'/'.$file->{name} %>"><%== $file->{name} %></a>
+      <a href="<%= $url_path->clone->merge($file->{name}) %>"><%== $file->{name} %></a>
     </td>
     <td class="action">
 %# if ($file->{mode}) {
-        <a href="<%= $url_path.'/'.$file->{name} %>?attachment=1" class="" style="padding:0.1rem;"><svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:download" /></a>
+        <a href="<%= $url_path->clone->merge($file->{name}) %>?attachment=1" class="" style="padding:0.1rem;"><svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:download" /></a>
 %# }
     </td>
     <td class="size right-align fs8" ><%= $file->{size} %></td>
@@ -133,7 +154,11 @@ __DATA__
 </div><!-- col 2 -->
 </div><!-- row -->
 
-<div class="markdown"><%== stash('markdown') || '' %></div>
+% if ($index) {
+  <h2 class="green-forest-text bold"><%= $index %></h2>
+  <hr/>
+% }
+<div class="index"><%== stash('markdown') || stash('pod') || '' %></div>
 
 @@ Mojolicious-Plugin-StaticShare/header.html.ep
 
@@ -149,7 +174,7 @@ __DATA__
 % }
 
 % if ($pc gt 1 || !$c->plugin->config->{'root_url'} && $pc) {
-  <a href="<%= $url_path->to_dir %>" class="btn-flat ">
+  <a href="<%= $url_path->clone->trailing_slash(0)->to_dir %>" class="btn-flat000 ">
     <svg class="icon icon15 maroon-fill"><use xlink:href="#svg:up-left-round" />
     <span class="maroon-text"><%= лок 'Up'%></span>
   </a>
@@ -159,46 +184,26 @@ __DATA__
 <hr />
 
 @@ Mojolicious-Plugin-StaticShare/markdown.html.ep
-% layout 'Mojolicious-Plugin-StaticShare/main';
+% layout 'Mojolicious-Plugin-StaticShare/main' unless layout;
 %= include 'Mojolicious-Plugin-StaticShare/header';
 <%== stash('markdown') || stash('content') || 'none content' %>
 
+@@ Mojolicious-Plugin-StaticShare/pod.html.ep
+% layout 'Mojolicious-Plugin-StaticShare/main' unless layout;
+%= include 'Mojolicious-Plugin-StaticShare/header';
+<%== stash('pod') || stash('content') || 'none content' %>
+
 @@ Mojolicious-Plugin-StaticShare/not_found.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
-<h1 class="red-text">404</h1>
-<hr />
-<h2><%= лок 'Not found'%>
-%#<span class="chip maroon-text maroon lighten-5" ><%= $url_path || лок 'root path' %></span>
-% my $con;
-% for my $part (@{$url_path->parts}) {
-%   $con .="/$part";
-  <a href="<%= $con %>" class="chip maroon-text maroon lighten-5"><%= $part %></a>
-% }
-
-% if (@{$url_path->parts}) {
-  <a href="<%= $url_path->to_dir %>" class="btn-flat dir maroon-text"><svg class="icon icon15 maroon-fill"><use xlink:href="#svg:up-left-round" /></svg> <%= лок 'Up'%></a>
-% }
-
-</h2>
+%= include 'Mojolicious-Plugin-StaticShare/header';
+<h2 class="red-text">404 <%= лок 'Not found'%></h2>
 
 @@ Mojolicious-Plugin-StaticShare/exception.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
 % title лок 'Error';
-<h1 class="red-text text-darken-2 bold">500</h1>
-<hr />
+%= include 'Mojolicious-Plugin-StaticShare/header';
 
-<h2><%= лок 'Error on path'%>
-% my $con;
-% for my $part (@{$url_path->parts}) {
-%   $con .="/$part";
-  <a href="<%= $con %>" class="chip maroon-text maroon lighten-5"><%= $part %></a>
-% }
-
-% if (@{$url_path->parts}) {
-  <a href="<%= $url_path->to_dir %>" class="btn-flat dir maroon-text"><svg class="icon icon15 maroon-fill fill-darken-1"><use xlink:href="#svg:up-left-round" /></svg> <%= лок 'Up'%></a>
-% }
-
-</h2>
+<h2 class="red-text">500 <%= лок 'Error'%></h2>
 
 % if(my $msg = $exception && $exception->message) {
 %   utf8::decode($msg);

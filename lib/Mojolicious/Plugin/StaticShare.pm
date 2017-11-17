@@ -1,15 +1,19 @@
 package Mojolicious::Plugin::StaticShare;
 use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::File qw(path);
+use Mojolicious::Types;
 
 our $VERSION = '0.01';
 my $PKG = __PACKAGE__;
 
 has [qw(app config)];
-has markdown => sub {
+has markdown => sub {# parser
   my $self = shift;
-   __internal__::Markdown->new(@_);
+   __internal__::Markdown->new($self->config->{markdown_pkg});
 };
+has is_markdown => sub { qr{[.]m(?:d(?:own)?|kdn?|arkdown)$}i };
+has is_pod => sub { qr{p(?:od|m|l)} };
+has mime => sub { Mojolicious::Types->new };
 
 sub register {
   my ($self, $app, $args) = @_;
@@ -22,8 +26,14 @@ sub register {
     unless defined($args->{render_dir}) && $args->{render_dir} eq 0
           && defined($args->{render_markdown}) && $args->{render_markdown} eq 0;
   
-  $args->{root_url} ||= '';
-  $args->{root_url}  =~ s|/$||;
+  #~ push @{$app->renderer->paths}, path($args->{root_dir} // '.')->to_abs
+    #~ unless ($args->{render_markdown} || '') eq 0;
+  
+  $args->{root_url}  =~ s|/$||
+    if $args->{root_url};
+  #~ $args->{root_url} //= '';
+  $args->{markdown_pkg} //= 'Text::Markdown::Hoedown';
+  $args->{dir_index} //= [qw(README.md INDEX.md README.pod INDEX.pod)];
   
   my $route = "$args->{root_url}/*pth";
   my $r = $app->routes;
@@ -33,6 +43,10 @@ sub register {
   $r->post($route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self )->name("$PKG POST");
 
   $app->helper(лок => sub { &лок(@_) });
+  
+  #POD
+  $self->app->plugin(PODRenderer => {no_perldoc => 1})
+    unless $self->app->renderer->helpers->{'pod_to_html'} || defined($args->{render_pod}) && $args->{render_pod} eq 0;
   
   return $app;
 }
@@ -83,13 +97,19 @@ sub лок {# helper
 package __internal__::Markdown;
 sub new {
   my $class  = shift;
-  my $md_pkg = 'Text::Markdown::Hoedown';
+  my $pkg = shift;
   return
-    unless eval "require $md_pkg; $md_pkg->import; $md_pkg->can('markdown'); 1";#
-  bless {@_} => $class;
+    unless eval "require $pkg;  1";#
+  $pkg->import
+    if $pkg->can('import');
+  return $pkg->new()
+    if $pkg->can('new') && $pkg->can('parse');
+  return
+    unless $pkg->can('markdown');
+  bless {pkg=>$pkg} => $class;
 }
 
-sub parse {  shift; markdown(@_); }
+sub parse { shift; markdown(@_); }
 
 1;
 =pod
@@ -115,20 +135,20 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
   plugin 'StaticShare', <options>;
   
   # oneliner
-  $ MOJO_MAX_MESSAGE_SIZE=0 perl -MMojolicious::Lite -E 'plugin("StaticShare", root_url=>"/my/share",)->secrets([rand])->start' daemon
+  $ perl -MMojolicious::Lite -E 'plugin("StaticShare", root_url=>"/my/share",)->secrets([rand])->start' daemon
 
 
 =head1 DESCRIPTION
 
-This plugin for share static files/dirs and has two interfaces: public and admin:
+This plugin for share static files/dirs and has public and admin functionality:
 
 =head2 Public interface
 
-Can browse and put files if name not exists.
+Can browse and upload files if name not exists.
 
 =head2 Admin interface
 
-Can copy, move, delete files/dirs
+Can copy, move, delete files/dirs.
 
 Append param C<< admin=<admin_pass> option >> to any url inside B<root_url> requests (see below).
 
@@ -165,12 +185,12 @@ Template path, format, handler, etc  which render directory index. Defaults to b
 
   render_dir => 'foo/dir_index', 
   render_dir => {template => 'foo/my_directory_index', foo=>...},
-  # Disable directory index
+  # Disable directory index rendering
   render_dir => 0,
 
 =head3 Usefull stash variables
 
-C<pth>, C<url_path>, C<file_path>, C<language>, C<dirs>, C<files>
+C<pth>, C<url_path>, C<file_path>, C<language>, C<dirs>, C<files>, C<index>
 
 =head4 pth
 
@@ -192,15 +212,46 @@ List of scalars dirnames. Not sorted.
 
 List of hashrefs (C<name, size, mtime> keys) files. Not sorted.
 
+=head4 index
+
+Filename for markdown or pod rendering in page below dirs and files.
+
 =head2 render_markdown
 
 Same as B<render_dir> but for markdown files. Defaults to builtin things.
 
   render_markdown =>  'foo/markdown',
   render_markdown => {template => 'foo/markdown', foo=>...},
-  # Disable markdown
+  # Disable markdown rendering
   render_markdown => 0,
 
+=head2 markdown_pkg
+
+Module name for render markdown. Must contains C<sub markdown {}>. Defaults to L<Text::Markdown::Hoedown>.
+
+  markdown_pkg =>  'Foo::Markup';
+
+Does not need to install if C<< render_markdown => 0 >> or never render md files.
+
+=head2 render_pod
+
+Template path, format, handler, etc  which render pod files. Defaults to builtin things.
+
+  render_pod=>'foo/pod',
+  render_pod => {template => 'foo/pod', layout=>'pod', foo=>...},
+  # Disable pod rendering
+  render_pod => 0,
+
+=head2 dir_index
+
+Arrayref to match files to include to directory index page. Defaults to C<< [qw(README.md INDEX.md README.pod INDEX.pod)] >>.
+
+  dir_index => [qw(DIR.md)],
+  dir_index => 0, # disable include markdown to index dir page
+
+=head1 UTF-8
+
+Everywhere  and everything: module, files, content.
 
 =head1 METHODS
 

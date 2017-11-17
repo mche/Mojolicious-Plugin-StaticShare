@@ -63,7 +63,7 @@ lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-
 lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-latin.woff2
 lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-latin-ext.woff2
 lib/Mojolicious/Plugin/StaticShare/static/js/jquery.ui.widget.js
-lib/Mojolicious/Plugin/StaticShare/static/js/main.js
+lib/Mojolicious/Plugin/StaticShare/static/js/plugin-static-share.js
 lib/Mojolicious/Plugin/StaticShare/static/js/jquery.fileupload.js
 t/00-load.t
 t/manifest.t
