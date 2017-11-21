@@ -236,6 +236,7 @@ my $layout_ext_re = qr|\.([^/\.;\s]+)?\.?([^/\.;\s]+)?$|; # .html.ep
 sub _layout_index {# from regexp execute
   my ($c, @match) = @_;#
   $match[0] =~ s|[;\s]+$||;
+  #~ utf8::encode($match[0]);
   push @match, $1, $2
     if $match[0] =~ s|$layout_ext_re||;
   my $found = $c->app->renderer->template_path({
@@ -243,8 +244,8 @@ sub _layout_index {# from regexp execute
       format   => $match[1] || 'html',
       handler  => $match[2] || 'ep',
     });
-  $c->layout(encode('UTF-8', $match[0]))
-    and return
+  $c->layout($match[0])#encode('UTF-8', $match[0]))
+    and return ''
     if $found;
   my $err = "layout [$match[0]].$match[1].$match[2] not found";
   $c->app->log->error("$err", "\t app->renderer->paths: ", @{$c->app->renderer->paths});
