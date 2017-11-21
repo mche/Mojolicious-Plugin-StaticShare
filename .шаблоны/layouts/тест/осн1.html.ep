@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<body class="">
+<div class="container clearfix">
+<h1>фыва</h1>
+%= content
+</div>
+</body>
+</html>
