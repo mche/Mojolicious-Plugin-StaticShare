@@ -82,9 +82,13 @@ sub _stash {
   my $lang = HTTP::AcceptLanguage->new($c->req->headers->accept_language || 'en;q=0.5');
   $c->stash('language' => $lang);
   $c->stash('title' => $c->лок('Share'));
-  $c->stash('pth' => Mojo::Path->new($c->stash('pth'))->leading_slash(0)->trailing_slash(0));
-  $c->stash('url_path' => Mojo::Path->new(encode('UTF-8', $c->plugin->config->{root_url}))->leading_slash(1)->trailing_slash(1)->merge($c->stash('pth'))->trailing_slash(1));
-  $c->stash('file_path' => Mojo::Path->new($c->plugin->config->{root_dir} // '.')->trailing_slash(1)->merge($c->stash('pth')));
+  my $pth = Mojo::Path->new($c->stash('pth'))->leading_slash(0)->trailing_slash(0);
+  $pth = $pth->trailing_slash(1)->merge('.'.$c->stash('format'))
+    if $c->stash('format');
+  $c->stash('pth' => $pth);
+  my $url_path = $c->plugin->root_url->clone->merge($c->stash('pth'))->trailing_slash(1);
+  $c->stash('url_path' => $url_path);
+  $c->stash('file_path' => $c->plugin->root_dir->clone->merge($c->stash('pth')));
 }
 
 
@@ -109,7 +113,7 @@ sub dir {
     
     push @$dirs, decode('UTF-8', $_)
       and next
-      if -d $child && -w _;
+      if -d $child && -r _;
     
     next
       unless -f _;
@@ -147,11 +151,11 @@ sub dir {
     if $c->plugin->config->{render_dir}; 
   
   unless (defined($c->plugin->config->{render_dir}) && $c->plugin->config->{render_dir} eq 0) {
-    $c->render_maybe("Mojolicious-Plugin-StaticShare/$_/dir", handler=>'ep',)
+    $c->render_maybe("Mojolicious-Plugin-StaticShare/$_/dir", format=>'html', handler=>'ep',)
       and return
       for $c->stash('language')->languages;
     
-    return $c->render('Mojolicious-Plugin-StaticShare/en/dir', handler=>'ep',);
+    return $c->render('Mojolicious-Plugin-StaticShare/en/dir', format=>'html', handler=>'ep',);
   }
   
   $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>Mojo::Exception->new(qq{Template rendering for dir content not found}))
@@ -200,7 +204,7 @@ sub file {
 sub _markdown {# file
   my ($c, $path) = @_;
 
-  my $ex = Mojo::Exception->new($c->лок(qq{Please install or verify markdown module (default to Text::Markdown::Hoedown) with markdown sub or parse method}));
+  my $ex = Mojo::Exception->new($c->лок(qq{Please install or verify markdown module (default to Text::Markdown::Hoedown) with markdown(\$str) sub or parse(\$str) method}));
 
   $c->_stash_markdown($path)
     or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>$ex)
@@ -208,7 +212,7 @@ sub _markdown {# file
   
   return $c->plugin->config->{render_markdown}
     ? $c->render(ref $c->plugin->config->{render_markdown} ? %{$c->plugin->config->{render_markdown}} : $c->plugin->config->{render_markdown},)
-    : $c->render('Mojolicious-Plugin-StaticShare/markdown', handler=>'ep',);
+    : $c->render('Mojolicious-Plugin-StaticShare/markdown', format=>'html', handler=>'ep',);
   
 }
 
@@ -289,7 +293,7 @@ sub _pod {# file
   
   return $c->plugin->config->{render_pod}
     ? $c->render(ref $c->plugin->config->{render_pod} ? %{$c->plugin->config->{render_pod}} : $c->plugin->config->{render_pod},)
-    : $c->render('Mojolicious-Plugin-StaticShare/pod', handler=>'ep',);
+    : $c->render('Mojolicious-Plugin-StaticShare/pod', format=>'html', handler=>'ep',);
   
 }
 
@@ -308,7 +312,7 @@ sub _stash_pod {
 
 sub not_found {
   my $c = shift;
-  $c->render_maybe('Mojolicious-Plugin-StaticShare/not_found', status=>404,)
+  $c->render_maybe('Mojolicious-Plugin-StaticShare/not_found', format=>'html', handler=>'ep', status=>404,)
     or $c->reply->not_found;
   
 };

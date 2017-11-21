@@ -201,8 +201,7 @@ pre {
 
 <header class="container clearfix">
 <h1><%= лок 'Index of'%>
-% my $pc = @{$url_path->parts};
-% unless ($pc) {
+% unless (@{$url_path->parts}) {
   <a href="<%= $url_path %>" class="chip grey-text grey lighten-4"><%= лок 'root' %></a>
 % }
 % my $con;
@@ -211,7 +210,7 @@ pre {
   <a href="<%= $con %>" class="chip maroon-text maroon lighten-5"><%= $part %></a>
 % }
 
-% if ($pc gt 1 || !$c->plugin->config->{'root_url'} && $pc) {
+% if ($c->plugin->root_url->to_route ne $url_path->to_route) {
   <a href="<%= $url_path->clone->trailing_slash(0)->to_dir %>" class="btn-flat000 ">
     <svg class="icon icon15 maroon-fill"><use xlink:href="#svg:up-left-round" />
     <span class="maroon-text"><%= лок 'Up'%></span>

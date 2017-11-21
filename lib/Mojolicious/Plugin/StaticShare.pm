@@ -2,11 +2,15 @@ package Mojolicious::Plugin::StaticShare;
 use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::File qw(path);
 use Mojolicious::Types;
+use Mojo::Path;
+use Mojo::Util qw(encode);
 
 our $VERSION = '0.01';
 my $PKG = __PACKAGE__;
 
 has [qw(app config)];
+has root_url => sub { Mojo::Path->new(encode('UTF-8', shift->config->{root_url}))->leading_slash(1)->trailing_slash(1) };
+has root_dir => sub { Mojo::Path->new(shift->config->{root_dir} // '.')->trailing_slash(1) };
 has markdown => sub {# parser
   my $self = shift;
    __internal__::Markdown->new($self->config->{markdown_pkg});
@@ -26,22 +30,19 @@ sub register {
     unless defined($args->{render_dir}) && $args->{render_dir} eq 0
           && defined($args->{render_markdown}) && $args->{render_markdown} eq 0;
   
-  #~ push @{$app->renderer->paths}, path($args->{root_dir} // '.')->to_abs
-    #~ unless ($args->{render_markdown} || '') eq 0;
-  
-  $args->{root_url}  =~ s|/$||
-    if $args->{root_url};
+  #~ $args->{root_url}  =~ s|/$||
+    #~ if $args->{root_url};
   #~ $args->{root_url} //= '';
   $args->{markdown_pkg} //= 'Text::Markdown::Hoedown';
   $args->{dir_index} //= [qw(README.md INDEX.md README.pod INDEX.pod)];
   $args->{public_uploads} //= 0;
   
-  my $route = "$args->{root_url}/*pth";
+  my $route = $self->root_url->clone->merge('*pth');#"$args->{root_url}/*pth";
   my $r = $app->routes;
-  $r->get($args->{root_url})->to(namespace=>$PKG, controller=>"Controller", action=>'get', pth=>'', plugin=>$self)->name("$PKG ROOT");
-  $r->post($args->{root_url})->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self)->name("$PKG ROOT POST");
-  $r->get($route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self )->name("$PKG GET");
-  $r->post($route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self )->name("$PKG POST");
+  $r->get($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', pth=>'', plugin=>$self)->name("$PKG ROOT");
+  $r->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self)->name("$PKG ROOT POST");
+  $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self )->name("$PKG GET");
+  $r->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self )->name("$PKG POST");
 
   $app->helper(лок => sub { &лок(@_) });
   
