@@ -170,7 +170,7 @@ pre {
 %#    <th class="mtime center"><%= лок 'Last Modified'%></th>
 %#  </tr>
 %#</thead>
-%#<tbody>
+<tbody>
   % for my $file (sort { $a->{name} cmp $b->{name} } @$files) {
   <tr>
     <td class="name">
