@@ -92,7 +92,7 @@ pre {
   <span class="chip lime lighten-5" style=""><%= scalar @$dirs %></span>
 </h2>
 
-<div class="progress white" style="margin:0; padding:0;">
+<div class="progress progress-dir white" style="margin:0; padding:0;">
     <div class="determinate lime" style="width: 0%"></div>
 </div>
 
@@ -155,7 +155,7 @@ pre {
 
 
 
-<div class="progress white" style="margin:0; padding:0;">
+<div class="progress progress-file white" style="margin:0; padding:0;">
     <div class="determinate blue" style="width: 0%"></div>
 </div>
 

@@ -49,7 +49,7 @@ sub post {
   
   
   return $c->render(json=>{error=>$c->лок('target directory not found')})
-    if grep {/^\./} @{$c->stash('url_path')->parts};
+    if !$c->admin && grep {/^\./} @{$c->stash('url_path')->parts};
   
   return $c->render(json=>{error=>$c->лок('you cant upload')})
     unless $c->admin || $c->public_uploads;
