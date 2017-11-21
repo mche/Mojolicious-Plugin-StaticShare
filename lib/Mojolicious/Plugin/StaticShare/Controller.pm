@@ -246,7 +246,9 @@ sub _layout_index {# from regexp execute
   $c->layout(encode('UTF-8', $match[0]))
     and return
     if $found;
-  return "<span style='color:red;'> layout [$match[0]].$match[1].$match[2] not found</span>";
+  my $err = "layout [$match[0]].$match[1].$match[2] not found";
+  $c->app->log->error("$err", "\t app->renderer->paths: ", @{$c->app->renderer->paths});
+  return "<div style='color:red;'>$err</div>";
 }
 
 sub _sanitize_script {# for markdown
