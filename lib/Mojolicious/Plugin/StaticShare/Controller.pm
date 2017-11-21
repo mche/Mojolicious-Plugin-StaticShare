@@ -8,27 +8,54 @@ use Time::Piece;# module replaces the standard localtime and gmtime functions wi
 use Mojo::Asset::File;
 
 has qw(plugin);
+has public_uploads => sub { !! shift->plugin->config->{public_uploads} };
+has admin => sub {
+  my $c = shift;
+  return 
+    unless my $pass = $c->plugin->config->{admin_pass};
+  my $sess = $c->session;
+  $sess->{StaticShare}{admin} = 1
+    if $c->param('admin') && $c->param('admin') eq $pass;
+  return $sess->{StaticShare} && $sess->{StaticShare}{admin};
+};
 
 sub get {
   my ($c) = @_;
   
   $c->_stash();
+  
+  return $c->not_found
+    if !$c->admin && grep {/^\./} @{$c->stash('url_path')->parts};
+  
   my $file_path = path(url_unescape($c->stash('file_path')));
   
   return $c->dir($file_path)
     if -d $file_path;
   return $c->file($file_path)
-    if -e $file_path;
+    if -f $file_path;
 
-  $c->render_maybe('Mojolicious-Plugin-StaticShare/not_found', status=>404,)
-    or $c->reply->not_found;
+  $c->not_found;
 }
 
 sub post {
   my ($c) = @_;
   $c->_stash();
+  
   my $file_path = path(url_unescape($c->stash('file_path')));
-  return $c->render(json=>{error=>$c->лок('Cant open directory')})
+  
+  if ($c->admin && (my $dir = $c->param('dir'))) {
+    return $c->new_dir($file_path, $dir);
+  }
+  
+  
+  return $c->render(json=>{error=>$c->лок('target directory not found')})
+    if grep {/^\./} @{$c->stash('url_path')->parts};
+  
+  return $c->render(json=>{error=>$c->лок('you cant upload')})
+    unless $c->admin || $c->public_uploads;
+  
+  
+  return $c->render(json=>{error=>$c->лок('Cant open target directory')})
     unless -w $file_path;
   #~ $c->req->max_message_size(0);
   # Check file size
@@ -42,7 +69,7 @@ sub post {
   return $c->render(json=>{error=>$c->лок('path is not a directory')})
     unless -d $file_path;
   return $c->render(json=>{error=>$c->лок('file already exists')})
-    if -f $to;
+    if -e $to;
   
   $file->asset->move_to($to);
   
@@ -76,7 +103,7 @@ sub dir {
     next
       if $_ eq '.' || $_ eq '..';
     next
-      if /^\./;
+      if !$c->admin && /^\./;
     
     my $child = $path->child($_);
     
@@ -127,8 +154,22 @@ sub dir {
     return $c->render('Mojolicious-Plugin-StaticShare/en/dir', handler=>'ep',);
   }
   
-  $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>Mojo::Exception->new(qq{Template rendering for path content not found}))
+  $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>Mojo::Exception->new(qq{Template rendering for dir content not found}))
     or $c->reply->exception();
+}
+
+sub new_dir {
+  my ($c, $path, $dir) = @_;
+  
+  my $to = $path->child(encode('UTF-8', url_unescape($dir)));
+  
+  return $c->render(json=>{error=>$c->лок('dir or file exists')})
+    if -e $to;
+  
+  $to->make_path;
+  
+  $c->render(json=>{ok=> $c->stash('url_path')->clone->merge($dir)->trailing_slash(1)->to_route});
+  
 }
 
 sub file {
@@ -159,11 +200,11 @@ sub file {
 sub _markdown {# file
   my ($c, $path) = @_;
 
-  #~ my $ex = Mojo::Exception->new($c->лок(qq{Please install or verify markdown module (default to Text::Markdown::Hoedown) with markdown sub or parse method}));
+  my $ex = Mojo::Exception->new($c->лок(qq{Please install or verify markdown module (default to Text::Markdown::Hoedown) with markdown sub or parse method}));
 
   $c->_stash_markdown($path)
-    or return;# $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>$ex)
-        #~ || $c->reply->exception($ex);
+    or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>$ex)
+        || $c->reply->exception($ex);
   
   return $c->plugin->config->{render_markdown}
     ? $c->render(ref $c->plugin->config->{render_markdown} ? %{$c->plugin->config->{render_markdown}} : $c->plugin->config->{render_markdown},)
@@ -264,5 +305,12 @@ sub _stash_pod {
   $dom->find('*')->each(\&_dom_attrs);
   $c->stash(pod =>  $dom->at('body') || $dom);
 }
+
+sub not_found {
+  my $c = shift;
+  $c->render_maybe('Mojolicious-Plugin-StaticShare/not_found', status=>404,)
+    or $c->reply->not_found;
+  
+};
 
 1;

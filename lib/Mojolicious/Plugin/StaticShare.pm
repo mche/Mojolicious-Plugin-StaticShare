@@ -34,6 +34,7 @@ sub register {
   #~ $args->{root_url} //= '';
   $args->{markdown_pkg} //= 'Text::Markdown::Hoedown';
   $args->{dir_index} //= [qw(README.md INDEX.md README.pod INDEX.pod)];
+  $args->{public_uploads} //= 0;
   
   my $route = "$args->{root_url}/*pth";
   my $r = $app->routes;
@@ -60,20 +61,21 @@ my %loc = (
     'Cant open directory'=>"Нет доступа в папку",
     'Share'=>'Обзор',
     'Index of'=>'Содержание',
-    'Dirs'=>'Каталоги',
+    
     'Files'=>'Файлы',
     'Name'=>'Название файла',
     'Size'=>'Размер',
     'Last Modified'=>'Дата изменения',
     'Up'=>'Выше',
+    'Down'=>'Ниже',
     'Add uploads'=>'Добавить файлы',
+    'Add dir'=>'Добавить папку',
     'root'=>"корень",
     'Uploading'=>'Загружается',
     'file is too big'=>'слишком большой файл',
     'path is not directory'=>"нет такого каталога/папки",
     'file already exists' => "такой файл уже есть",
-    
-    
+    'new dir name'=>"имя новой папки",
   },
 );
 sub лок {# helper
@@ -100,8 +102,8 @@ sub new {
   my $pkg = shift;
   return
     unless eval "require $pkg;  1";#
-  $pkg->import
-    if $pkg->can('import');
+  #~ $pkg->import
+    #~ if $pkg->can('import');
   return $pkg->new()
     if $pkg->can('new') && $pkg->can('parse');
   return
@@ -109,7 +111,7 @@ sub new {
   bless {pkg=>$pkg} => $class;
 }
 
-sub parse { shift; markdown(@_); }
+sub parse { my $self = shift; no strict 'refs'; ($self->{pkg}.'::markdown')->(@_); }
 
 1;
 =pod
@@ -146,7 +148,7 @@ This plugin for share static files/dirs and has public and admin functionality:
 
 Can browse and upload files if name not exists.
 
-=head2 Admin interface
+=head2 Admin interface (TODO)
 
 Can copy, move, delete files/dirs.
 
@@ -248,6 +250,12 @@ Arrayref to match files to include to directory index page. Defaults to C<< [qw(
 
   dir_index => [qw(DIR.md)],
   dir_index => 0, # disable include markdown to index dir page
+
+=head2 public_uploads
+
+Boolean to disable/enable uploads for public users. Defaults to 0 (disable).
+
+  public_uploads=>1, # enable
 
 =head1 UTF-8
 
