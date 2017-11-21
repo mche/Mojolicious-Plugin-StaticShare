@@ -97,7 +97,7 @@ sub dir {
   
   my $ex = Mojo::Exception->new($c->лок(qq{Cant open directory}));
   opendir(my $dir, $path)
-    or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500, exception=>$ex)
+    or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', format=>'html', handler=>'ep', status=>500, exception=>$ex)
       || $c->reply->exception($ex);
   
   my $files = $c->stash('files' => [])->stash('files');
@@ -158,7 +158,7 @@ sub dir {
     return $c->render('Mojolicious-Plugin-StaticShare/en/dir', format=>'html', handler=>'ep',);
   }
   
-  $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>Mojo::Exception->new(qq{Template rendering for dir content not found}))
+  $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', format=>'html', handler=>'ep', status=>500,exception=>Mojo::Exception->new(qq{Template rendering for dir content not found}))
     or $c->reply->exception();
 }
 
@@ -180,7 +180,7 @@ sub file {
   my ($c, $path) = @_;
   
   my $ex = Mojo::Exception->new($c->лок(qq{Permission denied}));
-  return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>$ex)
+  return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', format=>'html', handler=>'ep', status=>500,exception=>$ex)
     || $c->reply->exception($ex)
     unless -r $path;
   
@@ -207,7 +207,7 @@ sub _markdown {# file
   my $ex = Mojo::Exception->new($c->лок(qq{Please install or verify markdown module (default to Text::Markdown::Hoedown) with markdown(\$str) sub or parse(\$str) method}));
 
   $c->_stash_markdown($path)
-    or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>$ex)
+    or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', format=>'html', handler=>'ep', status=>500,exception=>$ex)
         || $c->reply->exception($ex);
   
   return $c->plugin->config->{render_markdown}
@@ -288,7 +288,7 @@ sub _pod {# file
   my ($c, $path) = @_;
 
   $c->_stash_pod($path)
-    or return;# $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', status=>500,exception=>$ex)
+    or return;# $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', format=>'html', handler=>'ep', status=>500,exception=>$ex)
         #~ || $c->reply->exception($ex);
   
   return $c->plugin->config->{render_pod}
