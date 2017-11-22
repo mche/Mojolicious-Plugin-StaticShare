@@ -1,6 +1,55 @@
 package Mojolicious::Plugin::StaticShare::Templates;
 use utf8;
 
+=pod
+
+=encoding utf8
+
+Доброго всем
+
+=head1 Mojolicious::Plugin::StaticShare::Templates
+
+¡ ¡ ¡ ALL GLORY TO GLORIA ! ! !
+
+=head1 NAME
+
+Mojolicious::Plugin::StaticShare::Templates - internal defaults templates.
+
+=head1 TEMPLATES
+
+=head2 layouts/Mojolicious-Plugin-StaticShare/main.html.ep
+
+One main layout.
+
+=head2 Mojolicious-Plugin-StaticShare/header.html.ep
+
+One included header for templates.
+
+=head2 Mojolicious-Plugin-StaticShare/dir.html.ep
+
+Template for render dir content: subdirs, files, markdown index file.
+
+=head2 Mojolicious-Plugin-StaticShare/markdown.html.ep
+
+Template for render parsed content of markdown files.
+
+=head2 Mojolicious-Plugin-StaticShare/pod.html.ep
+
+Template for render parsed content of Perl pod files(.pod, .pl, .pm).
+
+=head2 Mojolicious-Plugin-StaticShare/not_found.html.ep
+
+Template for render 404.
+
+=head2 Mojolicious-Plugin-StaticShare/exception.html.ep
+
+Template for render 500.
+
+=head2 Mojolicious-Plugin-StaticShare/svg.html.ep
+
+All SVG icons as one svg tag.
+
+=cut
 1;
 __DATA__
 
@@ -68,7 +117,7 @@ pre {
 </body>
 </html>
 
-@@ Mojolicious-Plugin-StaticShare/en/dir.html.ep
+@@ Mojolicious-Plugin-StaticShare/dir.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
 
 <div class="row">
@@ -152,7 +201,6 @@ pre {
   <%= лок 'Files'%>
   <span class="chip light-blue lighten-5" style=""><%= scalar @$files %></span>
 </h2>
-
 
 
 <div class="progress progress-file white" style="margin:0; padding:0;">

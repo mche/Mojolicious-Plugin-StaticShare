@@ -155,7 +155,7 @@ sub dir {
       and return
       for $c->stash('language')->languages;
     
-    return $c->render('Mojolicious-Plugin-StaticShare/en/dir', format=>'html', handler=>'ep',);
+    return $c->render('Mojolicious-Plugin-StaticShare/dir', format=>'html', handler=>'ep',);
   }
   
   $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', format=>'html', handler=>'ep', status=>500,exception=>Mojo::Exception->new(qq{Template rendering for dir content not found}))

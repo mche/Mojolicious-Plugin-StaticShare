@@ -168,7 +168,8 @@ C_FILES  =
 O_FILES  = 
 H_FILES  = 
 MAN1PODS = 
-MAN3PODS = lib/Mojolicious/Plugin/StaticShare.pm
+MAN3PODS = lib/Mojolicious/Plugin/StaticShare.pm \
+	lib/Mojolicious/Plugin/StaticShare/Templates.pm
 
 # Where is the Config information that we are using/depend on
 CONFIGDEP = $(PERL_ARCHLIBDEP)$(DFSEP)Config.pm $(PERL_INCDEP)$(DFSEP)config.h
@@ -527,9 +528,11 @@ POD2MAN = $(POD2MAN_EXE)
 
 
 manifypods : pure_all config  \
-	lib/Mojolicious/Plugin/StaticShare.pm
+	lib/Mojolicious/Plugin/StaticShare.pm \
+	lib/Mojolicious/Plugin/StaticShare/Templates.pm
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) -u \
-	  lib/Mojolicious/Plugin/StaticShare.pm $(INST_MAN3DIR)/Mojolicious::Plugin::StaticShare.$(MAN3EXT) 
+	  lib/Mojolicious/Plugin/StaticShare.pm $(INST_MAN3DIR)/Mojolicious::Plugin::StaticShare.$(MAN3EXT) \
+	  lib/Mojolicious/Plugin/StaticShare/Templates.pm $(INST_MAN3DIR)/Mojolicious::Plugin::StaticShare::Templates.$(MAN3EXT) 
 
 
 
