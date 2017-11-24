@@ -153,7 +153,7 @@ pre {
   <li class="collection-item dir lime darken-4 hide" style="position:relative;"><!-- template new folder -->
     <div class="input-field" style="padding-left:2rem; padding-right:4rem; position:relative;">
       <svg class="icon icon15 white-fill" style="position:absolute; left:0; top:0.3rem;"><use xlink:href="#svg:folder"></svg>
-      <input type="text" name="new-dir" class="" style="width:100%;" placeholder="<%= лок 'new dir name'%>" >
+      <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= лок 'new dir name'%>" >
       <a href="javascript:" _href="<%= $url_path->to_route %>" class="save-dir" style="position:absolute; right:2rem; top:0.3rem;">
         <svg class="icon icon15 white-fill"><use xlink:href="#svg:upload"></svg>
       </a>
@@ -166,8 +166,17 @@ pre {
     <input type="checkbox" name="dir-check"  class="" style="position:absolute; right:0.8rem; top:1rem;">
   </li>
   % for my $dir (sort  @$dirs) {
+  % my $url = $url_path->clone->merge($dir)->trailing_slash(1)->to_route;
     <li class="collection-item dir lime lighten-5" style="position:relative;">
-       <a href="<%= $url_path->clone->merge($dir)->trailing_slash(1)->to_route %>" class="lime-text text-darken-4 dir" style="display:block;">
+      <div class="input-field hide" style="padding-left:2rem; padding-right:4rem; position:relative;">
+        <svg class="icon icon15 lime-fill" style="position:absolute; left:0; top:0.3rem;"><use xlink:href="#svg:folder"></svg>
+        <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= лок 'new dir name'%>" value="<%== $dir %>">
+        <a href="javascript:" _href="<%= $url %>" class="save-dir" style="position:absolute; right:2rem; top:0.3rem;">
+          <svg class="icon icon15 lime-fill"><use xlink:href="#svg:upload"></svg>
+        </a>
+        <div class="red-text error"></div>
+      </div>
+       <a href="<%= $url %>" class="lime-text text-darken-4 dir" style="display:block;">
           <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:folder"></svg>
           <span><%== $dir %></span>
         </a>
