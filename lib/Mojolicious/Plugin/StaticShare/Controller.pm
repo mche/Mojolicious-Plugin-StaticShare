@@ -45,7 +45,11 @@ sub post {
   
   if ($c->admin && (my $dir = $c->param('dir'))) {
     return $c->new_dir($file_path, $dir);
-  }
+  } elsif ($c->admin && (my $rename = $c->param('rename'))) {
+    return $c->rename($file_path, $rename);
+  } elsif ($c->admin && (my $delete = $c->param('delete[]') && $c->every_param('delete[]'))) {
+    return $c->delete($file_path, $delete);
+  } 
   
   
   return $c->render(json=>{error=>$c->лок('target directory not found')})
@@ -62,7 +66,8 @@ sub post {
   return $c->render(json=>{error=>$c->лок('file is too big')}, status=>417)
     if $c->req->is_limit_exceeded;
 
-  my $file = $c->req->upload('file');
+  my $file = $c->req->upload('file')
+    or return return $c->render(json=>{error=>$c->лок('Where your parameters?')});
   my $name = url_unescape($c->param('name') || $file->filename);
   my $to = $file_path->child(encode('UTF-8', $name));
   
@@ -81,7 +86,7 @@ sub _stash {
   $c->plugin($c->stash('plugin'));
   my $lang = HTTP::AcceptLanguage->new($c->req->headers->accept_language || 'en;q=0.5');
   $c->stash('language' => $lang);
-  $c->stash('title' => $c->лок('Share'));
+  
   my $pth = Mojo::Path->new($c->stash('pth'))->leading_slash(0)->trailing_slash(0);
   $pth = $pth->trailing_slash(1)->merge('.'.$c->stash('format'))
     if $c->stash('format');
@@ -89,6 +94,7 @@ sub _stash {
   my $url_path = $c->plugin->root_url->clone->merge($c->stash('pth'))->trailing_slash(1);
   $c->stash('url_path' => $url_path);
   $c->stash('file_path' => $c->plugin->root_dir->clone->merge($c->stash('pth')));
+  $c->stash('title' => $c->лок('Share').": ".$url_path->to_route);
 }
 
 
@@ -174,6 +180,36 @@ sub new_dir {
   
   $c->render(json=>{ok=> $c->stash('url_path')->clone->merge($dir)->trailing_slash(1)->to_route});
   
+}
+
+sub rename {
+  my ($c, $path, $rename) = @_;
+  
+  my $to = $path->sibling(encode('UTF-8', url_unescape($rename)));
+  
+  return $c->render(json=>{error=>$c->лок('dir or file exists')})
+    if -e $to;
+  
+  my $move = eval {$path->move_to($to)}
+    or return $c->render(json=>{error=>$@});
+  
+  $c->render(json=>{ok=> $c->stash('url_path')->trailing_slash(0)->to_dir->merge($rename)->to_route});
+  
+}
+
+sub delete {
+  my ($c, $path, $delete) = @_;
+  my @delete = ();
+  for (@$delete) {
+    my $d = $path->sibling(encode('UTF-8', url_unescape($_)));
+    push @delete, $c->лок('dir or file does not exists')
+      and next
+      unless -e $d;
+    push @delete, eval {$d->remove_tree()} ? 1 : 0,
+  }
+
+  
+  $c->render(json=>{ok=>\@delete});
 }
 
 sub file {

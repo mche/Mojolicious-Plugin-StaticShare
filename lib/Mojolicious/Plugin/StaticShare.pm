@@ -76,6 +76,8 @@ my %loc = (
     'path is not directory'=>"нет такого каталога/папки",
     'file already exists' => "такой файл уже есть",
     'new dir name'=>"имя новой папки",
+    'Confirm to delete these files'=>"Подтвердите удаление этих файлов",
+    'I AM SURE'=>"ДА",
   },
 );
 sub лок {# helper
