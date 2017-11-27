@@ -248,8 +248,8 @@ pre {
   % for my $file (sort { $a->{name} cmp $b->{name} } @$files) {
   % my $href = $url_path->clone->merge($file->{name})->to_route;
   <tr class="">
-% if ($c->admin) {
     <td class="chb">
+% if ($c->admin) {
       <input type="checkbox" name="file-check"  class="" style="vertical-align: text-top;">
     </td>
 % }
