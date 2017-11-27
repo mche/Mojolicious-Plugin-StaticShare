@@ -30,9 +30,6 @@ sub register {
     unless defined($args->{render_dir}) && $args->{render_dir} eq 0
           && defined($args->{render_markdown}) && $args->{render_markdown} eq 0;
   
-  #~ $args->{root_url}  =~ s|/$||
-    #~ if $args->{root_url};
-  #~ $args->{root_url} //= '';
   $args->{markdown_pkg} //= 'Text::Markdown::Hoedown';
   $args->{dir_index} //= [qw(README.md INDEX.md README.pod INDEX.pod)];
   $args->{public_uploads} //= 0;
@@ -44,7 +41,7 @@ sub register {
   $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self )->name("$PKG GET");
   $r->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self )->name("$PKG POST");
 
-  $app->helper(лок => sub { &лок(@_) });
+  $app->helper(i18n => sub { &i18n(@_) });
   
   #POD
   $self->app->plugin(PODRenderer => {no_perldoc => 1})
@@ -77,10 +74,11 @@ my %loc = (
     'file already exists' => "такой файл уже есть",
     'new dir name'=>"имя новой папки",
     'Confirm to delete these files'=>"Подтвердите удаление этих файлов",
+     'Confirm to delete these dirs'=>"Подтвердите удаление этих папок", 
     'I AM SURE'=>"ДА",
   },
 );
-sub лок {# helper
+sub i18n {# helper
   my ($c, $str, $lang) = @_;
   #~ $lang //= $c->stash('language');
   return $str
@@ -150,7 +148,7 @@ This plugin for share static files/dirs and has public and admin functionality:
 
 Can browse and upload files if name not exists.
 
-=head2 Admin interface (TODO)
+=head2 Admin interface
 
 Can copy, move, delete files/dirs.
 
@@ -163,7 +161,7 @@ Append param C<< admin=<admin_pass> option >> to any url inside B<root_url> requ
 Absolute or relative file system path root directory. Defaults to '.'.
 
   root_dir => '/mnt/usb',
-  root_dir => 'here', 
+  root_dir => 'foo', 
 
 =head2 root_url
 

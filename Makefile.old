@@ -169,6 +169,7 @@ O_FILES  =
 H_FILES  = 
 MAN1PODS = 
 MAN3PODS = lib/Mojolicious/Plugin/StaticShare.pm \
+	lib/Mojolicious/Plugin/StaticShare/Controller.pm \
 	lib/Mojolicious/Plugin/StaticShare/Templates.pm
 
 # Where is the Config information that we are using/depend on
@@ -203,6 +204,7 @@ TO_INST_PM = README.pod \
 	lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_color.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_global.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_grid.scssc \
+	lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_modal.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_normalize.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_pod.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_robotocondensed-woff2.scssc \
@@ -291,12 +293,15 @@ TO_INST_PM = README.pod \
 	lib/Mojolicious/Plugin/StaticShare/static/js/jquery.ui.widget.js \
 	lib/Mojolicious/Plugin/StaticShare/static/js/materialize.js \
 	lib/Mojolicious/Plugin/StaticShare/static/js/materialize.min.js \
+	lib/Mojolicious/Plugin/StaticShare/static/js/modal.js \
 	lib/Mojolicious/Plugin/StaticShare/static/js/plugin-static-share.js \
+	lib/Mojolicious/Plugin/StaticShare/static/js/velocity.min.js \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_buttons.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_chips.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_color.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_global.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_grid.scss \
+	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_modal.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_normalize.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_robotocondensed-woff2.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/sass/components/_robotocondensed.scss \
@@ -529,9 +534,11 @@ POD2MAN = $(POD2MAN_EXE)
 
 manifypods : pure_all config  \
 	lib/Mojolicious/Plugin/StaticShare.pm \
+	lib/Mojolicious/Plugin/StaticShare/Controller.pm \
 	lib/Mojolicious/Plugin/StaticShare/Templates.pm
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) -u \
 	  lib/Mojolicious/Plugin/StaticShare.pm $(INST_MAN3DIR)/Mojolicious::Plugin::StaticShare.$(MAN3EXT) \
+	  lib/Mojolicious/Plugin/StaticShare/Controller.pm $(INST_MAN3DIR)/Mojolicious::Plugin::StaticShare::Controller.$(MAN3EXT) \
 	  lib/Mojolicious/Plugin/StaticShare/Templates.pm $(INST_MAN3DIR)/Mojolicious::Plugin::StaticShare::Templates.$(MAN3EXT) 
 
 
@@ -1017,10 +1024,11 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_color.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_color.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_global.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_global.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_grid.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_grid.scssc' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_modal.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_modal.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_normalize.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_normalize.scssc' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_pod.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_pod.scssc' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_robotocondensed-woff2.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_robotocondensed-woff2.scssc' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_pod.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_pod.scssc' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_robotocondensed-woff2.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_robotocondensed-woff2.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_robotocondensed.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_robotocondensed.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_typography.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_typography.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_variables.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_variables.scssc' \
@@ -1034,10 +1042,10 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Light.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Light.ttf' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Light.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Light.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Light.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Light.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.eot' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.eot' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.ttf' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.woff' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.eot' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.eot' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.ttf' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Medium.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Regular.eot' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Regular.eot' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Regular.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/roboto/Roboto-Regular.ttf' \
@@ -1050,10 +1058,10 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/LICENSE.txt' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/LICENSE.txt' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-cyrillic-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-cyrillic.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-greek-ext.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-greek.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-latin-ext.woff2' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-greek-ext.woff2' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-greek.woff2' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-latin-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-latin.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold-vietnamese.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Bold.ttf' \
@@ -1063,10 +1071,10 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-greek-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-greek.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin-ext.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-vietnamese.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic.ttf' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin.woff2' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic-vietnamese.woff2' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic.ttf' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-BoldItalic.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic-cyrillic-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic-cyrillic.woff2' \
@@ -1076,10 +1084,10 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic-latin.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic-vietnamese.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic.ttf' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic.woff' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-cyrillic-ext.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-cyrillic.woff2' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Italic.woff' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-cyrillic-ext.woff2' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-cyrillic.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-greek-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-greek.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light-latin-ext.woff2' \
@@ -1089,10 +1097,10 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Light.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-cyrillic-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-cyrillic.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-greek-ext.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-greek.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-latin-ext.woff2' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-greek-ext.woff2' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-greek.woff2' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-latin-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-latin.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic-vietnamese.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-LightItalic.ttf' \
@@ -1102,28 +1110,31 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-greek-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-greek.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-latin-ext.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-latin.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-vietnamese.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular.ttf' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-latin.woff2' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular-vietnamese.woff2' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular.ttf' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/fonts/robotocondensed/RobotoCondensed-Regular.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/dmuploader.min.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/dmuploader.min.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/jquery.fileupload.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/jquery.fileupload.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/jquery.ui.widget.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/jquery.ui.widget.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/materialize.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/materialize.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/materialize.min.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/materialize.min.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/js/modal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/modal.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/js/plugin-static-share.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/plugin-static-share.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/js/velocity.min.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/js/velocity.min.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_buttons.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_buttons.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_chips.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_chips.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_color.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_color.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_global.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_global.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_grid.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_grid.scss' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_modal.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_modal.scss' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_normalize.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_normalize.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_robotocondensed-woff2.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_robotocondensed-woff2.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_robotocondensed.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_robotocondensed.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_typography.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_typography.scss' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_variables.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_variables.scss' 
-	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/sass/components/_variables.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/components/_variables.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/sass/main.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/sass/main.scss' 
 	$(NOECHO) $(TOUCH) pm_to_blib
 

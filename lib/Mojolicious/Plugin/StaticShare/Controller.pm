@@ -52,28 +52,28 @@ sub post {
   } 
   
   
-  return $c->render(json=>{error=>$c->лок('target directory not found')})
+  return $c->render(json=>{error=>$c->i18n('target directory not found')})
     if !$c->admin && grep {/^\./} @{$c->stash('url_path')->parts};
   
-  return $c->render(json=>{error=>$c->лок('you cant upload')})
+  return $c->render(json=>{error=>$c->i18n('you cant upload')})
     unless $c->admin || $c->public_uploads;
   
   
-  return $c->render(json=>{error=>$c->лок('Cant open target directory')})
+  return $c->render(json=>{error=>$c->i18n('Cant open target directory')})
     unless -w $file_path;
   #~ $c->req->max_message_size(0);
   # Check file size
-  return $c->render(json=>{error=>$c->лок('file is too big')}, status=>417)
+  return $c->render(json=>{error=>$c->i18n('file is too big')}, status=>417)
     if $c->req->is_limit_exceeded;
 
   my $file = $c->req->upload('file')
-    or return return $c->render(json=>{error=>$c->лок('Where your parameters?')});
+    or return return $c->render(json=>{error=>$c->i18n('Where your parameters?')});
   my $name = url_unescape($c->param('name') || $file->filename);
   my $to = $file_path->child(encode('UTF-8', $name));
   
-  return $c->render(json=>{error=>$c->лок('path is not a directory')})
+  return $c->render(json=>{error=>$c->i18n('path is not a directory')})
     unless -d $file_path;
-  return $c->render(json=>{error=>$c->лок('file already exists')})
+  return $c->render(json=>{error=>$c->i18n('file already exists')})
     if -e $to;
   
   $file->asset->move_to($to);
@@ -94,14 +94,14 @@ sub _stash {
   my $url_path = $c->plugin->root_url->clone->merge($c->stash('pth'))->trailing_slash(1);
   $c->stash('url_path' => $url_path);
   $c->stash('file_path' => $c->plugin->root_dir->clone->merge($c->stash('pth')));
-  $c->stash('title' => $c->лок('Share').": ".$url_path->to_route);
+  $c->stash('title' => $c->i18n('Share')." ".$url_path->to_route);
 }
 
 
 sub dir {
   my ($c, $path) = @_;
   
-  my $ex = Mojo::Exception->new($c->лок(qq{Cant open directory}));
+  my $ex = Mojo::Exception->new($c->i18n(qq{Cant open directory}));
   opendir(my $dir, $path)
     or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', format=>'html', handler=>'ep', status=>500, exception=>$ex)
       || $c->reply->exception($ex);
@@ -173,7 +173,7 @@ sub new_dir {
   
   my $to = $path->child(encode('UTF-8', url_unescape($dir)));
   
-  return $c->render(json=>{error=>$c->лок('dir or file exists')})
+  return $c->render(json=>{error=>$c->i18n('dir or file exists')})
     if -e $to;
   
   $to->make_path;
@@ -187,7 +187,7 @@ sub rename {
   
   my $to = $path->sibling(encode('UTF-8', url_unescape($rename)));
   
-  return $c->render(json=>{error=>$c->лок('dir or file exists')})
+  return $c->render(json=>{error=>$c->i18n('dir or file exists')})
     if -e $to;
   
   my $move = eval {$path->move_to($to)}
@@ -202,7 +202,7 @@ sub delete {
   my @delete = ();
   for (@$delete) {
     my $d = $path->sibling(encode('UTF-8', url_unescape($_)));
-    push @delete, $c->лок('dir or file does not exists')
+    push @delete, $c->i18n('dir or file does not exists')
       and next
       unless -e $d;
     push @delete, eval {$d->remove_tree()} ? 1 : 0,
@@ -215,7 +215,7 @@ sub delete {
 sub file {
   my ($c, $path) = @_;
   
-  my $ex = Mojo::Exception->new($c->лок(qq{Permission denied}));
+  my $ex = Mojo::Exception->new($c->i18n(qq{Permission denied}));
   return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', format=>'html', handler=>'ep', status=>500,exception=>$ex)
     || $c->reply->exception($ex)
     unless -r $path;
@@ -240,7 +240,7 @@ sub file {
 sub _markdown {# file
   my ($c, $path) = @_;
 
-  my $ex = Mojo::Exception->new($c->лок(qq{Please install or verify markdown module (default to Text::Markdown::Hoedown) with markdown(\$str) sub or parse(\$str) method}));
+  my $ex = Mojo::Exception->new($c->i18n(qq{Please install or verify markdown module (default to Text::Markdown::Hoedown) with markdown(\$str) sub or parse(\$str) method}));
 
   $c->_stash_markdown($path)
     or return $c->render_maybe('Mojolicious-Plugin-StaticShare/exception', format=>'html', handler=>'ep', status=>500,exception=>$ex)
@@ -357,3 +357,20 @@ sub not_found {
 };
 
 1;
+
+=pod
+
+=encoding utf8
+
+Доброго всем
+
+=head1 Mojolicious::Plugin::StaticShare::Controller
+
+¡ ¡ ¡ ALL GLORY TO GLORIA ! ! !
+
+=head1 NAME
+
+Mojolicious::Plugin::StaticShare::Controller - is an internal controller for L<Mojolicious::Plugin::StaticShare>.
+
+
+=cut

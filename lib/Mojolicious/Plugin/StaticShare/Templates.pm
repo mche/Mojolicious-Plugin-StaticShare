@@ -113,7 +113,7 @@ pre {
 <script src="/js/plugin-static-share.js"></script>
 
 %= javascript begin
-  console.log('Доброго всем! ALL GLORY TO GLORIA');
+  ///console.log('Доброго всем!! ALL GLORY TO GLORIA');
 % end
 
 </body>
@@ -127,11 +127,11 @@ pre {
 
 % if ($c->admin) {
 <div class="right btn-panel" style="padding:1.2rem 0;">
-  <a href="javascript:" class="hide000 renames"><svg class="icon icon15 black-fill"><use xlink:href="#svg:rename" /></svg></a>
-  <a href="javascript:" class="hide000 del-dir"><svg class="icon icon15 red-fill fill-lighten-1"><use xlink:href="#svg:dir-delete" /></svg></a>
+  <a href="javascript:" class="hide renames"><svg class="icon icon15 black-fill"><use xlink:href="#svg:rename" /></svg></a>
+  <a href="javascript:" class="hide del-dirs"><svg class="icon icon15 red-fill fill-lighten-1"><use xlink:href="#svg:dir-delete" /></svg></a>
   <a id="add-dir" href="javascript:" class="btn-flat00" style="display:inline !important;">
     <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:add-dir" /></svg>
-    <!--span class="lime-text text-darken-4"><%= лок 'Add dir' %></span-->
+    <!--span class="lime-text text-darken-4"><%= i18n 'Add dir' %></span-->
   </a>
 </div>
 
@@ -139,9 +139,9 @@ pre {
 
 <h2 class="lime-text text-darken-4">
 %#  <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:folder"></svg>
-%# <%= лок 'Dirs' %>
+%# <%= i18n 'Dirs' %>
   <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:down-right-round" />
-  <span class=""><%= лок 'Down' %></span>
+  <span class=""><%= i18n 'Down' %></span>
   <span class="chip lime lighten-5" style=""><%= scalar @$dirs %></span>
 </h2>
 
@@ -152,34 +152,34 @@ pre {
 <ul class="collection dirs" style="margin-top:0;">
   <li class="collection-item dir lime darken-4 hide" style="position:relative;"><!-- template new folder -->
     <div class="input-field" style="padding-left:2rem; padding-right:4rem; position:relative;">
-      <svg class="icon icon15 white-fill" style="position:absolute; left:0; top:0.3rem;"><use xlink:href="#svg:folder"></svg>
-      <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= лок 'new dir name'%>" >
+      <svg class="icon icon15 lime-fill fill-lighten-5" style="position:absolute; left:0; top:0.3rem;"><use xlink:href="#svg:folder"></svg>
+      <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" >
       <a href="javascript:" _href="<%= $url_path->to_route %>" class="save-dir" style="position:absolute; right:2rem; top:0.3rem;">
-        <svg class="icon icon15 white-fill"><use xlink:href="#svg:upload"></svg>
+        <svg class="icon icon15 lime-fill fill-lighten-5"><use xlink:href="#svg:upload"></svg>
       </a>
-      <div class="red-text error"></div>
     </div>
     <a class="lime-text text-darken-4 dir hide" style="display:block;">
       <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:folder"></svg>
       <span></span>
     </a>
+    <div class="red-text error"></div>
     <input type="checkbox" name="dir-check"  class="" style="position:absolute; right:0.8rem; top:1rem;">
   </li>
   % for my $dir (sort  @$dirs) {
   % my $url = $url_path->clone->merge($dir)->trailing_slash(1)->to_route;
     <li class="collection-item dir lime lighten-5" style="position:relative;">
       <div class="input-field hide" style="padding-left:2rem; padding-right:4rem; position:relative;">
-        <svg class="icon icon15 lime-fill" style="position:absolute; left:0; top:0.3rem;"><use xlink:href="#svg:folder"></svg>
-        <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= лок 'new dir name'%>" value="<%== $dir %>">
+        <svg class="icon icon15 lime-fill fill-darken-4" style="position:absolute; left:0; top:0.3rem;"><use xlink:href="#svg:folder"></svg>
+        <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" value="<%== $dir %>">
         <a href="javascript:" _href="<%= $url %>" class="save-dir" style="position:absolute; right:2rem; top:0.3rem;">
-          <svg class="icon icon15 lime-fill"><use xlink:href="#svg:upload"></svg>
+          <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:upload"></svg>
         </a>
-        <div class="red-text error"></div>
       </div>
        <a href="<%= $url %>" class="lime-text text-darken-4 dir" style="display:block;">
           <svg class="icon icon15 lime-fill fill-darken-4"><use xlink:href="#svg:folder"></svg>
           <span><%== $dir %></span>
         </a>
+      <div class="red-text error"></div>
 % if ($c->admin) { # delete dir
         <input type="checkbox" name="dir-=check" style="position:absolute; right:0.8rem; top:1rem;">
 % }
@@ -197,7 +197,7 @@ pre {
   <a href="javascript:" class="hide del-files"><svg class="icon icon15 red-fill fill-lighten-1"><use xlink:href="#svg:file-delete" /></svg></a>
   <label for="fileupload" class="btn-flat000">
     <svg class="icon icon15 light-blue-fill fill-darken-1"><use xlink:href="#svg:add-item" /></svg>
-    <!--span class="blue-text"><%= лок 'Add uploads'%></span-->
+    <!--span class="blue-text"><%= i18n 'Add uploads'%></span-->
   </label>
   <input id="fileupload" style="display:none;" type="file" name="file" data-url="<%= $url_path->clone->trailing_slash(0) %>" multiple>
   
@@ -206,24 +206,22 @@ pre {
 % }
 
 <h2 class="light-blue-text text-darken-2">
-  <%= лок 'Files'%>
+  <%= i18n 'Files'%>
   <span class="chip light-blue lighten-5" style=""><%= scalar @$files %></span>
 </h2>
-
 
 <div class="progress progress-file white" style="margin:0; padding:0;">
     <div class="determinate blue" style="width: 0%"></div>
 </div>
 
-
 <table class="striped files light-blue lighten-5" style="border: 1px solid #e0e0e0;">
 %#<thead>
 %#  <tr>
-%#    <th class="name"><%= лок 'Name'%></th>
+%#    <th class="name"><%= i18n 'Name'%></th>
 %#    <th class="action" style="width:1%;"></th>
-%#    <th class="size center"><%= лок 'Size'%></th>
+%#    <th class="size center"><%= i18n 'Size'%></th>
 %#    <!--th class="type">Type</th-->
-%#    <th class="mtime center"><%= лок 'Last Modified'%></th>
+%#    <th class="mtime center"><%= i18n 'Last Modified'%></th>
 %#  </tr>
 %#</thead>
 <thead class="hide">
@@ -286,9 +284,9 @@ pre {
 @@ Mojolicious-Plugin-StaticShare/header.html.ep
 
 <header class="container clearfix">
-<h1><%= лок 'Index of'%>
+<h1><%= i18n 'Index of'%>
 % unless (@{$url_path->parts}) {
-  <a href="<%= $url_path %>" class="chip grey-text grey lighten-4"><%= лок 'root' %></a>
+  <a href="<%= $url_path %>" class="chip grey-text grey lighten-4"><%= i18n 'root' %></a>
 % }
 % my $con;
 % for my $part (@{$url_path->parts}) {
@@ -299,7 +297,7 @@ pre {
 % if ($c->plugin->root_url->to_route ne $url_path->to_route) {
   <a href="<%= $url_path->clone->trailing_slash(0)->to_dir %>" class="btn-flat000 ">
     <svg class="icon icon15 maroon-fill"><use xlink:href="#svg:up-left-round" />
-    <span class="maroon-text"><%= лок 'Up'%></span>
+    <span class="maroon-text"><%= i18n 'Up'%></span>
   </a>
 % }
 
@@ -318,13 +316,13 @@ pre {
 
 @@ Mojolicious-Plugin-StaticShare/not_found.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
-<h2 class="red-text">404 <%= лок 'Not found'%></h2>
+<h2 class="red-text">404 <%= i18n 'Not found'%></h2>
 
 @@ Mojolicious-Plugin-StaticShare/exception.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
-% title лок 'Error';
+% title i18n 'Error';
 
-<h2 class="red-text">500 <%= лок 'Error'%></h2>
+<h2 class="red-text">500 <%= i18n 'Error'%></h2>
 
 % if(my $msg = $exception && $exception->message) {
 %   utf8::decode($msg);
@@ -383,11 +381,12 @@ pre {
 <!-- Modal Structure -->
 <div id="confirm-modal" class="modal bottom-sheet modal-fixed-footer">
   <div class="modal-header hide">
-    <h2 class="red-text del-files"><span><%= лок 'Confirm to delete these files' %></span><span class="chip red lighten-4"></span></h2>
+    <h2 class="red-text del-files"><span><%= i18n 'Confirm to delete these files' %></span><span class="chip red lighten-4"></span></h2>
+    <h2 class="red-text del-dirs"><span><%= i18n 'Confirm to delete these dirs' %></span><span class="chip red lighten-4"></span></h2>
     <h2 class="red-text foo">Foo header</h2>
   </div>
   <div class="modal-content"></div>
   <div class="modal-footer green lighten-5">
-    <a href="javascript:" class="modal-action modal-close green-text waves-effect waves-green btn-flat"><%= лок 'I AM SURE' %></a>
+    <a href="javascript:" class="modal-action modal-close green-text waves-effect waves-green btn-flat"><%= i18n 'I AM SURE' %></a>
   </div>
 </div>
