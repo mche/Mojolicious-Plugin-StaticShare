@@ -5,7 +5,7 @@ use Mojolicious::Types;
 use Mojo::Path;
 use Mojo::Util qw(encode);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 my $PKG = __PACKAGE__;
 
 has [qw(app config)];
@@ -127,6 +127,10 @@ sub parse { my $self = shift; no strict 'refs'; ($self->{pkg}.'::markdown')->(@_
 =head1 NAME
 
 Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static files/dirs.
+
+=head VERSION
+
+0.02
 
 =head1 SYNOPSIS
 
