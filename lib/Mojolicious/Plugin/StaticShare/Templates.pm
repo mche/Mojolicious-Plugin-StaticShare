@@ -94,6 +94,7 @@ pre {
 
 <meta name="app:name" content="<%= stash('app:name') // 'Mojolicious::Plugin::StaticShare' %>">
 %#<meta name="app:version" content="<%= stash('app:version') // 0.01 %>">
+<meta name="url:version" content="<%= stash('app:version') // 0.01 %>">
 
 </head>
 <body class="white">
