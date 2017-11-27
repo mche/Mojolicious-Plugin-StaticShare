@@ -251,8 +251,9 @@ pre {
     <td class="chb">
 % if ($c->admin) {
       <input type="checkbox" name="file-check"  class="" style="vertical-align: text-top;">
-    </td>
 % }
+    </td>
+
     <td class="name">
       <a href="<%= $href %>" class="file-view"><%== $file->{name} %></a>
       <input type="text" name="file-name" value="<%== $file->{name} %>" class="hide" style="width:100%;">
