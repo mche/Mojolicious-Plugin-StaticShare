@@ -267,6 +267,10 @@ Boolean to disable/enable uploads for public users. Defaults to undef (disable).
 
 Everywhere  and everything: module, files, content.
 
+=head1 WINDOWS OS
+
+It was not tested but I hope you dont worry and have happy.
+
 =head1 METHODS
 
 L<Mojolicious::Plugin::StaticShare> inherits all methods from

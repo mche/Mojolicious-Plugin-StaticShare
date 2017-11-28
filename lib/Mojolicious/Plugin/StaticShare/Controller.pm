@@ -266,6 +266,8 @@ sub _stash_markdown {
   $dom->find('script')->each(\&_sanitize_script);
   $dom->find('*')->each(\&_dom_attrs);
   $c->stash(markdown => $dom->at('body') || $dom);
+  #~ my $filename = $path->basename;
+  #~ $c->stash('title'=>$filename);
   
 }
 
@@ -349,6 +351,8 @@ sub _stash_pod {
   $dom->find('script')->each(\&_sanitize_script);
   $dom->find('*')->each(\&_dom_attrs);
   $c->stash(pod =>  $dom->at('body') || $dom);
+  #~ my $filename = $path->basename;
+  #~ $c->stash('title'=>$filename);
 }
 
 sub not_found {

@@ -146,43 +146,57 @@ pre {
     <div class="determinate lime" style="width: 0%"></div>
 </div>
 
-<ul class="collection dirs" style="margin-top:0;">
-  <li class="collection-item dir lime darken-4 hide" style="position:relative;"><!-- template new folder -->
-    <div class="input-field" style="padding-left:2rem; padding-right:4rem; position:relative;">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-lighten-5" style="position:absolute; left:0; top:0.3rem;"  viewBox="0 0 30 30" data-include="svg:folder" />
-      <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" >
-      <a href="javascript:" _href="<%= $url_path->to_route %>" class="save-dir" style="position:absolute; right:2rem; top:0.3rem;">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-lighten-5"  viewBox="0 0 26 26" data-include="svg:upload" />
-      </a>
-    </div>
-    <a class="lime-text text-darken-4 dir hide" style="display:block;">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4"  viewBox="0 0 30 30" data-include="svg:folder" />
-      <span></span>
-    </a>
-    <div class="red-text error"></div>
-    <input type="checkbox" name="dir-check"  class="" style="position:absolute; right:0.8rem; top:1rem;">
-  </li>
+<table class="dirs" style000="margin-top:0;">
+  <thead class="hide">
+    <tr class="new-dir lime darken-4"><!-- template new folder -->
+      <td>
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-lighten-5" viewBox="0 0 30 30" data-include="svg:folder" />
+      </td>
+      <td>
+        <div class="input-field">
+          <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" >
+        </div>
+        <a class="lime-text text-lighten-5 dir hide" style="display:block;"></a>
+        <div class="red-text error"></div>
+      </td>
+      <td class="action">
+        <a href="javascript:" _href="<%= $url_path->to_route %>" class="save-dir">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-lighten-5" viewBox="0 0 26 26" data-include="svg:upload" />
+        </a>
+      </td>
+      <td class="chb">
+        <input type="checkbox" name="dir-check" style="margin: 0 0.5rem;">
+      </td>
+    </tr>
+  </thead>
+  <tbody>
   % for my $dir (sort  @$dirs) {
   % my $url = $url_path->clone->merge($dir)->trailing_slash(1)->to_route;
-    <li class="collection-item dir lime lighten-5" style="position:relative;">
-      <div class="input-field hide" style="padding-left:2rem; padding-right:4rem; position:relative;">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" style="position:absolute; left:0; top:0.3rem;"  viewBox="0 0 30 30" data-include="svg:folder" />
-        <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" value="<%== $dir %>">
-        <a href="javascript:" _href="<%= $url %>" class="save-dir" style="position:absolute; right:2rem; top:0.3rem;">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4"  viewBox="0 0 26 26" data-include="svg:upload" />
+    <tr class="dir lime lighten-5">
+      <td style="width:1%;">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 30 30" data-include="svg:folder" />
+      </td>
+      <td>
+        <div class="input-field hide">
+           <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" value="<%== $dir %>">
+        </div>
+        <a href="<%= $url %>" class="lime-text text-darken-4 dir" style="display:block;"><%== $dir %></a>
+        <div class="red-text error"></div>
+      </td>
+      <td class="action" style="width:1%;">
+        <a href="javascript:" _href="<%= $url %>" class="save-dir hide">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 26 26" data-include="svg:upload" />
         </a>
-      </div>
-       <a href="<%= $url %>" class="lime-text text-darken-4 dir" style="display:block;">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4"  viewBox="0 0 30 30" data-include="svg:folder" />
-          <span><%== $dir %></span>
-        </a>
-      <div class="red-text error"></div>
+      </td>
+      <td class="chb" style="width:1%;">
 % if ($c->admin) { # delete dir
-        <input type="checkbox" name="dir-=check" style="position:absolute; right:0.8rem; top:1rem;">
+          <input type="checkbox" name="dir-check" style="margin: 0 0.5rem;">
 % }
-    </li>
+      </td>
+    </tr>
   % }
-</ul>
+  </tbody>
+</table>
 
 </div>
 
@@ -224,7 +238,7 @@ pre {
 <thead class="hide">
   <tr class="light-blue"><!--- new upload file template -->
     <td class="chb">
-      <input type="checkbox" name="file-check" class="" style="vertical-align: text-top;">
+      <input type="checkbox" name="file-check" class="" style="">
     </td>
     <td class="name">
       <a class="file-view hide"></a>
@@ -232,9 +246,9 @@ pre {
       <div class="red-text error"></div>
     </td>
     <td class="action">
-      <a href="" class="file-download hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 light-blue-fill fill-darken-1" viewBox="0 0 26 26" data-include="svg:download" /></a>
-      <a href="javascript:" _href="" class="file-rename hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15"  viewBox="0 0 26 26" data-include="svg:upload" /></a>
-      <a href="javascript:" class="file-upload"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 white-fill"  viewBox="0 0 26 26" data-include="svg:upload" /></a>
+      <a href="" class="file-download hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 light-blue-fill fill-darken-1" style="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
+      <a href="javascript:" _href="" class="file-rename hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15" viewBox="0 0 26 26" data-include="svg:upload" /></a>
+      <a href="javascript:" class="file-upload"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 white-fill" viewBox="0 0 26 26" data-include="svg:upload" /></a>
     </td>
     <td class="size right-align fs8" ></td>
     <!--td class="type"></td-->
@@ -247,7 +261,7 @@ pre {
   <tr class="">
     <td class="chb">
 % if ($c->admin) {
-      <input type="checkbox" name="file-check"  class="" style="vertical-align: text-top;">
+      <input type="checkbox" name="file-check"  class="" style="">
 % }
     </td>
 
@@ -257,8 +271,8 @@ pre {
       <div class="red-text error hide"></div>
     </td>
     <td class="action">
-      <a href="<%= $href %>?attachment=1" class="file-download" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 light-blue-fill fill-darken-1" viewBox="0 0 26 26" data-include="svg:download" /></a>
-      <a href="javascript:" _href="<%= $href %>" class="file-rename hide" style="padding:0.1rem;"><svg class="icon icon15"  viewBox="0 0 26 26" data-include="svg:upload" /></a>
+      <a href="<%= $href %>?attachment=1" class="file-download" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 light-blue-fill fill-darken-1" style000="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
+      <a href="javascript:" _href="<%= $href %>" class="file-rename hide" style="padding:0.1rem;"><svg class="icon icon15" viewBox="0 0 26 26" data-include="svg:upload" /></a>
 
     </td>
     <td class="size right-align fs8" ><%= $file->{size} %></td>
