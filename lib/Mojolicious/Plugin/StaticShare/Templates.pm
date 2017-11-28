@@ -74,14 +74,14 @@ pre {
   background-color: #fafafa;
   border: 1px solid #c1c1c1;
   border-radius: 3px;
-  font: 100% Consolas, Menlo, Monaco, Courier, monospace;
+  font-size: 100%;
   padding: 1em;
 }
 
 :not(pre) > code {
   background-color: rgba(0, 0, 0, 0.04);
   border-radius: 3px;
-  font: 0.9em Consolas, Menlo, Monaco, Courier, monospace;
+  font-size: 0.9em;
   padding: 0.3em;
 }
 
