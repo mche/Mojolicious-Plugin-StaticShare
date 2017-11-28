@@ -149,22 +149,22 @@ pre {
 <table class="dirs" style="border: 1px solid #e0e0e0;">
   <thead class="hide">
     <tr class="new-dir lime darken-4" style="border-bottom: 1px solid #e0e0e0;"><!-- template new folder -->
-      <td>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" viewBox="0 0 50 50" data-include="svg:add-dir" />
+      <td style="width:1%;">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" style="margin:0 0.5rem;" viewBox="0 0 50 50" data-include="svg:add-dir" />
       </td>
-      <td style="width:99%;">
+      <td style=";">
         <div class="input-field">
           <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" >
         </div>
         <a class="lime-text text-lighten-5 dir hide" style="display:block;"></a>
         <div class="red-text error"></div>
       </td>
-      <td class="action">
+      <td class="action" style="width:1%;">
         <a href="javascript:" _href="<%= $url_path->to_route %>" class="save-dir">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" viewBox="0 0 26 26" data-include="svg:upload" />
         </a>
       </td>
-      <td class="chb">
+      <td class="chb" style="width:1%;">
         <input type="checkbox" name="dir-check" style="margin: 0 0.5rem;">
       </td>
     </tr>
@@ -174,9 +174,9 @@ pre {
   % my $url = $url_path->clone->merge($dir)->trailing_slash(1)->to_route;
     <tr class="dir lime lighten-5" style="border-bottom: 1px solid #e0e0e0;">
       <td style="width:1%;">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-darken-4" viewBox="0 0 30 30" data-include="svg:folder" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-darken-4" style="margin:0 0.5rem;" viewBox="0 0 30 30" data-include="svg:folder" />
       </td>
-      <td style="width:99%;">
+      <td style="">
         <div class="input-field hide">
            <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" value="<%== $dir %>">
         </div>
@@ -237,47 +237,47 @@ pre {
 %#</thead>
 <thead class="hide">
   <tr class="light-blue" style="border-bottom: 1px solid #e0e0e0;"><!--- new upload file template -->
-    <td class="chb">
+    <td class="chb" style="width:1%;">
       <input type="checkbox" name="file-check" class="" style="margin:0 0.5rem;">
     </td>
-    <td class="name">
+    <td class="name" style="">
       <a class="file-view hide"></a>
       <input type="text" name="file-name" value="" class="" style="width:100%;">
       <div class="red-text error"></div>
     </td>
-    <td class="action">
+    <td class="action" style="width:1%;">
       <a href="" class="file-download hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 light-blue-fill fill-darken-1" style="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
       <a href="javascript:" _href="" class="file-rename hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12" viewBox="0 0 26 26" data-include="svg:upload" /></a>
       <a href="javascript:" class="file-upload"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 white-fill" viewBox="0 0 26 26" data-include="svg:upload" /></a>
     </td>
-    <td class="size right-align fs8" ></td>
+    <td class="size right-align fs8" style="width:1%;"></td>
     <!--td class="type"></td-->
-    <td class="mtime right-align fs8"></td>
+    <td class="mtime right-align fs8" style=""></td>
   </tr>
 </thead>
 <tbody>
   % for my $file (sort { $a->{name} cmp $b->{name} } @$files) {
   % my $href = $url_path->clone->merge($file->{name})->to_route;
   <tr class="" style="border-bottom: 1px solid #e0e0e0;">
-    <td class="chb">
+    <td class="chb" style="width:1%;">
 % if ($c->admin) {
       <input type="checkbox" name="file-check"  class="" style="margin:0 0.5rem;">
 % }
     </td>
 
-    <td class="name">
+    <td class="name" style="">
       <a href="<%= $href %>" class="file-view"><%== $file->{name} %></a>
       <input type="text" name="file-name" value="<%== $file->{name} %>" class="hide" style="width:100%;">
       <div class="red-text error hide"></div>
     </td>
-    <td class="action">
+    <td class="action" style="width:1%;">
       <a href="<%= $href %>?attachment=1" class="file-download" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 light-blue-fill fill-darken-1" style000="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
       <a href="javascript:" _href="<%= $href %>" class="file-rename hide" style="padding:0.1rem;"><svg class="icon icon12" viewBox="0 0 26 26" data-include="svg:upload" /></a>
 
     </td>
-    <td class="size right-align fs8" ><%= $file->{size} %></td>
+    <td class="size right-align fs8" style="width:1%;"><%= $file->{size} %></td>
     <!--td class="type"><%= $file->{type} %></td-->
-    <td class="mtime right-align fs8"><%= $file->{mtime} %></td>
+    <td class="mtime right-align fs8" style=""><%= $file->{mtime} %></td>
   </tr>
   % }
 </tbody>
