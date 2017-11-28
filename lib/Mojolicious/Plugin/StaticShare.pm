@@ -279,7 +279,7 @@ You can place classnames and css-style rules to markup elements as below.
 In markdown:
 
   # {.class1 .class2 padding: 0 0.5rem;} Header 1
-  {.brown-text} paragraph text ...
+  {.brown-text} brown paragraph text ...
 
 In pod:
 

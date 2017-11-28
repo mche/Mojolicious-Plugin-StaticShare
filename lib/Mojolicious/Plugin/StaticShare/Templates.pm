@@ -307,7 +307,7 @@ pre {
 % }
 
 % if ($c->plugin->root_url->to_route ne $url_path->to_route) {
-  <a href="<%= $url_path->clone->trailing_slash(0)->to_dir %>" class="btn-flat000 ">
+  <a href="<%= $url_path->clone->trailing_slash(0)->to_dir %>" class="btn-flat000 " style="white-space:nowrap;">
     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 maroon-fill" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#up-left-round" /></svg>
     <span class="maroon-text"><%= i18n 'Up'%></span>
   </a>
