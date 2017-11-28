@@ -106,7 +106,7 @@ pre {
 <script src="/static-share/js/jquery.fileupload.js"></script>
 <script src="/static-share/js/velocity.min.js"></script>
 <script src="/static-share/js/modal.js"></script>
-<script src="/static-share/js/svg.js"></script>
+%#<script src="/static-share/js/svg.js"></script>
 <script src="/static-share/js/main.js"></script>
 
 %= javascript begin
@@ -124,10 +124,10 @@ pre {
 
 % if ($c->admin) {
 <div class="right btn-panel" style="padding:1.2rem 0;">
-  <a href="javascript:" class="hide renames"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 black-fill"  viewBox="0 0 26 26" data-include="svg:rename" /></a>
-  <a href="javascript:" class="hide del-dirs"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 red-fill fill-lighten-1" viewBox="0 0 50 50" data-include="svg:dir-delete" /></a>
+  <a href="javascript:" class="hide renames"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 black-fill"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#rename" /></svg></a>
+  <a href="javascript:" class="hide del-dirs"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 red-fill fill-lighten-1" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#dir-delete" /></svg></a>
   <a id="add-dir" href="javascript:" class="btn-flat00" style="display:inline !important;">
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 50 50" data-include="svg:add-dir" />
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#add-dir" /></svg>
     <!--span class="lime-text text-darken-4"><%= i18n 'Add dir' %></span-->
   </a>
 </div>
@@ -135,9 +135,9 @@ pre {
 % }
 
 <h2 class="lime-text text-darken-4">
-%#  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4"  viewBox="0 0 30 30" data-include="svg:folder" />
+%#  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4"  viewBox="0 0 30 30"><use xlink:href="/static-share/fonts/icons.svg#folder" /></svg>
 %# <%= i18n 'Down' %>
-  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 50 50" data-include="svg:down-right-round" />
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#down-right-round" /></svg>
   <span class=""><%= i18n 'Dirs' %></span>
   <span class="chip lime lighten-5" style=""><%= scalar @$dirs %></span>
 </h2>
@@ -150,7 +150,7 @@ pre {
   <thead class="hide">
     <tr class="new-dir lime darken-4" style="border-bottom: 1px solid #e0e0e0;"><!-- template new folder -->
       <td style="width:1%;">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" style="margin:0 0.5rem;" viewBox="0 0 50 50" data-include="svg:add-dir" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" style="margin:0 0.5rem;" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#add-dir" /></svg>
       </td>
       <td style=";">
         <div class="input-field">
@@ -161,7 +161,7 @@ pre {
       </td>
       <td class="action" style="width:1%;">
         <a href="javascript:" _href="<%= $url_path->to_route %>" class="save-dir">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" viewBox="0 0 26 26" data-include="svg:upload" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#upload" /></svg>
         </a>
       </td>
       <td class="chb" style="width:1%;">
@@ -174,7 +174,7 @@ pre {
   % my $url = $url_path->clone->merge($dir)->trailing_slash(1)->to_route;
     <tr class="dir lime lighten-5" style="border-bottom: 1px solid #e0e0e0;">
       <td style="width:1%;">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-darken-4" style="margin:0 0.5rem;" viewBox="0 0 30 30" data-include="svg:folder" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-darken-4" style="margin:0 0.5rem;" viewBox="0 0 30 30"><use xlink:href="/static-share/fonts/icons.svg#folder" /></svg>
       </td>
       <td style="">
         <div class="input-field hide">
@@ -185,7 +185,7 @@ pre {
       </td>
       <td class="action" style="width:1%;">
         <a href="javascript:" _href="<%= $url %>" class="save-dir hide">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-darken-4" viewBox="0 0 26 26" data-include="svg:upload" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-darken-4" viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#upload" /></svg>
         </a>
       </td>
       <td class="chb" style="width:1%;">
@@ -204,10 +204,10 @@ pre {
 
 % if ($c->admin || $c->public_uploads) {
 <div class="right btn-panel" style="padding:1.2rem 0;">
-  <a href="javascript:" class="hide renames"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 black-fill"  viewBox="0 0 26 26" data-include="svg:rename"  /></a>
-  <a href="javascript:" class="hide del-files"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 red-fill fill-lighten-1"  viewBox="0 0 26 26" data-include="svg:file-delete" /></a>
+  <a href="javascript:" class="hide renames"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 black-fill"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#rename" /></svg></a>
+  <a href="javascript:" class="hide del-files"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 red-fill fill-lighten-1"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#file-delete" /></svg></a>
   <label for="fileupload" class="btn-flat000">
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 light-blue-fill fill-darken-1" viewBox="0 0 26 26" data-include="svg:add-item"  />
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 light-blue-fill fill-darken-1" viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#add-item" /></svg>
     <!--span class="blue-text"><%= i18n 'Add uploads'%></span-->
   </label>
   <input id="fileupload" style="display:none;" type="file" name="file" data-url="<%= $url_path->clone->trailing_slash(0) %>" multiple>
@@ -246,9 +246,9 @@ pre {
       <div class="red-text error"></div>
     </td>
     <td class="action" style="width:1%;">
-      <a href="" class="file-download hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 light-blue-fill fill-darken-1" style="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
-      <a href="javascript:" _href="" class="file-rename hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12" viewBox="0 0 26 26" data-include="svg:upload" /></a>
-      <a href="javascript:" class="file-upload"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 white-fill" viewBox="0 0 26 26" data-include="svg:upload" /></a>
+      <a href="" class="file-download hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 light-blue-fill fill-darken-1" style="height:1.2rem;" viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#download" /></svg></a>
+      <a href="javascript:" _href="" class="file-rename hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12" viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#upload" /></svg></a>
+      <a href="javascript:" class="file-upload"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 white-fill" viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#upload" /></svg></a>
     </td>
     <td class="size right-align fs8" style="width:1%;"></td>
     <!--td class="type"></td-->
@@ -271,8 +271,8 @@ pre {
       <div class="red-text error hide"></div>
     </td>
     <td class="action" style="width:1%;">
-      <a href="<%= $href %>?attachment=1" class="file-download" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 light-blue-fill fill-darken-1" style000="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
-      <a href="javascript:" _href="<%= $href %>" class="file-rename hide" style="padding:0.1rem;"><svg class="icon icon12" viewBox="0 0 26 26" data-include="svg:upload" /></a>
+      <a href="<%= $href %>?attachment=1" class="file-download" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 light-blue-fill fill-darken-1" style000="height:1.2rem;" viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#download" /></svg></a>
+      <a href="javascript:" _href="<%= $href %>" class="file-rename hide" style="padding:0.1rem;"><svg class="icon icon12" viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#upload" /></svg></a>
 
     </td>
     <td class="size right-align fs8" style="width:1%;"><%= $file->{size} %></td>
@@ -308,7 +308,7 @@ pre {
 
 % if ($c->plugin->root_url->to_route ne $url_path->to_route) {
   <a href="<%= $url_path->clone->trailing_slash(0)->to_dir %>" class="btn-flat000 ">
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 maroon-fill" viewBox="0 0 50 50" data-include="svg:up-left-round" />
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 maroon-fill" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#up-left-round" /></svg>
     <span class="maroon-text"><%= i18n 'Up'%></span>
   </a>
 % }
@@ -352,6 +352,9 @@ pre {
   </div>
   <div class="modal-content"></div>
   <div class="modal-footer green lighten-5">
-    <a href="javascript:" class="modal-action modal-close green-text waves-effect waves-green btn-flat"><%= i18n 'I AM SURE' %></a>
+    <a href="javascript:" class="modal-action modal-close green-text waves-effect waves-green btn-flat">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 green-fill" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#confirm" /></svg>
+      <%= i18n 'I AM SURE' %>
+    </a>
   </div>
 </div>

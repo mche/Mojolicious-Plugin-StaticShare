@@ -62,12 +62,12 @@ lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/Rob
 lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-latin-ext.woff2
 lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-latin.woff2
 lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-latin-ext.woff2
+lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/icons.svg
 lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.ui.widget.js
 lib/Mojolicious/Plugin/StaticShare/static/static-share/js/main.js
 lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.fileupload.js
 lib/Mojolicious/Plugin/StaticShare/static/static-share/js/velocity.min.js
 lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js
-lib/Mojolicious/Plugin/StaticShare/static/static-share/js/svg.js
 t/00-load.t
 t/manifest.t
 t/pod-coverage.t
