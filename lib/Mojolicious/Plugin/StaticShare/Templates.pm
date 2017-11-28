@@ -54,7 +54,7 @@ __DATA__
 <!DOCTYPE html>
 <html>
 <head>
-<title><%= stash('title')  %></title>
+<title><%= stash('title') || i18n 'Share'  %></title>
 
 
 %# http://realfavicongenerator.net
@@ -136,9 +136,9 @@ pre {
 
 <h2 class="lime-text text-darken-4">
 %#  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4"  viewBox="0 0 30 30" data-include="svg:folder" />
-%# <%= i18n 'Dirs' %>
+%# <%= i18n 'Down' %>
   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 50 50" data-include="svg:down-right-round" />
-  <span class=""><%= i18n 'Down' %></span>
+  <span class=""><%= i18n 'Dirs' %></span>
   <span class="chip lime lighten-5" style=""><%= scalar @$dirs %></span>
 </h2>
 
@@ -146,13 +146,13 @@ pre {
     <div class="determinate lime" style="width: 0%"></div>
 </div>
 
-<table class="dirs" style000="margin-top:0;">
+<table class="dirs" style="border: 1px solid #e0e0e0;">
   <thead class="hide">
-    <tr class="new-dir lime darken-4"><!-- template new folder -->
+    <tr class="new-dir lime darken-4" style="border-bottom: 1px solid #e0e0e0;"><!-- template new folder -->
       <td>
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-lighten-5" viewBox="0 0 30 30" data-include="svg:folder" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" viewBox="0 0 50 50" data-include="svg:add-dir" />
       </td>
-      <td>
+      <td style="width:99%;">
         <div class="input-field">
           <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" >
         </div>
@@ -161,7 +161,7 @@ pre {
       </td>
       <td class="action">
         <a href="javascript:" _href="<%= $url_path->to_route %>" class="save-dir">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-lighten-5" viewBox="0 0 26 26" data-include="svg:upload" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" viewBox="0 0 26 26" data-include="svg:upload" />
         </a>
       </td>
       <td class="chb">
@@ -172,11 +172,11 @@ pre {
   <tbody>
   % for my $dir (sort  @$dirs) {
   % my $url = $url_path->clone->merge($dir)->trailing_slash(1)->to_route;
-    <tr class="dir lime lighten-5">
+    <tr class="dir lime lighten-5" style="border-bottom: 1px solid #e0e0e0;">
       <td style="width:1%;">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 30 30" data-include="svg:folder" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-darken-4" viewBox="0 0 30 30" data-include="svg:folder" />
       </td>
-      <td>
+      <td style="width:99%;">
         <div class="input-field hide">
            <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" value="<%== $dir %>">
         </div>
@@ -185,7 +185,7 @@ pre {
       </td>
       <td class="action" style="width:1%;">
         <a href="javascript:" _href="<%= $url %>" class="save-dir hide">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 26 26" data-include="svg:upload" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-darken-4" viewBox="0 0 26 26" data-include="svg:upload" />
         </a>
       </td>
       <td class="chb" style="width:1%;">
@@ -236,9 +236,9 @@ pre {
 %#  </tr>
 %#</thead>
 <thead class="hide">
-  <tr class="light-blue"><!--- new upload file template -->
+  <tr class="light-blue" style="border-bottom: 1px solid #e0e0e0;"><!--- new upload file template -->
     <td class="chb">
-      <input type="checkbox" name="file-check" class="" style="">
+      <input type="checkbox" name="file-check" class="" style="margin:0 0.5rem;">
     </td>
     <td class="name">
       <a class="file-view hide"></a>
@@ -246,9 +246,9 @@ pre {
       <div class="red-text error"></div>
     </td>
     <td class="action">
-      <a href="" class="file-download hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 light-blue-fill fill-darken-1" style="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
-      <a href="javascript:" _href="" class="file-rename hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15" viewBox="0 0 26 26" data-include="svg:upload" /></a>
-      <a href="javascript:" class="file-upload"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 white-fill" viewBox="0 0 26 26" data-include="svg:upload" /></a>
+      <a href="" class="file-download hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 light-blue-fill fill-darken-1" style="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
+      <a href="javascript:" _href="" class="file-rename hide" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12" viewBox="0 0 26 26" data-include="svg:upload" /></a>
+      <a href="javascript:" class="file-upload"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 white-fill" viewBox="0 0 26 26" data-include="svg:upload" /></a>
     </td>
     <td class="size right-align fs8" ></td>
     <!--td class="type"></td-->
@@ -258,10 +258,10 @@ pre {
 <tbody>
   % for my $file (sort { $a->{name} cmp $b->{name} } @$files) {
   % my $href = $url_path->clone->merge($file->{name})->to_route;
-  <tr class="">
+  <tr class="" style="border-bottom: 1px solid #e0e0e0;">
     <td class="chb">
 % if ($c->admin) {
-      <input type="checkbox" name="file-check"  class="" style="">
+      <input type="checkbox" name="file-check"  class="" style="margin:0 0.5rem;">
 % }
     </td>
 
@@ -271,8 +271,8 @@ pre {
       <div class="red-text error hide"></div>
     </td>
     <td class="action">
-      <a href="<%= $href %>?attachment=1" class="file-download" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 light-blue-fill fill-darken-1" style000="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
-      <a href="javascript:" _href="<%= $href %>" class="file-rename hide" style="padding:0.1rem;"><svg class="icon icon15" viewBox="0 0 26 26" data-include="svg:upload" /></a>
+      <a href="<%= $href %>?attachment=1" class="file-download" style="padding:0.1rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 light-blue-fill fill-darken-1" style000="height:1.2rem;" viewBox="0 0 26 26" data-include="svg:download" /></a>
+      <a href="javascript:" _href="<%= $href %>" class="file-rename hide" style="padding:0.1rem;"><svg class="icon icon12" viewBox="0 0 26 26" data-include="svg:upload" /></a>
 
     </td>
     <td class="size right-align fs8" ><%= $file->{size} %></td>
