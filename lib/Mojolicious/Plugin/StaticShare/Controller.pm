@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use HTTP::AcceptLanguage;
 use Mojo::Path;
 use Mojo::File qw(path);
-use Mojo::Util qw ( decode encode url_unescape xml_escape);#encode 
+use Mojo::Util qw ( decode encode url_unescape xml_escape);# 
 use Time::Piece;# module replaces the standard localtime and gmtime functions with implementations that return objects
 use Mojo::Asset::File;
 
@@ -68,12 +68,12 @@ sub post {
 
   my $file = $c->req->upload('file')
     or return $c->render(json=>{error=>$c->i18n('Where is your upload file?')});
-  my $name = url_unescape($c->param('name') || $file->filename);
-  
+  my $name = (my $ename) = url_unescape($c->param('name') || $file->filename);
+  utf8::upgrade($ename);
   return $c->render(json=>{error=>$c->i18n('Provide the name of upload file')})
-    unless encode('UTF-8', $name) =~ /\w/;
+    unless $ename =~ /\S/i;
   
-  my $to = $file_path->child(encode('UTF-8', $name));
+  my $to = $file_path->child($ename);
   
   return $c->render(json=>{error=>$c->i18n('path is not a directory')})
     unless -d $file_path;
@@ -177,10 +177,13 @@ sub dir {
 sub new_dir {
   my ($c, $path, $dir) = @_;
   
-  return $c->render(json=>{error=>$c->i18n('provide the name of new directory')})
-    unless encode('UTF-8', url_unescape($dir)) =~ /\w+/;
+  my $edir = url_unescape($dir);
+  utf8::upgrade($edir);
   
-  my $to = $path->child(encode('UTF-8', url_unescape($dir)));
+  return $c->render(json=>{error=>$c->i18n('provide the name of new directory')})
+    unless $edir =~ /\S/i;
+  
+  my $to = $path->child($edir);#
   
   return $c->render(json=>{error=>$c->i18n('dir or file exists')})
     if -e $to;
@@ -194,10 +197,13 @@ sub new_dir {
 sub rename {
   my ($c, $path, $rename) = @_;
   
-  return $c->render(json=>{error=>$c->i18n('provide new name')})
-    unless encode('UTF-8', url_unescape($rename)) =~ /\w+/;
+  my $ename = url_unescape($rename);
+  utf8::upgrade($ename);
   
-  my $to = $path->sibling(encode('UTF-8', url_unescape($rename)));
+  return $c->render(json=>{error=>$c->i18n('provide new name')})
+    unless $ename =~ /\S/i;
+  
+  my $to = $path->sibling($ename);
   
   return $c->render(json=>{error=>$c->i18n('dir or file exists')})
     if -e $to;
@@ -213,10 +219,12 @@ sub delete {
   my ($c, $path, $delete) = @_;
   my @delete = ();
   for (@$delete) {
+    my $del = url_unescape($_);
+    utf8::upgrade($del);
     push @delete, $c->i18n('provide the name of deleted dir')
       and next
-      unless encode('UTF-8', url_unescape($_)) =~ /\w+/;
-    my $d = $path->sibling(encode('UTF-8', url_unescape($_)));
+      unless $del =~ /\S/i;
+    my $d = $path->sibling($del);
     push @delete, $c->i18n('dir or file does not exists')
       and next
       unless -e $d;
@@ -323,15 +331,16 @@ sub _dom_attrs {# for markdown
   my $content = $child1->content;
   if ($content =~ s|^(?:\s*\{([^\}]+)\}\s*)||) {
     my $attrs = $1;
-    while ($attrs =~ s|([\w\-]+\s*:\s*[^;]+;)|| ) {# styles
+    utf8::upgrade($attrs);
+    while ($attrs =~ s|([\S\-]+\s*:\s*[^;]+;)|| ) {# styles
       #~ warn "\tstyle=", $1;
       $parent->{style} .= " $1";
     }
-    while ($attrs =~ s|\.?([.\w\-]+)||) {# classes
+    while ($attrs =~ s|\.?([.\S\-]+)||) {# classes
       #~ warn "\tclass=", $1;
       $parent->{class} .= " $1";
     }
-    while ($attrs =~ s|#([\w\-]+)||) {# id
+    while ($attrs =~ s|#([\S\-]+)||i) {# id
       #~ warn "\tid=", $1;
       $parent->{id}  = $1;
     }
