@@ -67,8 +67,12 @@ sub post {
     if $c->req->is_limit_exceeded;
 
   my $file = $c->req->upload('file')
-    or return return $c->render(json=>{error=>$c->i18n('Where your parameters?')});
+    or return $c->render(json=>{error=>$c->i18n('Where is your upload file?')});
   my $name = url_unescape($c->param('name') || $file->filename);
+  
+  return $c->render(json=>{error=>$c->i18n('Provide the name of upload file')})
+    unless encode('UTF-8', $name) =~ /\w/;
+  
   my $to = $file_path->child(encode('UTF-8', $name));
   
   return $c->render(json=>{error=>$c->i18n('path is not a directory')})
@@ -173,6 +177,9 @@ sub dir {
 sub new_dir {
   my ($c, $path, $dir) = @_;
   
+  return $c->render(json=>{error=>$c->i18n('provide the name of new directory')})
+    unless encode('UTF-8', url_unescape($dir)) =~ /\w+/;
+  
   my $to = $path->child(encode('UTF-8', url_unescape($dir)));
   
   return $c->render(json=>{error=>$c->i18n('dir or file exists')})
@@ -186,6 +193,9 @@ sub new_dir {
 
 sub rename {
   my ($c, $path, $rename) = @_;
+  
+  return $c->render(json=>{error=>$c->i18n('provide new name')})
+    unless encode('UTF-8', url_unescape($rename)) =~ /\w+/;
   
   my $to = $path->sibling(encode('UTF-8', url_unescape($rename)));
   
@@ -203,13 +213,15 @@ sub delete {
   my ($c, $path, $delete) = @_;
   my @delete = ();
   for (@$delete) {
+    push @delete, $c->i18n('provide the name of deleted dir')
+      and next
+      unless encode('UTF-8', url_unescape($_)) =~ /\w+/;
     my $d = $path->sibling(encode('UTF-8', url_unescape($_)));
     push @delete, $c->i18n('dir or file does not exists')
       and next
       unless -e $d;
     push @delete, eval {$d->remove_tree()} ? 1 : 0,
   }
-
   
   $c->render(json=>{ok=>\@delete});
 }
