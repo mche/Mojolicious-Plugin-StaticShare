@@ -120,6 +120,7 @@ pre {
 % layout 'Mojolicious-Plugin-StaticShare/main';
 
 <div class="row">
+% if (@$dirs || $c->admin) {
 <div class="dirs-col col s6">
 
 % if ($c->admin) {
@@ -199,7 +200,9 @@ pre {
 </table>
 
 </div>
+% }
 
+% if (@$files || $c->admin || $c->public_uploads) {
 <div class="files-col col s6">
 
 % if ($c->admin || $c->public_uploads) {
@@ -283,7 +286,8 @@ pre {
 </tbody>
 </table>
 
-</div><!-- col 2 -->
+</div><!-- col files -->
+% }
 </div><!-- row -->
 
 % if (stash 'index') {
