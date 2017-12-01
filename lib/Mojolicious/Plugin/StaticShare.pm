@@ -5,7 +5,7 @@ use Mojolicious::Types;
 use Mojo::Path;
 use Mojo::Util qw(encode);
 
-our $VERSION = '0.05';
+our $VERSION = '0.055';
 my $PKG = __PACKAGE__;
 
 has [qw(app config)];
@@ -133,7 +133,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
 
 =head1 VERSION
 
-0.05
+0.055
 
 =head1 SYNOPSIS
 

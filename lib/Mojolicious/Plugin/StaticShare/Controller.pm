@@ -181,7 +181,7 @@ sub new_dir {
   utf8::upgrade($edir);
   
   return $c->render(json=>{error=>$c->i18n('provide the name of new directory')})
-    unless $edir =~ /\S/i;
+    unless $edir =~ /\S/;
   
   my $to = $path->child($edir);#
   
@@ -201,7 +201,7 @@ sub rename {
   utf8::upgrade($ename);
   
   return $c->render(json=>{error=>$c->i18n('provide new name')})
-    unless $ename =~ /\S/i;
+    unless $ename =~ /\S/;
   
   my $to = $path->sibling($ename);
   
@@ -223,7 +223,7 @@ sub delete {
     utf8::upgrade($del);
     push @delete, $c->i18n('provide the name of deleted dir')
       and next
-      unless $del =~ /\S/i;
+      unless $del =~ /\S/;
     my $d = $path->sibling($del);
     push @delete, $c->i18n('dir or file does not exists')
       and next
@@ -271,7 +271,6 @@ sub _markdown {# file
   return $c->plugin->render_markdown
     ? $c->render(ref $c->plugin->render_markdown ? %{$c->plugin->render_markdown} : $c->plugin->render_markdown,)
     : $c->render('Mojolicious-Plugin-StaticShare/markdown', format=>'html', handler=>'ep',);
-  
 }
 
 my $layout_re = qr|^(?:\s*%+\s*layouts/(.+)[;\s]+)|;
@@ -288,7 +287,6 @@ sub _stash_markdown {
   $c->stash(markdown => $dom->at('body') || $dom);
   #~ my $filename = $path->basename;
   #~ $c->stash('title'=>$filename);
-  
 }
 
 my $layout_ext_re = qr|\.([^/\.;\s]+)?\.?([^/\.;\s]+)?$|; # .html.ep
@@ -332,18 +330,15 @@ sub _dom_attrs {# for markdown
   if ($content =~ s|^(?:\s*\{([^\}]+)\}\s*)||) {
     my $attrs = $1;
     utf8::upgrade($attrs);
-    while ($attrs =~ s|([\S\-]+\s*:\s*[^;]+;)|| ) {# styles
-      #~ warn "\tstyle=", $1;
-      $parent->{style} .= " $1";
-    }
-    while ($attrs =~ s|\.?([.\S\-]+)||) {# classes
-      #~ warn "\tclass=", $1;
-      $parent->{class} .= " $1";
-    }
-    while ($attrs =~ s|#([\S\-]+)||i) {# id
-      #~ warn "\tid=", $1;
-      $parent->{id}  = $1;
-    }
+    # styles
+    $parent->{style} .= " $1"
+      while $attrs =~ s|(\S+\s*:\s*[^;]+;)||;
+    # id
+    $parent->{id}  = $1
+      while $attrs =~ s|#(\S+)||;
+    # classes
+    $parent->{class} .= " $1"
+      while $attrs =~ s|\.?([^\.\s]+)||;
     $child1->content($content);# replace
   }
 }
