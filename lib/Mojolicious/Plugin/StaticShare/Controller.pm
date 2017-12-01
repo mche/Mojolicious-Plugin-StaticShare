@@ -41,7 +41,7 @@ sub post {
   my ($c) = @_;
   $c->_stash();
   
-  my $file_path = path(url_unescape($c->stash('file_path')));
+  my $file_path = path(decode('UTF-8', url_unescape($c->stash('file_path'))));
   
   if ($c->admin && (my $dir = $c->param('dir'))) {
     return $c->new_dir($file_path, $dir);
@@ -68,19 +68,20 @@ sub post {
 
   my $file = $c->req->upload('file')
     or return $c->render(json=>{error=>$c->i18n('Where is your upload file?')});
-  my $name = (my $ename) = url_unescape($c->param('name') || $file->filename);
-  utf8::upgrade($ename);
+  my $name = url_unescape($c->param('name') || $file->filename);
+  utf8::upgrade($name);
   return $c->render(json=>{error=>$c->i18n('Provide the name of upload file')})
-    unless $ename =~ /\S/i;
+    unless $name =~ /\S/i;
   
-  my $to = $file_path->child($ename);
+  my $to = $file_path->child($name);
   
   return $c->render(json=>{error=>$c->i18n('path is not a directory')})
     unless -d $file_path;
   return $c->render(json=>{error=>$c->i18n('file already exists')})
     if -e $to;
   
-  $file->asset->move_to($to);
+  eval { $file->asset->move_to($to) }
+    or return $c->render(json=>{error=>$@  =~ /(.+) at /});
   
   $c->render(json=>{ok=> $c->stash('url_path')->merge($name)->to_route});
 }
@@ -208,8 +209,8 @@ sub rename {
   return $c->render(json=>{error=>$c->i18n('dir or file exists')})
     if -e $to;
   
-  my $move = eval {$path->move_to($to)}
-    or return $c->render(json=>{error=>$@});
+  my $move = eval { $path->move_to($to) }
+    or return $c->render(json=>{error=>$@ =~ /(.+) at /});
   
   $c->render(json=>{ok=> $c->stash('url_path')->trailing_slash(0)->to_dir->merge($rename)->to_route});
   

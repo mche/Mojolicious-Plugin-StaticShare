@@ -5,7 +5,7 @@ use Mojolicious::Types;
 use Mojo::Path;
 use Mojo::Util qw(encode);
 
-our $VERSION = '0.055';
+our $VERSION = '0.056';
 my $PKG = __PACKAGE__;
 
 has [qw(app config)];
@@ -133,7 +133,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
 
 =head1 VERSION
 
-0.055
+0.056
 
 =head1 SYNOPSIS
 
@@ -274,7 +274,7 @@ It was not tested but I hope you dont worry and have happy.
 
 =head1 Extended markdown & pod
 
-You can place classnames and css-style rules to markup elements as below.
+You can place attributes like id, classnames and css-style rules to markup elements as below.
 
 In markdown:
 
