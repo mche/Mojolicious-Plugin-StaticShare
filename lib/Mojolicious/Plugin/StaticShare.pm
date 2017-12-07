@@ -5,7 +5,7 @@ use Mojolicious::Types;
 use Mojo::Path;
 use Mojo::Util qw(encode);
 
-our $VERSION = '0.056';
+our $VERSION = '0.057';
 my $PKG = __PACKAGE__;
 
 has [qw(app config)];
@@ -18,6 +18,7 @@ has dir_index => sub { shift->config->{dir_index} // [qw(README.md INDEX.md READ
 has render_pod =>  sub { shift->config->{render_pod} };
 has render_markdown =>  sub { shift->config->{render_markdown} };
 has markdown_pkg => sub { shift->config->{markdown_pkg} // 'Text::Markdown::Hoedown' };
+has templates_dir => sub { shift->config->{templates_dir} };
 has markdown => sub {# parser object
    __internal__::Markdown->new(shift->markdown_pkg);
 };
@@ -35,6 +36,8 @@ sub register {
     and push @{$app->static->paths}, path(__FILE__)->sibling('StaticShare')->child('static') 
     unless ($self->render_dir // '') eq 0
           && ($self->render_markdown // '') eq 0;
+  push @{$app->renderer->paths}, ref $self->templates_dir ? @{$self->templates_dir} : $self->templates_dir
+    if $self->templates_dir;
   
   my $route = $self->root_url->clone->merge('*pth');#"$args->{root_url}/*pth";
   my $r = $app->routes;
@@ -133,7 +136,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
 
 =head1 VERSION
 
-0.056
+0.057
 
 =head1 SYNOPSIS
 
@@ -223,7 +226,11 @@ List of hashrefs (C<name, size, mtime> keys) files. Not sorted.
 
 =head4 index
 
-Filename for markdown or pod rendering in page below dirs and files.
+Filename for markdown or pod rendering in page below the column dirs and column files.
+
+=head2 templates_dir
+
+String or arrayref strings. Simply C<< push @{$app->renderer->paths}, <templates_dir>; >>. None defaults.
 
 =head2 render_markdown
 
