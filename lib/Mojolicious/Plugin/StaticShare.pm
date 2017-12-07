@@ -230,7 +230,7 @@ Filename for markdown or pod rendering in page below the column dirs and column 
 
 =head2 templates_dir
 
-String or arrayref strings. Simply C<< push @{$app->renderer->paths}, <templates_dir>; >>. None defaults.
+String or arrayref strings. Simply C<< push @{$app->renderer->paths}, <templates_dir>; >>. None defaults. Mainly needs for layouting markdown.
 
 =head2 render_markdown
 
