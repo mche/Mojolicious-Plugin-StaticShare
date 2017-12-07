@@ -230,7 +230,12 @@ Filename for markdown or pod rendering in page below the column dirs and column 
 
 =head2 templates_dir
 
-String or arrayref strings. Simply C<< push @{$app->renderer->paths}, <templates_dir>; >>. None defaults. Mainly needs for layouting markdown.
+String or arrayref strings. Simply C<< push @{$app->renderer->paths}, <templates_dir>; >>. None defaults.
+
+Mainly needs for layouting markdown. When you set this option then you can define layout inside markdown/pod files like syntax:
+
+  % layouts/foo.html.ep
+  # Foo header
 
 =head2 render_markdown
 
