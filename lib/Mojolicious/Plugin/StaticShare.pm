@@ -5,7 +5,7 @@ use Mojolicious::Types;
 use Mojo::Path;
 use Mojo::Util qw(encode);
 
-our $VERSION = '0.057';
+our $VERSION = '0.058';
 my $PKG = __PACKAGE__;
 
 has [qw(app config)];
@@ -26,14 +26,17 @@ has is_markdown => sub { qr{[.]m(?:d(?:own)?|kdn?|arkdown)$}i };
 has is_pod => sub { qr{[.]p(?:od|m|l)$} };
 has mime => sub { Mojolicious::Types->new };
 
-sub register {
+sub register {# none magic
   my ($self, $app, $args) = @_;
   $self->config($args);
   $self->app($app);
   
+  my $push_class = "$PKG\::Templates";
+  my $push_path = path(__FILE__)->sibling('StaticShare')->child('static');
+  
   require Mojolicious::Plugin::StaticShare::Templates
-    and push @{$app->renderer->classes}, "$PKG\::Templates"
-    and push @{$app->static->paths}, path(__FILE__)->sibling('StaticShare')->child('static') 
+    and push @{$app->renderer->classes}, grep($_ eq $push_class, @{$app->renderer->classes}) ? () : $push_class
+    and push @{$app->static->paths}, grep($_ eq $push_path, @{$app->static->paths}) ? () : $push_path
     unless ($self->render_dir // '') eq 0
           && ($self->render_markdown // '') eq 0;
   push @{$app->renderer->paths}, ref $self->templates_dir ? @{$self->templates_dir} : $self->templates_dir
@@ -41,12 +44,12 @@ sub register {
   
   my $route = $self->root_url->clone->merge('*pth');#"$args->{root_url}/*pth";
   my $r = $app->routes;
-  $r->get($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', pth=>'', plugin=>$self)->name("$PKG ROOT");
-  $r->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self)->name("$PKG ROOT POST");
-  $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self )->name("$PKG GET");
-  $r->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self )->name("$PKG POST");
+  $r->get($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', pth=>'', plugin=>$self);#->name("$PKG ROOT GET");
+  $r->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self);#->name("$PKG ROOT POST");
+  $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self );#->name("$PKG GET");
+  $r->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self );#->name("$PKG POST");
 
-  $app->helper(i18n => sub { &i18n(@_) });
+  $app->helper(i18n => \&i18n);
   
   #POD
   $self->app->plugin(PODRenderer => {no_perldoc => 1})
@@ -136,7 +139,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
 
 =head1 VERSION
 
-0.057
+0.058
 
 =head1 SYNOPSIS
 
@@ -149,10 +152,11 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
   # oneliner
   $ perl -MMojolicious::Lite -E 'plugin("StaticShare", root_url=>"/my/share",)->secrets([rand])->start' daemon
 
+L</MULTI-PLUGIN> also.
 
 =head1 DESCRIPTION
 
-This plugin for share static files/dirs and has public and admin functionality:
+This plugin allow to share static files/dirs/markdown and has public and admin functionality:
 
 =head2 Public interface
 
@@ -276,26 +280,18 @@ Boolean to disable/enable uploads for public users. Defaults to undef (disable).
 
   public_uploads=>1, # enable
 
-=head1 UTF-8
-
-Everywhere  and everything: module, files, content.
-
-=head1 WINDOWS OS
-
-It was not tested but I hope you dont worry and have happy.
-
 =head1 Extended markdown & pod
 
-You can place attributes like id, classnames and css-style rules to markup elements as below.
+You can place attributes like id(# as prefix), classnames(dot as prefix and separator) and css-style rules(key:value; colon separator and semicolon terminator) to markup elements as below.
 
 In markdown:
 
-  # {.class1 .class2 padding: 0 0.5rem;} Header 1
+  # {#foo123 .class1 .class2 padding: 0 0.5rem;} Header 1
   {.brown-text} brown paragraph text ...
 
 In pod:
 
-  =head2 {.class1 .blue-text border-bottom: 1px dotted;} Header 2
+  =head2 {.class1.blue-text border-bottom: 1px dotted;} Header 2
   
   {.red-text} red color text...
 
@@ -309,6 +305,22 @@ L<Mojolicious::Plugin> and implements the following new ones.
   $plugin->register(Mojolicious->new);
 
 Register plugin in L<Mojolicious> application.
+
+=head1 MULTI PLUGIN
+
+A possible:
+
+  # Mojolicious
+  $self->plugin('StaticShare', <options-1>);
+  $self->plugin('StaticShare', <options-2>); # and so on ...
+
+=head1 UTF-8
+
+Everywhere  and everything: module, files, content.
+
+=head1 WINDOWS OS
+
+It was not tested but I hope you dont worry and have happy.
 
 =head1 SEE ALSO
 
