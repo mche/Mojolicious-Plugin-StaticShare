@@ -27,7 +27,7 @@ sub get {
   return $c->not_found
     if !$c->admin && grep {/^\./} @{$c->stash('url_path')->parts};
   
-  my $file_path = path(url_unescape($c->stash('file_path')));
+  my $file_path = $c->stash('file_path');
   
   return $c->dir($file_path)
     if -d $file_path;
@@ -41,7 +41,7 @@ sub post {
   my ($c) = @_;
   $c->_stash();
   
-  my $file_path = path(decode('UTF-8', url_unescape($c->stash('file_path'))));
+  my $file_path = $c->stash('file_path');
   
   if ($c->admin && (my $dir = $c->param('dir'))) {
     return $c->new_dir($file_path, $dir);
@@ -96,9 +96,10 @@ sub _stash {
   $pth = $pth->trailing_slash(1)->merge('.'.$c->stash('format'))
     if $c->stash('format');
   $c->stash('pth' => $pth);
-  my $url_path = $c->plugin->root_url->clone->merge($c->stash('pth'))->trailing_slash(1);
+  my $url_path = $c->plugin->root_url->clone->merge($pth)->trailing_slash(1);
   $c->stash('url_path' => $url_path);
-  $c->stash('file_path' => $c->plugin->root_dir->clone->merge($c->stash('pth')));
+  #~ $c->stash('file_path' => $c->plugin->root_dir->clone->merge($c->stash('pth')));
+  $c->stash('file_path' => path(url_unescape($c->plugin->root_dir->clone->merge($pth))));
   $c->stash('title' => $c->i18n('Share')." ".$url_path->to_route);
 }
 
@@ -245,12 +246,13 @@ sub file {
   
   my $filename = $path->basename;
   
-  $c->_markdown($path)
-    and return
+  return $c->_edit($path)
+    if $c->admin && $c->param('edit');
+  
+  return $c->_markdown($path)
     unless ($c->plugin->render_markdown || '') eq 0 || $c->param('attachment') || $filename !~ $c->plugin->is_markdown;
   
-  $c->_pod($path)
-    and return
+  return $c->_pod($path)
     unless ($c->plugin->render_pod || '') eq 0 || $c->param('attachment') || $filename !~ $c->plugin->is_pod;
   
   $c->res->headers->content_disposition($c->param('attachment') ? "attachment; filename=$filename;" : "inline");
@@ -378,6 +380,12 @@ sub not_found {
     or $c->reply->not_found;
   
 };
+
+sub _edit {
+  my ($c, $path) = @_;
+  $c->stash('edit'=> decode('UTF-8', $path->slurp));
+  $c->render('Mojolicious-Plugin-StaticShare/edit', format=>'html', handler=>'ep',);
+}
 
 1;
 

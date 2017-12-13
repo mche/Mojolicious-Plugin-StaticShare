@@ -67,9 +67,31 @@ __DATA__
 
 <link href="/static-share/css/main.css" rel="stylesheet">
 
-% if (stash('pod')) {
-<style>
+<style type="text/css" media="screen">
 
+.index-file {
+  border: 1px solid lightgray;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+
+}
+
+#footer {
+  /*position: absolute;
+  bottom: 0;
+  right: 1rem;
+  z-index: -100;*/
+  text-align:right;
+  color: lightgray;
+  font-size: 0.7rem;
+}
+
+#footer .logo {
+  height: 1rem;
+  vertical-align: text-bottom;
+}
+
+% if (stash('pod')) {
 pre {
   background-color: #fafafa;
   border: 1px solid #c1c1c1;
@@ -85,9 +107,18 @@ pre {
   padding: 0.3em;
 }
 
-</style>
 % }
 
+% if (param('edit')) {
+
+  .ace_editor {
+    border: 1px solid lightgray;
+    margin: auto;
+    height: calc(70vh);
+    width: 100%;
+  }
+% }
+</style>
 
 <meta name="app:name" content="<%= stash('app:name') // 'Mojolicious::Plugin::StaticShare' %>">
 %#<meta name="app:version" content="<%= stash('app:version') // 0.01 %>">
@@ -109,6 +140,23 @@ pre {
 %#<script src="/static-share/js/svg.js"></script>
 <script src="/static-share/js/main.js"></script>
 
+% if (param('edit')) {
+<script src="/static-share/js/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+  var editor = ace.edit("editor");
+  ///editor.setTheme("ace/theme/monokai");
+  editor.setOptions({
+    autoScrollEditorIntoView: true,
+    ///maxLines: 8
+  });
+  
+  $('a.save').on('click', function(){
+    console.log("save", editor.getValue().length);
+  });
+  
+</script>
+% }
+
 %= javascript begin
   ///console.log('Доброго всем!! ALL GLORY TO GLORIA');
 % end
@@ -119,7 +167,7 @@ pre {
 @@ Mojolicious-Plugin-StaticShare/dir.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
 
-<div class="row">
+<div class="row"><%#= @$dirs || @$files ? '' : 'style="min-height: calc(80vh);" ' %>
 % if (@$dirs || $c->admin) {
 <div class="dirs-col col s6">
 
@@ -127,7 +175,7 @@ pre {
 <div class="right btn-panel" style="padding:1.2rem 0;">
   <a href="javascript:" class="hide renames"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 black-fill"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#rename" /></svg></a>
   <a href="javascript:" class="hide del-dirs"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 red-fill fill-lighten-1" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#dir-delete" /></svg></a>
-  <a id="add-dir" href="javascript:" class="btn-flat00" style="display:inline !important;">
+  <a id="add-dir" href="javascript:" class="btn-flat000" style000="display:inline !important;">
     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#add-dir" /></svg>
     <!--span class="lime-text text-darken-4"><%= i18n 'Add dir' %></span-->
   </a>
@@ -291,11 +339,22 @@ pre {
 </div><!-- row -->
 
 % if (stash 'index') {
-  <div class="right-align grey-text"><%= stash 'index' %></div>
+  <h4 class="right-align grey-text" title="<%= i18n 'below to the end' %>"><%= stash 'index' %></h4>
 % }
-<div class="index"><%== stash('markdown') || stash('pod') || '' %></div>
+% if (stash('markdown') || stash('pod')) {
+  <div class="index-file"><%== stash('markdown') || stash('pod') || '' %></div>
+% }
 
 %= include 'Mojolicious-Plugin-StaticShare/confirm-modal';
+
+<div id="footer">
+  Powered by
+  <a href="http://mojolicious.org">
+    <picture>
+      <img class="logo" src="/mojo/logo-black.png" srcset="/mojo/logo-black-2x.png 2x" alt="Mojolicious logo">
+    </picture>
+  </a>
+</div>
 
 @@ Mojolicious-Plugin-StaticShare/header.html.ep
 
@@ -361,4 +420,15 @@ pre {
       <%= i18n 'I AM SURE' %>
     </a>
   </div>
+</div>
+
+@@ Mojolicious-Plugin-StaticShare/edit.html.ep
+% layout 'Mojolicious-Plugin-StaticShare/main';
+
+<pre id="editor"><%= $edit %></pre>
+
+<div class="right-align">
+  <a href="javascript:" _href="<%= $url_path->clone->trailing_slash(0)->to_route %>" class="save btn-flat green-text">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 green-fill" viewBox="0 0 24 24"><use xlink:href="/static-share/fonts/icons.svg#save" /></svg>
+    <span><%= i18n 'Save'%></a></span>
 </div>

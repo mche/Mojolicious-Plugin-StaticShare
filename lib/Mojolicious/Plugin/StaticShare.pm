@@ -5,7 +5,6 @@ use Mojolicious::Types;
 use Mojo::Path;
 use Mojo::Util qw(encode);
 
-our $VERSION = '0.058';
 my $PKG = __PACKAGE__;
 
 has [qw(app config)];
@@ -85,6 +84,7 @@ my %loc = (
     'Confirm to delete these files'=>"Подтвердите удаление этих файлов",
      'Confirm to delete these dirs'=>"Подтвердите удаление этих папок", 
     'I AM SURE'=>"ДА",
+    'Save'=> 'Сохранить',
   },
 );
 sub i18n {# helper
@@ -122,7 +122,7 @@ sub new {
 
 sub parse { my $self = shift; no strict 'refs'; ($self->{pkg}.'::markdown')->(@_); }
 
-1;
+our $VERSION = '0.059';
 =pod
 
 =encoding utf8
@@ -139,12 +139,12 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static fil
 
 =head1 VERSION
 
-0.058
+0.059
 
 =head1 SYNOPSIS
 
   # Mojolicious
-  $self->plugin('StaticShare', <options>);
+  $app->plugin('StaticShare', <options>);
 
   # Mojolicious::Lite
   plugin 'StaticShare', <options>;
@@ -164,7 +164,7 @@ Can browse and upload files if name not exists.
 
 =head2 Admin interface
 
-Can copy, move, delete files/dirs.
+Can copy, move, delete, rename and edit content of files/dirs.
 
 Append param C<< admin=<admin_pass> option >> to any url inside B<root_url> requests (see below).
 
@@ -282,7 +282,15 @@ Boolean to disable/enable uploads for public users. Defaults to undef (disable).
 
 =head1 Extended markdown & pod
 
-You can place attributes like id(# as prefix), classnames(dot as prefix and separator) and css-style rules(key:value; colon separator and semicolon terminator) to markup elements as below.
+You can place attributes like:
+
+=head2 id (# as prefix)
+
+=head2 classnames (dot as prefix and separator)
+
+=head2 css-style rules (key:value; colon separator and semicolon terminator)
+
+to markup elements as below.
 
 In markdown:
 
@@ -311,8 +319,14 @@ Register plugin in L<Mojolicious> application.
 A possible:
 
   # Mojolicious
-  $self->plugin('StaticShare', <options-1>);
-  $self->plugin('StaticShare', <options-2>); # and so on ...
+  $app->plugin('StaticShare', <options-1>)
+           ->plugin('StaticShare', <options-2>); # and so on ...
+  
+  # Mojolicious::Lite
+  app->config(...)
+         ->plugin('StaticShare', <options-1>)
+         ->plugin('StaticShare', <options-2>) # and so on ...
+         ...
 
 =head1 UTF-8
 
