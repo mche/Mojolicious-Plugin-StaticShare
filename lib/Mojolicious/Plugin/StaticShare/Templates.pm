@@ -91,6 +91,11 @@ __DATA__
   vertical-align: text-bottom;
 }
 
+a.btn-flat svg + span {
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
 % if (stash('pod')) {
 pre {
   background-color: #fafafa;
@@ -142,19 +147,6 @@ pre {
 
 % if (param('edit')) {
 <script src="/static-share/js/ace.js" type="text/javascript" charset="utf-8"></script>
-<script>
-  var editor = ace.edit("editor");
-  ///editor.setTheme("ace/theme/monokai");
-  editor.setOptions({
-    autoScrollEditorIntoView: true,
-    ///maxLines: 8
-  });
-  
-  $('a.save').on('click', function(){
-    console.log("save", editor.getValue().length);
-  });
-  
-</script>
 % }
 
 %= javascript begin
@@ -167,7 +159,7 @@ pre {
 @@ Mojolicious-Plugin-StaticShare/dir.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
 
-<div class="row"><%#= @$dirs || @$files ? '' : 'style="min-height: calc(80vh);" ' %>
+<div class="row show-on-ready" style="display:none;"><%#= @$dirs || @$files ? '' : 'style="min-height: calc(80vh);" ' %>
 % if (@$dirs || $c->admin) {
 <div class="dirs-col col s6">
 
@@ -342,7 +334,7 @@ pre {
   <h4 class="right-align grey-text" title="<%= i18n 'below to the end' %>"><%= stash 'index' %></h4>
 % }
 % if (stash('markdown') || stash('pod')) {
-  <div class="index-file"><%== stash('markdown') || stash('pod') || '' %></div>
+  <div class="index-file show-on-ready" style="display:none;"><%== stash('markdown') || stash('pod') || '' %></div>
 % }
 
 %= include 'Mojolicious-Plugin-StaticShare/confirm-modal';
@@ -425,7 +417,10 @@ pre {
 @@ Mojolicious-Plugin-StaticShare/edit.html.ep
 % layout 'Mojolicious-Plugin-StaticShare/main';
 
-<pre id="editor"><%= $edit %></pre>
+<div class="show-on-ready" style="display:none;">
+  <pre id="editor"><%= $edit %></pre>
+</div>
+
 
 <div class="right-align">
   <a href="javascript:" _href="<%= $url_path->clone->trailing_slash(0)->to_route %>" class="save btn-flat green-text">
