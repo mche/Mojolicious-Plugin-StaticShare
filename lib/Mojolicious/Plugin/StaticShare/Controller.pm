@@ -382,11 +382,13 @@ sub not_found {
 
 sub _edit {
   my ($c, $path, $edit) = @_;
-  unless (defined $edit) {
+  unless (defined $edit) {# get
     $c->stash('edit'=> decode('UTF-8', $path->slurp));
+    $c->stash('title' => $c->i18n('Edit')." ".$c->stash('url_path')->to_route);
     return $c->render('Mojolicious-Plugin-StaticShare/edit', format=>'html', handler=>'ep',);
   }
   
+  # save
   $path->spurt(encode('UTF-8', $edit));
   $c->render(json=>{ok=>$path->to_string});
 }

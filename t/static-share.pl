@@ -16,6 +16,7 @@ my %CONF = (
   },
 
 );
+system('touch', "$CONF{'админка папка'}/$CONF{'файл топиков'}");
 #~ my $shares = path(__FILE__)->sibling("$CONF{'админка папка'}/$CONF{'файл топиков'}");
 my $shares = path("$CONF{'админка папка'}/$CONF{'файл топиков'}");
 my @shares = map {decode('UTF-8', $_)} grep {!/^\s*#/} split /\n+/, $shares->slurp();
@@ -24,7 +25,8 @@ my $nav = sub {# навигация админа
   my $c   = shift;
   my @items = (
     ['админ папка'=>$CONF{'админка адрес'}],
-    map(["в /$_" =>"/$_" ], @shares),
+    ['в /файловый корень/'=>"/абсолютный корень"],
+    map(["в /$_/" =>"/$_" ], @shares),
     ['редактировать конфиг'=>"$CONF{'админка адрес'}/$CONF{'файл топиков'}?edit=1"],
     ['перезапустить конфиг'=>'/restart'],
     ['выключить комп'=>'/выключить'],
@@ -32,9 +34,7 @@ my $nav = sub {# навигация админа
   return $c->render_to_string('admin-nav', format=>'html', handler=>'ep', items=>\@items, );
 };
 
-$ENV{MOJO_MAX_MESSAGE_SIZE}=0;
-app->config($CONF{mojo});
-
+app->plugin("StaticShare", root_dir=>'/', root_url=>'/абсолютный корень', admin_pass=>$CONF{'админка пароль'}, admin_nav=>$nav,);
 my ($app, $adm_plugin) = app->plugin("StaticShare", root_dir=>$CONF{'админка папка'}, root_url=>$CONF{'админка адрес'}, admin_pass=>$CONF{'админка пароль'}, admin_nav=>$nav,);
 push @{app->renderer->paths}, "$CONF{'админка папка'}/$CONF{'шаблоны папка'}";
 
@@ -79,13 +79,15 @@ app->plugin("StaticShare", root_dir=>"$CONF{'админка папка'}/$CONF{'
   #~ say STDERR $plugin, $c->stash('url_path') || '';
 #~ });
 
-app->secrets(['21--332++34'])
-   ->start;
+$ENV{MOJO_MAX_MESSAGE_SIZE}=0;
+app->config($CONF{mojo})
+  ->secrets(['21--332++34'])
+  ->start;
 
 __DATA__
 
 @@ admin-nav.html.ep
-<nav class="right chip green-forest" style="margin-top: 0.5rem;">
+<nav class="right000 chip green-forest" style="position:absolute; right:0.5rem;">
   <a class="dropdown-button white-text" data-activates="admin-nav" href="javascript:" style="">админ</a>
   <ul id="admin-nav" class="dropdown-content">
   % for (@$items) {

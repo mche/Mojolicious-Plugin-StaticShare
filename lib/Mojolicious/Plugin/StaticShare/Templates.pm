@@ -327,7 +327,13 @@ pre {
   <%== ref($c->plugin->config->{admin_nav}) eq 'CODE' ? $c->plugin->config->{admin_nav}($c) : $c->plugin->config->{admin_nav} %>
 % }
 
-<h1><%= i18n 'Index of'%>
+<h1>
+  % if (param 'edit') {
+  <%= i18n 'Edit'%>
+  % } else {
+  <%= i18n 'Index of'%>
+  % }
+
 % unless (@{$url_path->parts}) {
   <a href="<%= $url_path %>" class="chip grey-text grey lighten-4"><%= i18n 'root' %></a>
 % }
@@ -338,7 +344,7 @@ pre {
 % }
 
 % if ($c->plugin->root_url->to_route ne $url_path->to_route) {
-  <a href="<%= $url_path->clone->trailing_slash(0)->to_dir %>" class="btn-flat000 " style="white-space:nowrap;">
+  <a href="<%= $url_path->clone->trailing_slash(0)->to_dir %>" class="btn-flat000 chip right nowrap" style="">
     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 maroon-fill" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#up-left-round" /></svg>
     <span class="maroon-text"><%= i18n 'Up'%></span>
   </a>

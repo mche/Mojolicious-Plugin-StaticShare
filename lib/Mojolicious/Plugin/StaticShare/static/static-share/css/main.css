@@ -6549,6 +6549,9 @@ small {
 .block {
   display: block; }
 
+.nowrap {
+  white-space: nowrap; }
+
 .btn-panel {
   position: fixed;
   z-index: 1;

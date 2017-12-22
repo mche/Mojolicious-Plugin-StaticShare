@@ -70,6 +70,7 @@ my %loc = (
     'Permission denied'=>"Нет доступа",
     'Cant open directory'=>"Нет доступа в папку",
     'Share'=>'Обзор',
+    'Edit'=>'Редактировать',
     'Index of'=>'Содержание',
     'Dirs'=>'Папки',
     'Files'=>'Файлы',

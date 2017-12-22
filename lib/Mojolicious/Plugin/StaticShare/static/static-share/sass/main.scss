@@ -35,6 +35,10 @@ $h5-fontsize: 1.2rem;
   display: block;
 }
 
+.nowrap {
+  white-space:nowrap;
+}
+
 .btn-panel {
   position: fixed;
   z-index:1;
