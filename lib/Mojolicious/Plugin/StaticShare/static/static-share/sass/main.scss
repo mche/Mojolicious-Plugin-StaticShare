@@ -1,11 +1,11 @@
 @charset "UTF-8";
 
 // эти переменные обязательно перед импортом материализа, там они использ
-$h1-fontsize: 2.2rem !default;
-$h2-fontsize: 1.8rem !default;
-$h3-fontsize: 1.6rem !default;
-$h4-fontsize: 1.4rem !default;
-$h5-fontsize: 1.2rem !default;
+$h1-fontsize: 2.2rem;
+$h2-fontsize: 1.8rem;
+$h3-fontsize: 1.6rem;
+$h4-fontsize: 1.4rem;
+$h5-fontsize: 1.2rem;
 
 @import "components/color";
 
@@ -20,11 +20,52 @@ $h5-fontsize: 1.2rem !default;
 @import "components/grid";
 @import "components/chips";
 @import "components/buttons";
+@import "components/cards";
 
 @import "components/robotocondensed";
 @import "components/robotocondensed-woff2";
 @import "components/typography";
 @import "components/modal";
 
+@import "components/dropdown";
+
 //@import "components/forms/input-fields";
 
+.block {
+  display: block;
+}
+
+.btn-panel {
+  position: fixed;
+  z-index:1;
+  border: 1px solid #dadada;
+}
+
+.index-file {
+  border: 1px solid lightgray;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+#footer {
+  text-align:right;
+  color: lightgray;
+  font-size: 0.51rem;
+}
+
+#footer .logo {
+  height: 1rem;
+  vertical-align: text-bottom;
+}
+
+a.btn-flat svg + span {
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.ace_editor {
+  border: 1px solid lightgray;
+  margin: auto;
+  height: calc(70vh);
+  width: 100%;
+}

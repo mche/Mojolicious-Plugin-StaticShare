@@ -62,11 +62,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = Mojolicious::Plugin::StaticShare
 NAME_SYM = Mojolicious_Plugin_StaticShare
-VERSION = 0.058
+VERSION = 0.059
 VERSION_MACRO = VERSION
-VERSION_SYM = 0_058
+VERSION_SYM = 0_059
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 0.058
+XS_VERSION = 0.059
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -213,8 +213,10 @@ TO_INST_PM = README.pod \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_variables.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/8e3a0f068a18c07fb642fedcca80148e70742fd7/main.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_buttons.scssc \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_cards.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_chips.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_color.scssc \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_dropdown.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_global.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_grid.scssc \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_modal.scssc \
@@ -301,7 +303,379 @@ TO_INST_PM = README.pod \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-vietnamese.woff2 \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular.ttf \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular.woff \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ace.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-beautify.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-chromevox.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-elastic_tabstops_lite.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-emmet.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-error_marker.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-keybinding_menu.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-language_tools.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-linking.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-modelist.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-old_ie.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-searchbox.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-settings_menu.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-spellcheck.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-split.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-static_highlight.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-statusbar.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-textarea.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-themelist.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-whitespace.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/keybinding-emacs.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/keybinding-vim.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-abap.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-abc.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-actionscript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ada.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-apache_conf.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-applescript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-asciidoc.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-assembly_x86.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-autohotkey.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-batchfile.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-bro.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-c9search.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-c_cpp.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-cirru.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-clojure.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-cobol.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-coffee.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-coldfusion.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csharp.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csound_document.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csound_orchestra.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csound_score.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-css.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-curly.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-d.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-dart.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-diff.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-django.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-dockerfile.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-dot.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-drools.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-eiffel.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ejs.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-elixir.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-elm.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-erlang.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-forth.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-fortran.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ftl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gcode.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gherkin.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gitignore.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-glsl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gobstones.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-golang.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-graphqlschema.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-groovy.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-handlebars.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haskell.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haskell_cabal.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haxe.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-hjson.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-html.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-html_elixir.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-html_ruby.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ini.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-io.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jack.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jade.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-java.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-javascript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-json.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jsoniq.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jsp.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jssm.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jsx.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-julia.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-kotlin.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-latex.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lean.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-less.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-liquid.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lisp.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-live_script.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-livescript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-logiql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lsl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lua.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-luapage.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lucene.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-makefile.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-markdown.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mask.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-matlab.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-maze.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mel.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mips_assembler.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mipsassembler.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mushcode.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mysql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-nix.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-nsis.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-objectivec.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ocaml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-pascal.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-perl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-pgsql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-php.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-pig.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-plain_text.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-powershell.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-praat.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-prolog.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-properties.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-protobuf.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-python.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-r.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-razor.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rdoc.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-red.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rhtml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rst.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ruby.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rust.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sass.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scad.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scala.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scheme.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scss.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sh.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sjs.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-smarty.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-snippets.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-soy_template.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-space.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sparql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sqlserver.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-stylus.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-svg.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-swift.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-swig.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-tcl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-tex.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-text.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-textile.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-toml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-tsx.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-turtle.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-twig.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-typescript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-vala.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-vbscript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-velocity.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-verilog.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-vhdl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-wollok.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-xml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-xquery.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-yaml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/abap.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/abc.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/actionscript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ada.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/apache_conf.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/applescript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/asciidoc.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/assembly_x86.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/autohotkey.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/batchfile.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/bro.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/c9search.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/c_cpp.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/cirru.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/clojure.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/cobol.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/coffee.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/coldfusion.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csharp.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csound_document.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csound_orchestra.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csound_score.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/css.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/curly.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/d.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/dart.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/diff.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/django.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/dockerfile.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/dot.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/drools.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/eiffel.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ejs.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/elixir.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/elm.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/erlang.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/forth.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/fortran.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ftl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gcode.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gherkin.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gitignore.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/glsl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gobstones.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/golang.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/graphqlschema.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/groovy.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/handlebars.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haskell.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haskell_cabal.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haxe.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/hjson.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/html.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/html_elixir.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/html_ruby.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ini.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/io.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jack.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jade.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/java.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/javascript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/json.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jsoniq.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jsp.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jssm.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jsx.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/julia.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/kotlin.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/latex.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lean.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/less.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/liquid.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lisp.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/live_script.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/livescript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/logiql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lsl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lua.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/luapage.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lucene.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/makefile.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/markdown.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mask.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/matlab.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/maze.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mel.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mips_assembler.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mipsassembler.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mushcode.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mysql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/nix.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/nsis.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/objectivec.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ocaml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/pascal.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/perl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/pgsql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/php.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/pig.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/plain_text.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/powershell.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/praat.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/prolog.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/properties.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/protobuf.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/python.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/r.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/razor.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rdoc.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/red.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rhtml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rst.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ruby.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rust.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sass.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scad.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scala.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scheme.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scss.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sh.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sjs.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/smarty.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/snippets.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/soy_template.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/space.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sparql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sql.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sqlserver.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/stylus.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/svg.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/swift.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/swig.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/tcl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/tex.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/text.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/textile.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/toml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/tsx.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/turtle.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/twig.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/typescript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/vala.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/vbscript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/velocity.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/verilog.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/vhdl.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/wollok.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/xml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/xquery.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/yaml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-ambiance.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-chaos.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-chrome.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-clouds.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-clouds_midnight.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-cobalt.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-crimson_editor.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-dawn.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-dracula.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-dreamweaver.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-eclipse.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-github.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-gob.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-gruvbox.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-idle_fingers.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-iplastic.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-katzenmilch.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-kr_theme.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-kuroir.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-merbivore.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-merbivore_soft.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-mono_industrial.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-monokai.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-pastel_on_dark.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-solarized_dark.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-solarized_light.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-sqlserver.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-terminal.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-textmate.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night_blue.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night_bright.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night_eighties.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-twilight.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-vibrant_ink.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-xcode.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-coffee.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-css.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-html.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-javascript.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-json.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-lua.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-php.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-xml.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-xquery.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/dmuploader.min.js \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/dropdown.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.fileupload.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.ui.widget.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/main.js \
@@ -311,8 +685,10 @@ TO_INST_PM = README.pod \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/svg.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/velocity.min.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_buttons.scss \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_cards.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_chips.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_color.scss \
+	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_dropdown.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_global.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_grid.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_modal.scss \
@@ -391,7 +767,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = Mojolicious-Plugin-StaticShare
-DISTVNAME = Mojolicious-Plugin-StaticShare-0.058
+DISTVNAME = Mojolicious-Plugin-StaticShare-0.059
 
 
 # --- MakeMaker macro section:
@@ -646,7 +1022,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  perl: '\''5.014'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'resources:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  repository: git://github.com/mche/Mojolicious-Plugin-StaticShare.git' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: '\''0.058'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: '\''0.059'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'x_serialization_backend: '\''CPAN::Meta::YAML version 0.018'\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
@@ -699,7 +1075,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '         "web" : "https://github.com/mche/Mojolicious-Plugin-StaticShare"' >> META_new.json
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "0.058",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "0.059",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 2.27400_02"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
@@ -1009,7 +1385,7 @@ testdb_static :: static pure_all
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Mojolicious-Plugin-StaticShare" VERSION="0.058">' > Mojolicious-Plugin-StaticShare.ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Mojolicious-Plugin-StaticShare" VERSION="0.059">' > Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>browse, upload, copy, move, delete static files and dirs.</ABSTRACT>' >> Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>ÐÐ¸ÑÐ°Ð¸Ð» Ð§Ðµ (Mikhail Che) &lt;mche[-at-]cpan.org&gt;</AUTHOR>' >> Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Mojolicious-Plugin-StaticShare.ppd
@@ -1048,10 +1424,12 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_variables.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/7bd8ad59c979d8990e84ebfaeb116b93c1501d09/_variables.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/8e3a0f068a18c07fb642fedcca80148e70742fd7/main.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/8e3a0f068a18c07fb642fedcca80148e70742fd7/main.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_buttons.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_buttons.scssc' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_cards.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_cards.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_chips.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_chips.scssc' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_color.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_color.scssc' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_global.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_global.scssc' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_color.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_color.scssc' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_dropdown.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_dropdown.scssc' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_global.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_global.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_grid.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_grid.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_modal.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_modal.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_normalize.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_normalize.scssc' \
@@ -1060,11 +1438,11 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_typography.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_typography.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_variables.scssc' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/.sass-cache/cbf168ba9e16ace1c69f7188d7afbed776d6d765/_variables.scssc' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/css/main.css' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/css/main.css' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/css/main.css.map' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/css/main.css.map' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/css/main.css.map' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/css/main.css.map' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/icons.svg' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/icons.svg' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.eot' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.eot' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.ttf' 
-	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.ttf' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Bold.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Light.eot' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Light.eot' \
@@ -1076,10 +1454,10 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Medium.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Medium.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Medium.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Medium.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.eot' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.eot' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.ttf' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.woff' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.woff2' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.ttf' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.woff' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Regular.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Thin.eot' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Thin.eot' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Thin.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Thin.ttf' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Thin.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/roboto/Roboto-Thin.woff' \
@@ -1090,9 +1468,9 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-greek-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-greek.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-latin-ext.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-latin.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-vietnamese.woff2' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-latin.woff2' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold-vietnamese.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold.ttf' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Bold.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic-cyrillic-ext.woff2' \
@@ -1102,9 +1480,9 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic-latin.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic-vietnamese.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic.ttf' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic.woff' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic.ttf' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-BoldItalic.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic-cyrillic-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic-cyrillic.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic-greek-ext.woff2' \
@@ -1114,9 +1492,9 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic-vietnamese.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic.ttf' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Italic.woff' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-cyrillic-ext.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-cyrillic.woff2' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-cyrillic-ext.woff2' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-cyrillic.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-greek-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-greek.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light-latin-ext.woff2' \
@@ -1126,9 +1504,9 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Light.woff' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-cyrillic-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-cyrillic-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-cyrillic.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-greek-ext.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-greek.woff2' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-greek-ext.woff2' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-greek.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-latin-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-latin.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-LightItalic-vietnamese.woff2' \
@@ -1138,25 +1516,424 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-cyrillic.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-cyrillic.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-greek-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-greek-ext.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-greek.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-greek.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-latin-ext.woff2' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-latin.woff2' 
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-latin-ext.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-latin-ext.woff2' 
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-latin.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-latin.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-vietnamese.woff2' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular-vietnamese.woff2' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular.ttf' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular.ttf' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular.woff' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/fonts/robotocondensed/RobotoCondensed-Regular.woff' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ace.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ace.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-beautify.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-beautify.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-chromevox.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-chromevox.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-elastic_tabstops_lite.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-elastic_tabstops_lite.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-emmet.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-emmet.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-error_marker.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-error_marker.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-keybinding_menu.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-keybinding_menu.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-language_tools.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-language_tools.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-linking.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-linking.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-modelist.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-modelist.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-old_ie.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-old_ie.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-searchbox.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-searchbox.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-settings_menu.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-settings_menu.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-spellcheck.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-spellcheck.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-split.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-split.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-static_highlight.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-static_highlight.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-statusbar.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-statusbar.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-textarea.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-textarea.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-themelist.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-themelist.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-whitespace.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/ext-whitespace.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/keybinding-emacs.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/keybinding-emacs.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/keybinding-vim.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/keybinding-vim.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-abap.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-abap.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-abc.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-abc.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-actionscript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-actionscript.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ada.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ada.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-apache_conf.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-apache_conf.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-applescript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-applescript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-asciidoc.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-asciidoc.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-assembly_x86.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-assembly_x86.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-autohotkey.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-autohotkey.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-batchfile.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-batchfile.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-bro.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-bro.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-c9search.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-c9search.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-c_cpp.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-c_cpp.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-cirru.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-cirru.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-clojure.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-clojure.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-cobol.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-cobol.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-coffee.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-coffee.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-coldfusion.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-coldfusion.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csharp.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csharp.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csound_document.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csound_document.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csound_orchestra.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csound_orchestra.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csound_score.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-csound_score.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-css.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-css.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-curly.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-curly.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-d.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-d.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-dart.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-dart.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-diff.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-diff.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-django.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-django.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-dockerfile.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-dockerfile.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-dot.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-dot.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-drools.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-drools.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-eiffel.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-eiffel.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ejs.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ejs.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-elixir.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-elixir.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-elm.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-elm.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-erlang.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-erlang.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-forth.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-forth.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-fortran.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-fortran.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ftl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ftl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gcode.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gcode.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gherkin.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gherkin.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gitignore.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gitignore.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-glsl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-glsl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gobstones.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-gobstones.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-golang.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-golang.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-graphqlschema.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-graphqlschema.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-groovy.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-groovy.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haml.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-handlebars.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-handlebars.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haskell.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haskell.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haskell_cabal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haskell_cabal.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haxe.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-haxe.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-hjson.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-hjson.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-html.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-html.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-html_elixir.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-html_elixir.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-html_ruby.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-html_ruby.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ini.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ini.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-io.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-io.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jack.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jack.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jade.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jade.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-java.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-java.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-javascript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-javascript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-json.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-json.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jsoniq.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jsoniq.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jsp.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jsp.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jssm.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jssm.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jsx.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-jsx.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-julia.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-julia.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-kotlin.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-kotlin.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-latex.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-latex.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lean.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lean.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-less.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-less.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-liquid.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-liquid.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lisp.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lisp.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-live_script.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-live_script.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-livescript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-livescript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-logiql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-logiql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lsl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lsl.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lua.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lua.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-luapage.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-luapage.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lucene.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-lucene.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-makefile.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-makefile.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-markdown.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-markdown.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mask.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mask.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-matlab.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-matlab.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-maze.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-maze.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mel.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mel.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mips_assembler.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mips_assembler.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mipsassembler.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mipsassembler.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mushcode.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mushcode.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mysql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-mysql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-nix.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-nix.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-nsis.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-nsis.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-objectivec.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-objectivec.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ocaml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ocaml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-pascal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-pascal.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-perl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-perl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-pgsql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-pgsql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-php.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-php.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-pig.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-pig.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-plain_text.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-plain_text.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-powershell.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-powershell.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-praat.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-praat.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-prolog.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-prolog.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-properties.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-properties.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-protobuf.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-protobuf.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-python.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-python.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-r.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-r.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-razor.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-razor.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rdoc.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rdoc.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-red.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-red.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rhtml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rhtml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rst.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rst.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ruby.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-ruby.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rust.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-rust.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sass.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sass.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scad.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scad.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scala.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scala.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scheme.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scheme.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scss.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-scss.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sh.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sh.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sjs.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sjs.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-smarty.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-smarty.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-snippets.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-snippets.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-soy_template.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-soy_template.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-space.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-space.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sparql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sparql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sqlserver.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-sqlserver.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-stylus.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-stylus.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-svg.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-svg.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-swift.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-swift.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-swig.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-swig.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-tcl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-tcl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-tex.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-tex.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-text.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-text.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-textile.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-textile.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-toml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-toml.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-tsx.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-tsx.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-turtle.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-turtle.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-twig.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-twig.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-typescript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-typescript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-vala.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-vala.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-vbscript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-vbscript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-velocity.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-velocity.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-verilog.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-verilog.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-vhdl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-vhdl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-wollok.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-wollok.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-xml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-xml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-xquery.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-xquery.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-yaml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/mode-yaml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/abap.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/abap.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/abc.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/abc.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/actionscript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/actionscript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ada.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ada.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/apache_conf.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/apache_conf.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/applescript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/applescript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/asciidoc.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/asciidoc.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/assembly_x86.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/assembly_x86.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/autohotkey.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/autohotkey.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/batchfile.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/batchfile.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/bro.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/bro.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/c9search.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/c9search.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/c_cpp.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/c_cpp.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/cirru.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/cirru.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/clojure.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/clojure.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/cobol.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/cobol.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/coffee.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/coffee.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/coldfusion.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/coldfusion.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csharp.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csharp.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csound_document.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csound_document.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csound_orchestra.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csound_orchestra.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csound_score.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/csound_score.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/css.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/css.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/curly.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/curly.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/d.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/d.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/dart.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/dart.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/diff.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/diff.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/django.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/django.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/dockerfile.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/dockerfile.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/dot.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/dot.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/drools.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/drools.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/eiffel.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/eiffel.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ejs.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ejs.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/elixir.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/elixir.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/elm.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/elm.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/erlang.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/erlang.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/forth.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/forth.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/fortran.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/fortran.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ftl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ftl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gcode.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gcode.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gherkin.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gherkin.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gitignore.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gitignore.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/glsl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/glsl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gobstones.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/gobstones.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/golang.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/golang.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/graphqlschema.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/graphqlschema.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/groovy.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/groovy.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/handlebars.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/handlebars.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haskell.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haskell.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haskell_cabal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haskell_cabal.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haxe.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/haxe.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/hjson.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/hjson.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/html.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/html.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/html_elixir.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/html_elixir.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/html_ruby.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/html_ruby.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ini.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ini.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/io.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/io.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jack.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jack.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jade.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jade.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/java.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/java.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/javascript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/javascript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/json.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/json.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jsoniq.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jsoniq.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jsp.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jsp.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jssm.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jssm.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jsx.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/jsx.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/julia.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/julia.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/kotlin.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/kotlin.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/latex.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/latex.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lean.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lean.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/less.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/less.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/liquid.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/liquid.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lisp.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lisp.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/live_script.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/live_script.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/livescript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/livescript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/logiql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/logiql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lsl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lsl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lua.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lua.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/luapage.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/luapage.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lucene.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/lucene.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/makefile.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/makefile.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/markdown.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/markdown.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mask.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mask.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/matlab.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/matlab.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/maze.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/maze.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mel.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mel.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mips_assembler.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mips_assembler.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mipsassembler.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mipsassembler.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mushcode.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mushcode.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mysql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/mysql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/nix.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/nix.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/nsis.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/nsis.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/objectivec.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/objectivec.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ocaml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ocaml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/pascal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/pascal.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/perl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/perl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/pgsql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/pgsql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/php.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/php.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/pig.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/pig.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/plain_text.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/plain_text.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/powershell.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/powershell.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/praat.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/praat.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/prolog.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/prolog.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/properties.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/properties.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/protobuf.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/protobuf.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/python.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/python.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/r.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/r.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/razor.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/razor.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rdoc.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rdoc.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/red.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/red.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rhtml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rhtml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rst.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rst.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ruby.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/ruby.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rust.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/rust.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sass.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sass.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scad.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scad.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scala.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scala.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scheme.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scheme.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scss.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/scss.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sh.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sh.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sjs.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sjs.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/smarty.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/smarty.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/snippets.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/snippets.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/soy_template.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/soy_template.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/space.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/space.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sparql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sparql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sql.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sql.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sqlserver.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/sqlserver.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/stylus.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/stylus.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/svg.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/svg.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/swift.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/swift.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/swig.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/swig.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/tcl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/tcl.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/tex.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/tex.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/text.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/text.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/textile.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/textile.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/toml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/toml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/tsx.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/tsx.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/turtle.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/turtle.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/twig.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/twig.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/typescript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/typescript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/vala.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/vala.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/vbscript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/vbscript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/velocity.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/velocity.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/verilog.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/verilog.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/vhdl.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/vhdl.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/wollok.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/wollok.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/xml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/xml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/xquery.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/xquery.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/yaml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/snippets/yaml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-ambiance.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-ambiance.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-chaos.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-chaos.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-chrome.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-chrome.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-clouds.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-clouds.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-clouds_midnight.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-clouds_midnight.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-cobalt.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-cobalt.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-crimson_editor.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-crimson_editor.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-dawn.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-dawn.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-dracula.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-dracula.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-dreamweaver.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-dreamweaver.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-eclipse.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-eclipse.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-github.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-github.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-gob.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-gob.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-gruvbox.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-gruvbox.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-idle_fingers.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-idle_fingers.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-iplastic.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-iplastic.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-katzenmilch.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-katzenmilch.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-kr_theme.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-kr_theme.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-kuroir.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-kuroir.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-merbivore.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-merbivore.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-merbivore_soft.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-merbivore_soft.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-mono_industrial.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-mono_industrial.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-monokai.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-monokai.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-pastel_on_dark.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-pastel_on_dark.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-solarized_dark.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-solarized_dark.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-solarized_light.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-solarized_light.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-sqlserver.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-sqlserver.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-terminal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-terminal.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-textmate.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-textmate.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night_blue.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night_blue.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night_bright.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night_bright.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night_eighties.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-tomorrow_night_eighties.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-twilight.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-twilight.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-vibrant_ink.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-vibrant_ink.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-xcode.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/theme-xcode.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-coffee.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-coffee.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-css.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-css.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-html.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-html.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-javascript.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-javascript.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-json.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-json.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-lua.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-lua.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-php.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-php.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-xml.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-xml.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-xquery.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace-000/worker-xquery.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/ace.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/dmuploader.min.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/dmuploader.min.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/dropdown.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/dropdown.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.fileupload.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.fileupload.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.ui.widget.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.ui.widget.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/main.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/main.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.min.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.min.js' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/svg.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/svg.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/velocity.min.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/velocity.min.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_buttons.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_buttons.scss' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_cards.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_cards.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_chips.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_chips.scss' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_color.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_color.scss' 
-	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_color.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_color.scss' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_dropdown.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_dropdown.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_global.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_global.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_grid.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_grid.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_modal.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_modal.scss' \
@@ -1164,7 +1941,8 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_robotocondensed-woff2.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_robotocondensed-woff2.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_robotocondensed.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_robotocondensed.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_typography.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_typography.scss' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_variables.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_variables.scss' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_variables.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_variables.scss' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/main.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/main.scss' 
 	$(NOECHO) $(TOUCH) pm_to_blib
 

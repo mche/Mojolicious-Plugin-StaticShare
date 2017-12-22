@@ -1,22 +1,17 @@
 package Mojolicious::Plugin::StaticShare::Controller;
 use Mojo::Base 'Mojolicious::Controller';
+use Mojo::File qw(path);
 use HTTP::AcceptLanguage;
 use Mojo::Path;
-use Mojo::File qw(path);
 use Mojo::Util qw ( decode encode url_unescape xml_escape);# 
 use Time::Piece;# module replaces the standard localtime and gmtime functions with implementations that return objects
 use Mojo::Asset::File;
 
 has plugin => sub {   shift->stash('plugin') };
 has public_uploads => sub { shift->plugin->public_uploads };
-has admin => sub {
+has is_admin => sub {
   my $c = shift;
-  return 
-    unless my $pass = $c->plugin->admin_pass;
-  my $sess = $c->session;
-  $sess->{StaticShare}{admin} = 1
-    if $c->param('admin') && $c->param('admin') eq $pass;
-  return $sess->{StaticShare} && $sess->{StaticShare}{admin};
+  $c->plugin->is_admin($c);
 };
 
 sub get {
@@ -25,7 +20,10 @@ sub get {
   $c->_stash();
   
   return $c->not_found
-    if !$c->admin && grep {/^\./} @{$c->stash('url_path')->parts};
+    if !$c->is_admin && grep {/^\./} @{$c->stash('url_path')->parts};
+  
+  return $c->not_found
+    if $c->plugin->access && !( ref $c->plugin->access eq 'CODE' ? $c->plugin->access->($c) : $c->plugin->access );
   
   my $file_path = $c->stash('file_path');
   
@@ -43,20 +41,21 @@ sub post {
   
   my $file_path = $c->stash('file_path');
   
-  if ($c->admin && (my $dir = $c->param('dir'))) {
+  if ($c->is_admin && (my $dir = $c->param('dir'))) {
     return $c->new_dir($file_path, $dir);
-  } elsif ($c->admin && (my $rename = $c->param('rename'))) {
+  } elsif ($c->is_admin && (my $rename = $c->param('rename'))) {
     return $c->rename($file_path, $rename);
-  } elsif ($c->admin && (my $delete = $c->param('delete[]') && $c->every_param('delete[]'))) {
+  } elsif ($c->is_admin && (my $delete = $c->param('delete[]') && $c->every_param('delete[]'))) {
     return $c->delete($file_path, $delete);
-  } 
-  
+  } elsif ($c->is_admin && defined(my $edit = $c->param('edit'))) {
+    return $c->_edit($file_path, $edit);
+  }
   
   return $c->render(json=>{error=>$c->i18n('target directory not found')})
-    if !$c->admin && grep {/^\./} @{$c->stash('url_path')->parts};
+    if !$c->is_admin && grep {/^\./} @{$c->stash('url_path')->parts};
   
   return $c->render(json=>{error=>$c->i18n('you cant upload')})
-    unless $c->admin || $c->public_uploads;
+    unless $c->is_admin || $c->public_uploads;
   
   
   return $c->render(json=>{error=>$c->i18n('Cant open target directory')})
@@ -99,7 +98,7 @@ sub _stash {
   my $url_path = $c->plugin->root_url->clone->merge($pth)->trailing_slash(1);
   $c->stash('url_path' => $url_path);
   #~ $c->stash('file_path' => $c->plugin->root_dir->clone->merge($c->stash('pth')));
-  $c->stash('file_path' => path(url_unescape($c->plugin->root_dir->clone->merge($pth))));
+  $c->stash('file_path' => path(decode('UTF-8', url_unescape($c->plugin->root_dir->clone->merge($pth)))));
   $c->stash('title' => $c->i18n('Share')." ".$url_path->to_route);
 }
 
@@ -122,9 +121,9 @@ sub dir {
     next
       if $_ eq '.' || $_ eq '..';
     next
-      if !$c->admin && /^\./;
+      if !$c->is_admin && /^\./;
     
-    my $child = $path->child($_);
+    my $child = $path->child(decode('UTF-8', $_));
     
     push @$dirs, decode('UTF-8', $_)
       and next
@@ -153,12 +152,12 @@ sub dir {
     $c->_stash_markdown($file)
       and $c->stash(index=>$index)
       and last
-      if $index =~ $c->plugin->is_markdown;
+      if $index =~ $c->plugin->re_markdown;
     
     $c->_stash_pod($file)
       and $c->stash(index=>$index)
       and last
-      if $index =~ $c->plugin->is_pod;
+      if $index =~ $c->plugin->re_pod;
 
   }
   
@@ -247,13 +246,13 @@ sub file {
   my $filename = $path->basename;
   
   return $c->_edit($path)
-    if $c->admin && $c->param('edit');
+    if $c->is_admin && $c->param('edit');
   
   return $c->_markdown($path)
-    unless ($c->plugin->render_markdown || '') eq 0 || $c->param('attachment') || $filename !~ $c->plugin->is_markdown;
+    unless ($c->plugin->render_markdown || '') eq 0 || $c->param('attachment') || $filename !~ $c->plugin->re_markdown;
   
   return $c->_pod($path)
-    unless ($c->plugin->render_pod || '') eq 0 || $c->param('attachment') || $filename !~ $c->plugin->is_pod;
+    unless ($c->plugin->render_pod || '') eq 0 || $c->param('attachment') || $filename !~ $c->plugin->re_pod;
   
   $c->res->headers->content_disposition($c->param('attachment') ? "attachment; filename=$filename;" : "inline");
   my $type  =$c->plugin->mime->type(  ( $path =~ /\.([0-9a-zA-Z]+)$/)[0] || 'txt' ) || $c->plugin->mime->type('txt');#'application/octet-stream';
@@ -382,9 +381,14 @@ sub not_found {
 };
 
 sub _edit {
-  my ($c, $path) = @_;
-  $c->stash('edit'=> decode('UTF-8', $path->slurp));
-  $c->render('Mojolicious-Plugin-StaticShare/edit', format=>'html', handler=>'ep',);
+  my ($c, $path, $edit) = @_;
+  unless (defined $edit) {
+    $c->stash('edit'=> decode('UTF-8', $path->slurp));
+    return $c->render('Mojolicious-Plugin-StaticShare/edit', format=>'html', handler=>'ep',);
+  }
+  
+  $path->spurt(encode('UTF-8', $edit));
+  $c->render(json=>{ok=>$path->to_string});
 }
 
 1;

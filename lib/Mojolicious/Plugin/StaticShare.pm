@@ -3,14 +3,15 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::File qw(path);
 use Mojolicious::Types;
 use Mojo::Path;
-use Mojo::Util qw(encode);
+use Mojo::Util qw(decode);
 
 my $PKG = __PACKAGE__;
 
 has [qw(app config)];
-has root_url => sub { Mojo::Path->new(encode('UTF-8', shift->config->{root_url}))->leading_slash(1)->trailing_slash(1) };
+has root_url => sub { Mojo::Path->new(shift->config->{root_url})->leading_slash(1)->trailing_slash(1) };
 has root_dir => sub { Mojo::Path->new(shift->config->{root_dir} // '.')->trailing_slash(1) };
 has admin_pass => sub { shift->config->{admin_pass} };
+has access => sub { shift->config->{access} };
 has public_uploads => sub { !! shift->config->{public_uploads} };
 has render_dir =>  sub { shift->config->{render_dir} };
 has dir_index => sub { shift->config->{dir_index} // [qw(README.md INDEX.md README.pod INDEX.pod)] };
@@ -21,8 +22,8 @@ has templates_dir => sub { shift->config->{templates_dir} };
 has markdown => sub {# parser object
    __internal__::Markdown->new(shift->markdown_pkg);
 };
-has is_markdown => sub { qr{[.]m(?:d(?:own)?|kdn?|arkdown)$}i };
-has is_pod => sub { qr{[.]p(?:od|m|l)$} };
+has re_markdown => sub { qr{[.]m(?:d(?:own)?|kdn?|arkdown)$}i };
+has re_pod => sub { qr{[.]p(?:od|m|l)$} };
 has mime => sub { Mojolicious::Types->new };
 
 sub register {# none magic
@@ -47,14 +48,18 @@ sub register {# none magic
   $r->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self);#->name("$PKG ROOT POST");
   $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self );#->name("$PKG GET");
   $r->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self );#->name("$PKG POST");
+  
+  path($self->config->{root_dir})->make_path
+    unless !$self->config->{root_dir} || -e $self->config->{root_dir};
 
   $app->helper(i18n => \&i18n);
+  #~ $app->helper(StaticShareIsAdmin => sub { $self->is_admin(@_) });
   
   #POD
   $self->app->plugin(PODRenderer => {no_perldoc => 1})
     unless $self->app->renderer->helpers->{'pod_to_html'} && ($self->render_pod // '') eq 0 ;
   
-  return $app;
+  return ($app, $self);
 }
 
 my %loc = (
@@ -85,6 +90,7 @@ my %loc = (
      'Confirm to delete these dirs'=>"Подтвердите удаление этих папок", 
     'I AM SURE'=>"ДА",
     'Save'=> 'Сохранить',
+    'Success saved' => "Успешно сохранено",
   },
 );
 sub i18n {# helper
@@ -103,6 +109,18 @@ sub i18n {# helper
     if $loc;
   return $str;
 }
+
+sub is_admin {# as helper
+  my ($self, $c) = @_;
+  return 
+    unless my $pass = $self->admin_pass;
+  my $sess = $c->session;
+  $sess->{StaticShare}{admin} = 1
+    if $c->param('admin') && $c->param('admin') eq $pass;
+  return $sess->{StaticShare} && $sess->{StaticShare}{admin};
+}
+
+
 
 ##############################################
 package __internal__::Markdown;
