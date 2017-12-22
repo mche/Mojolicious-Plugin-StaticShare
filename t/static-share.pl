@@ -24,7 +24,7 @@ my @shares = map {decode('UTF-8', $_)} grep {!/^\s*#/} split /\n+/, $shares->slu
 my $nav = sub {# навигация админа
   my $c   = shift;
   my @items = (
-    ['админ папка'=>$CONF{'админка адрес'}],
+    ['в /админ/'=>$CONF{'админка адрес'}],
     ['в /файловый корень/'=>"/абсолютный корень"],
     map(["в /$_/" =>"/$_" ], @shares),
     ['редактировать конфиг'=>"$CONF{'админка адрес'}/$CONF{'файл топиков'}?edit=1"],
@@ -68,17 +68,6 @@ app->plugin("StaticShare", root_dir=>"$CONF{'админка папка'}/$_", ro
 # этот маршрут последним!
 app->plugin("StaticShare", root_dir=>"$CONF{'админка папка'}/$CONF{'корень папка'}", root_url=>"/", admin_pass=>$CONF{'админка пароль'}, admin_nav=>$nav, public_uploads=>1,);
 
-#~ app->hook(before_render => sub {
-  #~ my ($c, $args) = @_;
-  #~ unless ($c->stash('plugin')) {
-    #~ $c->stash('pth'=>'/foo/bar.txt');
-    #~ $c->stash('plugin'=>$plugin);
-    #~ $c->attr(plugin=>sub{ $plugin });
-    #~ $c->attr(is_admin=>sub{ $plugin->is_admin($c) });
-  #~ }
-  #~ say STDERR $plugin, $c->stash('url_path') || '';
-#~ });
-
 $ENV{MOJO_MAX_MESSAGE_SIZE}=0;
 app->config($CONF{mojo})
   ->secrets(['21--332++34'])
@@ -91,7 +80,7 @@ __DATA__
   <a class="dropdown-button white-text" data-activates="admin-nav" href="javascript:" style="">админ</a>
   <ul id="admin-nav" class="dropdown-content">
   % for (@$items) {
-    <li><a href="<%= $_->[1] %>" class="green-forest-text"><%= $_->[0] %></a></li>
+    <li><a href="<%= $_->[1] %>" class="nowrap green-forest-text"><%= $_->[0] %></a></li>
   % }
   </ul>
 </nav>
