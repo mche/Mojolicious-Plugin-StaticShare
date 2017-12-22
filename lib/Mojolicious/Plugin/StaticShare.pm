@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::File qw(path);
 use Mojolicious::Types;
 use Mojo::Path;
-use Mojo::Util qw(decode);
+#~ use Mojo::Util qw(decode);
 
 my $PKG = __PACKAGE__;
 

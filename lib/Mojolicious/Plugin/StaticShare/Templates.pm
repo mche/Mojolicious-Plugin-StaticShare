@@ -45,6 +45,9 @@ Template for render 404.
 
 Template for render 500.
 
+=head2 Mojolicious-Plugin-StaticShare/edit.html.ep
+
+File content editor (with ace.js)
 
 =cut
 1;

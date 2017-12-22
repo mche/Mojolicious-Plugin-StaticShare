@@ -679,10 +679,7 @@ TO_INST_PM = README.pod \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.fileupload.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.ui.widget.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/main.js \
-	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.js \
-	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.min.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js \
-	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/svg.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/js/velocity.min.js \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_buttons.scss \
 	lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_cards.scss \
@@ -1923,13 +1920,10 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.fileupload.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.fileupload.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.ui.widget.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/jquery.ui.widget.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/main.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/main.js' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.js' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.min.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/materialize.min.js' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js' 
-	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/svg.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/svg.js' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/modal.js' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/js/velocity.min.js' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/js/velocity.min.js' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_buttons.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_buttons.scss' \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_buttons.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_buttons.scss' 
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_cards.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_cards.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_chips.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_chips.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_color.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_color.scss' \
@@ -1941,8 +1935,7 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_robotocondensed-woff2.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_robotocondensed-woff2.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_robotocondensed.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_robotocondensed.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_typography.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_typography.scss' \
-	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_variables.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_variables.scss' 
-	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_variables.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/components/_variables.scss' \
 	  'lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/main.scss' 'blib/lib/Mojolicious/Plugin/StaticShare/static/static-share/sass/main.scss' 
 	$(NOECHO) $(TOUCH) pm_to_blib
 

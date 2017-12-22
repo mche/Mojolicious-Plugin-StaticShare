@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= stash('title') || i18n 'Share' %></title>
+</head>
+<body class="">
+<div class="container clearfix">
+<h1>Заголовок из шаблона [осн1.html.ep]</h1>
+%= content
+</div>
+</body>
+</html>
