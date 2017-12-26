@@ -5,7 +5,7 @@ use HTTP::AcceptLanguage;
 use Mojo::Path;
 use Mojo::Util qw ( decode encode url_unescape xml_escape);# 
 use Time::Piece;# module replaces the standard localtime and gmtime functions with implementations that return objects
-use Mojo::Asset::File;
+#~ use Mojo::Asset::File;
 
 has plugin => sub {   shift->stash('plugin') };
 has public_uploads => sub { shift->plugin->public_uploads };
@@ -243,10 +243,10 @@ sub file {
     || $c->reply->exception($ex)
     unless -r $path;
   
-  my $filename = $path->basename;
-  
   return $c->_edit($path)
     if $c->is_admin && $c->param('edit');
+  
+  my $filename = $path->basename;
   
   return $c->_markdown($path)
     unless ($c->plugin->render_markdown || '') eq 0 || $c->param('attachment') || $filename !~ $c->plugin->re_markdown;
@@ -254,11 +254,26 @@ sub file {
   return $c->_pod($path)
     unless ($c->plugin->render_pod || '') eq 0 || $c->param('attachment') || $filename !~ $c->plugin->re_pod;
   
+  my $asset = $c->_html($path)
+    unless $c->param('attachment') || $filename !~ $c->plugin->re_html;
+  
   $c->res->headers->content_disposition($c->param('attachment') ? "attachment; filename=$filename;" : "inline");
   my $type  =$c->plugin->mime->type(  ( $path =~ /\.([0-9a-zA-Z]+)$/)[0] || 'txt' ) || $c->plugin->mime->type('txt');#'application/octet-stream';
   $c->res->headers->content_type($type);
-  $c->reply->asset(Mojo::Asset::File->new(path => $path));
+  $c->reply->asset($asset || Mojo::Asset::File->new(path => $path));
+}
+
+sub _html {# disable scripts inside html
+  my ($c, $path) = @_;
+  my $file = Mojo::Asset::File->new(path => $path);
+  my $content = $file->slurp;
+  my $dom = Mojo::DOM->new($content);
+  $dom->find('script')->each(\&_sanitize_script)->size
+    or return $file;
   
+  my $asset = Mojo::Asset::Memory->new;
+  $asset->add_chunk($dom)->mtime($file->mtime);
+  return $asset;
 }
 
 sub _markdown {# file

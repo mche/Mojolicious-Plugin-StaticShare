@@ -146,7 +146,7 @@ pre {
 %# <%= i18n 'Down' %>
   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#down-right-round" /></svg>
   <span class=""><%= i18n 'Dirs' %></span>
-  <sup class="circle lime lighten-5" style="padding:0.3rem;"><%= scalar @$dirs %></sup>
+  <sup class="chip lime lighten-5" style="padding:0.3rem;"><%= scalar @$dirs %></sup>
 </h2>
 
 <div class="progress progress-dir white" style="margin:0; padding:0;">
@@ -227,7 +227,7 @@ pre {
 
 <h2 class="light-blue-text text-darken-2 center">
   <%= i18n 'Files'%>
-  <sup class="circle light-blue lighten-5" style="padding:0.3rem;"><%= scalar @$files %></sup>
+  <sup class="chip light-blue lighten-5" style="padding:0.3rem;"><%= scalar @$files %></sup>
 </h2>
 
 <div class="progress progress-file white" style="margin:0; padding:0;">
@@ -383,8 +383,8 @@ pre {
 <!-- Modal Structure -->
 <div id="confirm-modal" class="modal bottom-sheet modal-fixed-footer">
   <div class="modal-header hide">
-    <h2 class="red-text del-files"><span><%= i18n 'Confirm to delete these files' %></span><sup class="circle red lighten-4" style="padding:0.3rem;"></sup></h2>
-    <h2 class="red-text del-dirs"><span><%= i18n 'Confirm to delete these dirs' %></span><sup class="circle red lighten-4" style="padding:0.3rem;"></sup></h2>
+    <h2 class="red-text del-files"><span><%= i18n 'Confirm to delete these files' %></span><sup class="chip red lighten-5" style="padding:0.3rem;"></sup></h2>
+    <h2 class="red-text del-dirs"><span><%= i18n 'Confirm to delete these dirs' %></span><sup class="chip red lighten-5" style="padding:0.3rem;"></sup></h2>
     <h2 class="red-text foo">Foo header</h2>
   </div>
   <div class="modal-content"></div>

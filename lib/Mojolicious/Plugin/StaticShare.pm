@@ -24,6 +24,7 @@ has markdown => sub {# parser object
 };
 has re_markdown => sub { qr{[.]m(?:d(?:own)?|kdn?|arkdown)$}i };
 has re_pod => sub { qr{[.]p(?:od|m|l)$} };
+has re_html => sub { qr{[.]html?$} };
 has mime => sub { Mojolicious::Types->new };
 
 sub register {# none magic
@@ -141,7 +142,7 @@ sub new {
 
 sub parse { my $self = shift; no strict 'refs'; ($self->{pkg}.'::markdown')->(@_); }
 
-our $VERSION = '0.059';
+our $VERSION = '0.060';
 =pod
 
 =encoding utf8
@@ -154,11 +155,11 @@ our $VERSION = '0.059';
 
 =head1 NAME
 
-Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete static files and dirs.
+Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete, edit, rename static files and dirs.
 
 =head1 VERSION
 
-0.059
+0.060
 
 =head1 SYNOPSIS
 
