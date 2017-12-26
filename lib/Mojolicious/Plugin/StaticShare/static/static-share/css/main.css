@@ -4623,15 +4623,6 @@ blockquote {
   padding-left: 1.5rem;
   border-left: 5px solid #ee6e73; }
 
-svg.icon {
-  vertical-align: middle; }
-  svg.icon.icon15 {
-    width: 1.5rem;
-    height: 1.5rem; }
-  svg.icon.icon12 {
-    width: 1.2rem;
-    height: 1.2rem; }
-
 i {
   line-height: inherit; }
   i.left {
@@ -6553,14 +6544,21 @@ small {
   white-space: nowrap; }
 
 .btn-panel {
-  position: fixed;
-  z-index: 1;
+  /*position: absolute;
+  z-index:1;*/
   border: 1px solid #dadada; }
 
 .index-file {
-  border: 1px solid lightgray;
   padding: 0 1rem;
   margin-bottom: 1rem; }
+
+.scroll-75vh {
+  max-height: 75vh;
+  overflow-y: auto; }
+
+.scroll-50vh {
+  max-height: 50vh;
+  overflow-y: auto; }
 
 #footer {
   text-align: right;
@@ -6580,5 +6578,17 @@ a.btn-flat svg + span {
   margin: auto;
   height: calc(70vh);
   width: 100%; }
+
+svg.icon {
+  vertical-align: middle; }
+  svg.icon.icon15 {
+    width: 1.5rem;
+    height: 1.5rem; }
+  svg.icon.icon12 {
+    width: 1.5rem;
+    height: 1.5rem; }
+
+input {
+  vertical-align: middle; }
 
 /*# sourceMappingURL=main.css.map */

@@ -127,13 +127,13 @@ pre {
 
 <div class="row show-on-ready" style="display:none;"><%#= @$dirs || @$files ? '' : 'style="min-height: calc(80vh);" ' %>
 % if (@$dirs || $c->is_admin) {
-<div class="dirs-col col s6">
+<div class="dirs-col col s6" style="">
 
 % if ($c->is_admin) {
-<div class="chip card lime lighten-5 btn-panel" style="left:0;">
-  <a href="javascript:" class="block btn-flat hide renames" style="padding:0 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 black-fill"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#rename" /></svg></a>
-  <a href="javascript:" class="block btn-flat hide del-dirs" style="padding:0 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 red-fill fill-lighten-1" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#dir-delete" /></svg></a>
-  <a id="add-dir" href="javascript:" class="block btn-flat" style="padding:0 0.5rem;">
+<div class="chip right card000 lime lighten-5 btn-panel" style="">
+  <a href="javascript:" class="block000 btn-flat hide renames" style="padding:0 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 black-fill"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#rename" /></svg></a>
+  <a href="javascript:" class="block000 btn-flat hide del-dirs" style="padding:0 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 red-fill fill-lighten-1" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#dir-delete" /></svg></a>
+  <a id="add-dir" href="javascript:" class="block000 btn-flat" style="padding:0 0.5rem;">
     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#add-dir" /></svg>
     <!--span class="lime-text text-darken-4"><%= i18n 'Add dir' %></span-->
   </a>
@@ -141,7 +141,7 @@ pre {
 
 % }
 
-<h2 class="lime-text text-darken-4 center">
+<h2 class="lime-text text-darken-4 center000">
 %#  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4"  viewBox="0 0 30 30"><use xlink:href="/static-share/fonts/icons.svg#folder" /></svg>
 %# <%= i18n 'Down' %>
   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 lime-fill fill-darken-4" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#down-right-round" /></svg>
@@ -153,13 +153,13 @@ pre {
     <div class="determinate lime" style="width: 0%"></div>
 </div>
 
-<table class="dirs card" style="border: 1px solid #e0e0e0;">
+<div class="<%= stash('index') ? 'scroll-50vh' : 'scroll-75vh' %> card"><table class="dirs" style="">
   <thead class="hide">
     <tr class="new-dir lime darken-4" style="border-bottom: 1px solid #e0e0e0;"><!-- template new folder -->
       <td style="width:1%;">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon12 lime-fill fill-lighten-5" style="margin:0 0.5rem;" viewBox="0 0 50 50"><use xlink:href="/static-share/fonts/icons.svg#add-dir" /></svg>
       </td>
-      <td style=";">
+      <td style="">
         <div class="input-field">
           <input type="text" name="dir-name" class="" style="width:100%;" placeholder="<%= i18n 'new dir name'%>" >
         </div>
@@ -203,19 +203,19 @@ pre {
     </tr>
   % }
   </tbody>
-</table>
+</table></div>
 
 </div>
 % }
 
 % if (@$files || $c->is_admin || $c->public_uploads) {
-<div class="files-col col s6">
+<div class="files-col col s6" style="">
 
 % if ($c->is_admin || $c->public_uploads) {
-<div class="chip card light-blue lighten-5 btn-panel" style="right:0;">
-  <a href="javascript:" class="block btn-flat hide renames" style="padding:0 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 black-fill"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#rename" /></svg></a>
-  <a href="javascript:" class="block btn-flat hide del-files" style="padding:0 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 red-fill fill-lighten-1"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#file-delete" /></svg></a>
-  <label for="fileupload" class="block btn-flat" style="padding:0 0.5rem;">
+<div class="chip right card000 light-blue lighten-5 btn-panel" style="">
+  <a href="javascript:" class="block000 btn-flat hide renames" style="padding:0 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 black-fill"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#rename" /></svg></a>
+  <a href="javascript:" class="block000 btn-flat hide del-files" style="padding:0 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 red-fill fill-lighten-1"  viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#file-delete" /></svg></a>
+  <label for="fileupload" class="block000 btn-flat" style="padding:0 0.5rem;">
     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon15 light-blue-fill fill-darken-1" viewBox="0 0 26 26"><use xlink:href="/static-share/fonts/icons.svg#add-item" /></svg>
     <!--span class="blue-text"><%= i18n 'Add uploads'%></span-->
   </label>
@@ -225,7 +225,7 @@ pre {
 
 % }
 
-<h2 class="light-blue-text text-darken-2 center">
+<h2 class="light-blue-text text-darken-2 center000">
   <%= i18n 'Files'%>
   <sup class="chip light-blue lighten-5" style="padding:0.3rem;"><%= scalar @$files %></sup>
 </h2>
@@ -234,7 +234,7 @@ pre {
     <div class="determinate blue" style="width: 0%"></div>
 </div>
 
-<table class="striped files light-blue lighten-5 card" style="border: 1px solid #e0e0e0;">
+<div class="<%= stash('index') ? 'scroll-50vh' : 'scroll-75vh' %> card"><table class="striped files light-blue lighten-5" style="">
 %#<thead>
 %#  <tr>
 %#    <th class="name"><%= i18n 'Name'%></th>
@@ -295,7 +295,7 @@ pre {
   </tr>
   % }
 </tbody>
-</table>
+</table></div>
 
 </div><!-- col files -->
 % }
@@ -305,7 +305,7 @@ pre {
   <h4 class="right-align grey-text" title="<%= i18n 'below to the end' %>"><%= stash 'index' %></h4>
 % }
 % if (stash('markdown') || stash('pod')) {
-  <div class="index-file show-on-ready" style="display:none;"><%== stash('markdown') || stash('pod') || '' %></div>
+  <div class="card index-file show-on-ready" style="display:none;"><%== stash('markdown') || stash('pod') || '' %></div>
 % }
 
 %= include 'Mojolicious-Plugin-StaticShare/confirm-modal';
