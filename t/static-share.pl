@@ -7,12 +7,12 @@ use Mojo::Util qw(decode);
 my %CONF = (
   'файл топиков'=> 'static-share.dirs.txt', # в 'админка папка'
   'админка адрес'=>'/админ',
-  'админка папка'=>'t',#/mnt/sda/
-  'админка пароль'=>123,# 111-333+159
+  'админка папка'=>'/mnt/sda',
+  'админка пароль'=>'111-333-159',
   'шаблоны папка'=>'шаблоны',# в 'админка папка' '/mnt/sda/шаблоны'
   'корень папка'=>'корень',
   mojo=>{
-    hypnotoad => {listen => ["http://*:3003"], pid_file => "t/static-share-hypnotoad.pid", workers000 => 1,},
+    hypnotoad => {listen => ["http://*:80"], pid_file => "/home/guest/hypnotoad.pid", workers000 => 1,},
   },
 
 );
@@ -24,17 +24,18 @@ my @shares = map {decode('UTF-8', $_)} grep {!/^\s*#/} split /\n+/, $shares->slu
 my $nav = sub {# навигация админа
   my $c   = shift;
   my @items = (
-    ['в /админ/'=>$CONF{'админка адрес'}],
-    ['в /файловый корень/'=>"/абсолютный корень"],
+    ['в /админ корень/'=>$CONF{'админка адрес'}],
+    ['в /абсолютный корень/'=>"/абсолютный корень"],
     map(["в /$_/" =>"/$_" ], @shares),
     ['редактировать конфиг'=>"$CONF{'админка адрес'}/$CONF{'файл топиков'}?edit=1"],
-    ['перезапустить конфиг'=>'/restart'],
+    ['перезапустить сервис'=>'/restart'],
     ['выключить комп'=>'/выключить'],
   );
   return $c->render_to_string('admin-nav', format=>'html', handler=>'ep', items=>\@items, );
 };
 
 app->plugin("StaticShare", root_dir=>'/', root_url=>'/абсолютный корень', admin_pass=>$CONF{'админка пароль'}, admin_nav=>$nav,);
+
 my ($app, $adm_plugin) = app->plugin("StaticShare", root_dir=>$CONF{'админка папка'}, root_url=>$CONF{'админка адрес'}, admin_pass=>$CONF{'админка пароль'}, admin_nav=>$nav,);
 push @{app->renderer->paths}, "$CONF{'админка папка'}/$CONF{'шаблоны папка'}";
 
@@ -70,18 +71,17 @@ app->plugin("StaticShare", root_dir=>"$CONF{'админка папка'}/$CONF{'
 
 $ENV{MOJO_MAX_MESSAGE_SIZE}=0;
 app->config($CONF{mojo})
-  ->secrets(['21--332++34'])
-  ->start;
+   ->secrets(['213--32+34'])
+   ->start;
 
 __DATA__
 
 @@ admin-nav.html.ep
-<nav class="right000 chip green-forest" style="position:absolute; right:0.5rem;">
-  <a class="dropdown-button white-text" data-activates="admin-nav" href="javascript:" style="">админ</a>
+<nav class="right000 chip card000 green-forest lighten-3" style="position:absolute; right:0.5rem;">
+  <a class="dropdown-button btn-flat white-text" style="padding: 0 0.5rem;" data-activates="admin-nav" href="javascript:" style="">админ</a>
   <ul id="admin-nav" class="dropdown-content">
   % for (@$items) {
-    <li><a href="<%= $_->[1] %>" class="nowrap green-forest-text"><%= $_->[0] %></a></li>
+    <li><a href="<%= $_->[1] %>" class="nowrap green-forest-text text-lighten-2"><%= $_->[0] %></a></li>
   % }
   </ul>
 </nav>
-
