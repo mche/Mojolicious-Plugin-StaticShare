@@ -38,7 +38,7 @@ my @nav = (
 my $nav = sub {# навигация админа
   my $c   = shift;
   $pid //= eval {path($CONF->{mojo}{hypnotoad}{pid_file})->slurp} || 0;
-  splice(@nav,-2,1,["перезапустить сервис (pid=$pid)"=>'/restart'])
+  splice(@nav,-2,0,["перезапустить сервис (pid=$pid)"=>'/restart'])
     if $pid;
   return $c->render_to_string('admin-nav', format=>'html', handler=>'ep', items=>\@nav, );
 };
