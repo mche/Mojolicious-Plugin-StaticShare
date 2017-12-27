@@ -22,14 +22,16 @@ my @shares = map {decode('UTF-8', $_)} grep {!/^\s*#/} split /\n+/, $shares->slu
 push @{app->renderer->paths}, "$CONF->{'админка папка'}/$CONF->{'шаблоны папка'}"
   if $CONF->{'шаблоны папка'};
 
+#~ my $pid = $$;
 my $nav = sub {# навигация админа
   my $c   = shift;
   my @items = (
     ['в /админ корень/'=>$CONF->{'админка адрес'}],
     ['в /абсолютный корень/'=>"/абсолютный корень"],
     map(["в /$_/" =>"/$_" ], @shares),
-    ['редактировать конфиг'=>"$CONF->{'админка адрес'}/$CONF->{'файл топиков'}?edit=1"],
-    ['перезапустить сервис'=>'/restart'],
+    ['редактировать ветки-топики'=>"$CONF->{'админка адрес'}/$CONF->{'файл топиков'}?edit=1"],
+    ['редактировать конфиг сервиса'=>"/абсолютный корень/home/guest/static-share.conf.pl?edit=1"],
+    ["перезапустить сервис (pid=$CONF->{mojo}{hypnotoad}{pid_file})"=>'/restart'],
     ['выключить комп'=>'/выключить'],
     ['выход из админа'=> '/logout'],
   );
@@ -57,11 +59,12 @@ get '/выключить' => sub {
   $c->render(text => "Комп выключается...", format=>'txt',);
 };
 
-my $pid = $$;
+
 get '/restart' => sub {
   my $c   = shift;
   return $c->reply->not_found
     unless $adm_plugin->is_admin($c);
+  my $pid = path($CONF->{mojo}{hypnotoad}{pid_file})->slurp;
   my $k = kill 'USR2', $pid;
   #~ $c->render(text => "Процесс [$pid] перезапускается...", format=>'txt',);
   $c->redirect_to($CONF->{'админка адрес'});
