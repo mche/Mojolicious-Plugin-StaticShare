@@ -39,7 +39,7 @@ my $nav = sub {# навигация админа
   my $c   = shift;
   $pid //= eval {path($CONF->{mojo}{hypnotoad}{pid_file})->slurp} || 0;
   splice(@nav,-2,0,["перезапустить сервис (pid=$pid)"=>'/restart'])
-    if $pid;
+    if $pid && $nav[-3][-1] ne '/restart';
   return $c->render_to_string('admin-nav', format=>'html', handler=>'ep', items=>\@nav, );
 };
 
@@ -98,7 +98,10 @@ __DATA__
 
 @@ admin-nav.html.ep
 <nav class="chip card green-forest lighten-3" style="position:absolute; right:0.5rem;">
-  <a class="dropdown-button btn-flat white-text" style="padding: 0 0.5rem;" data-activates="admin-nav" href="javascript:" style="">админ</a>
+  <a class="dropdown-button btn-flat white-text" style="padding: 0 0.5rem;" data-activates="admin-nav" href="javascript:" style="">
+    <svg xmlns="http://www.w3.org/2000/svg" class="white-fill" style="height:1.5rem;" viewBox="0 0 30 30"><use xlink:href="/static-share/fonts/icons.svg#menu" /></svg>
+    <span>админ</span>
+  </a>
   <ul id="admin-nav" class="dropdown-content">
   % for (@$items) {
     <li><a href="<%= $_->[1] %>" class="nowrap green-forest-text text-lighten-2"><%= $_->[0] %></a></li>
