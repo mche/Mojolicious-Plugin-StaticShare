@@ -3,48 +3,51 @@ use Mojo::File qw(path);
 use Mojo::Path;
 use Mojo::Util qw(decode);
 
-
-my %CONF = (
-  'файл топиков'=> 'static-share.dirs.txt', # в 'админка папка'
-  'админка адрес'=>'/админ',
-  'админка папка'=>'/mnt/sda',
-  'админка пароль'=>'111-333-159',
-  'шаблоны папка'=>'шаблоны',# в 'админка папка' '/mnt/sda/шаблоны'
-  'корень папка'=>'корень',
-  mojo=>{
-    hypnotoad => {listen => ["http://*:80"], pid_file => "/home/guest/hypnotoad.pid", workers000 => 1,},
-  },
-
-);
-system('touch', "$CONF{'админка папка'}/$CONF{'файл топиков'}");
-#~ my $shares = path(__FILE__)->sibling("$CONF{'админка папка'}/$CONF{'файл топиков'}");
-my $shares = path("$CONF{'админка папка'}/$CONF{'файл топиков'}");
+#~ my $CONF = do './static-share.conf.pl';
+my $CONF = do './t/static-share.my.pl';
+  #~ 'файл топиков'=> 'static-share.dirs.txt', # в 'админка папка'
+  #~ 'админка адрес'=>'/админ',
+  #~ 'админка папка'=>'/mnt/sda',
+  #~ 'админка пароль'=>'**********',
+  #~ 'шаблоны папка'=>'шаблоны',# в 'админка папка' '/mnt/sda/шаблоны'
+  #~ 'корень папка'=>'корень',
+  #~ mojo=>{
+    #~ hypnotoad => {listen => ["http://*:80"], pid_file => "/home/guest/hypnotoad.pid", workers000 => 1,},
+    #~ secrets=>['*************']
+  #~ },
+system('touch', "$CONF->{'админка папка'}/$CONF->{'файл топиков'}");
+#~ my $shares = path(__FILE__)->sibling("$CONF->{'админка папка'}/$CONF->{'файл топиков'}");
+my $shares = path("$CONF->{'админка папка'}/$CONF->{'файл топиков'}");
 my @shares = map {decode('UTF-8', $_)} grep {!/^\s*#/} split /\n+/, $shares->slurp();
+push @{app->renderer->paths}, "$CONF->{'админка папка'}/$CONF->{'шаблоны папка'}"
+  if $CONF->{'шаблоны папка'};
 
 my $nav = sub {# навигация админа
   my $c   = shift;
   my @items = (
-    ['в /админ корень/'=>$CONF{'админка адрес'}],
+    ['в /админ корень/'=>$CONF->{'админка адрес'}],
     ['в /абсолютный корень/'=>"/абсолютный корень"],
     map(["в /$_/" =>"/$_" ], @shares),
-    ['редактировать конфиг'=>"$CONF{'админка адрес'}/$CONF{'файл топиков'}?edit=1"],
+    ['редактировать конфиг'=>"$CONF->{'админка адрес'}/$CONF->{'файл топиков'}?edit=1"],
     ['перезапустить сервис'=>'/restart'],
     ['выключить комп'=>'/выключить'],
+    ['выход из админа'=> '/logout'],
   );
   return $c->render_to_string('admin-nav', format=>'html', handler=>'ep', items=>\@items, );
 };
 
-app->plugin("StaticShare", root_dir=>'/', root_url=>'/абсолютный корень', admin_pass=>$CONF{'админка пароль'}, admin_nav=>$nav,);
-
-my ($app, $adm_plugin) = app->plugin("StaticShare", root_dir=>$CONF{'админка папка'}, root_url=>$CONF{'админка адрес'}, admin_pass=>$CONF{'админка пароль'}, admin_nav=>$nav,);
-push @{app->renderer->paths}, "$CONF{'админка папка'}/$CONF{'шаблоны папка'}";
-
-
-$adm_plugin->access(sub {
+my $admin_access = sub {
   my ($c,) = @_;
-  return $adm_plugin->is_admin($c);
+  return 1
+    if $c->plugin->is_admin($c);
   
-});
+  return {template=>"static-share/login"};
+};
+
+# правильный порядок маршрутов!
+app->plugin("StaticShare", root_dir=>'/', root_url=>'/абсолютный корень', admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, access=>$admin_access,);
+my (undef, $adm_plugin) = app->plugin("StaticShare", root_dir=>$CONF->{'админка папка'}, root_url=>$CONF->{'админка адрес'}, admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, access=>$admin_access,);
+
 
 get '/выключить' => sub {
   my $c   = shift;
@@ -61,17 +64,24 @@ get '/restart' => sub {
     unless $adm_plugin->is_admin($c);
   my $k = kill 'USR2', $pid;
   #~ $c->render(text => "Процесс [$pid] перезапускается...", format=>'txt',);
-  $c->redirect_to($CONF{'админка адрес'});
+  $c->redirect_to($CONF->{'админка адрес'});
 };
 
-app->plugin("StaticShare", root_dir=>"$CONF{'админка папка'}/$_", root_url=>"/$_", admin_pass=>$CONF{'админка пароль'}, admin_nav=>$nav,  public_uploads=>1,)
+get '/logout' => sub {
+  my $c   = shift;
+  # Delete whole session by setting an expiration date in the past
+  $c->session(expires => 1);
+  $c->redirect_to('/');
+};
+
+app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$_", root_url=>"/$_", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav,  public_uploads=>1,)
   for @shares;
 # этот маршрут последним!
-app->plugin("StaticShare", root_dir=>"$CONF{'админка папка'}/$CONF{'корень папка'}", root_url=>"/", admin_pass=>$CONF{'админка пароль'}, admin_nav=>$nav, public_uploads=>1,);
+app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$CONF->{'корень папка'}", root_url=>"/", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, public_uploads=>1,);
 
 $ENV{MOJO_MAX_MESSAGE_SIZE}=0;
-app->config($CONF{mojo})
-   ->secrets(['213--32+34'])
+app->config($CONF->{mojo})
+   ->secrets($CONF->{mojo}{secrets})
    ->start;
 
 __DATA__
@@ -85,3 +95,12 @@ __DATA__
   % }
   </ul>
 </nav>
+
+@@ static-share/login.html.ep
+% layout 'Mojolicious-Plugin-StaticShare/main';
+<h2 class="">Администратор</h2>
+<form method="get">
+  <input type="text" name="admin">
+  <input type="submit" value="Вход">
+</form>
+
