@@ -23,19 +23,23 @@ push @{app->renderer->paths}, "$CONF->{'админка папка'}/$CONF->{'ш�
   if $CONF->{'шаблоны папка'};
 
 #~ my $pid = $$;
-my $pid = eval {path($CONF->{mojo}{hypnotoad}{pid_file})->slurp} || warn;
+my $pid;# = eval {path($CONF->{mojo}{hypnotoad}{pid_file})->slurp} || warn;
 my @nav = (
-  ['в /админ корень/'=>$CONF->{'админка адрес'}],
-  ['в /абсолютный корень/'=>"/абсолютный корень"],
-  map(["в /$_/" =>"/$_" ], @shares),
+  ['/админ корень/'=>$CONF->{'админка адрес'}],
+  ['/абсолютный корень/'=>"/абсолютный корень"],
+  map(["топик /$_/" =>"/$_" ], @shares),
   ['редактировать ветки-топики'=>"$CONF->{'админка адрес'}/$CONF->{'файл топиков'}?edit=1"],
   ['редактировать конфиг сервиса'=>"/абсолютный корень/home/guest/static-share.conf.pl?edit=1"],
-  $pid ? ["перезапустить сервис (pid=$pid)"=>'/restart'] : (),
+  ['редактировать скрипт сервиса'=>"/абсолютный корень/home/guest/static-share.pl?edit=1"],
+  #~ $pid ? ["перезапустить сервис (pid=$pid)"=>'/restart'] : (),
   ['выключить комп'=>'/выключить'],
   ['выход из админа'=> '/logout'],
 );
 my $nav = sub {# навигация админа
   my $c   = shift;
+  $pid //= eval {path($CONF->{mojo}{hypnotoad}{pid_file})->slurp} || 0;
+  splice(@nav,-2,1,["перезапустить сервис (pid=$pid)"=>'/restart'])
+    if $pid;
   return $c->render_to_string('admin-nav', format=>'html', handler=>'ep', items=>\@nav, );
 };
 
@@ -88,10 +92,12 @@ app->config($CONF->{mojo})
    ->secrets($CONF->{mojo}{secrets})
    ->start;
 
+
+
 __DATA__
 
 @@ admin-nav.html.ep
-<nav class="right000 chip card000 green-forest lighten-3" style="position:absolute; right:0.5rem;">
+<nav class="chip card green-forest lighten-3" style="position:absolute; right:0.5rem;">
   <a class="dropdown-button btn-flat white-text" style="padding: 0 0.5rem;" data-activates="admin-nav" href="javascript:" style="">админ</a>
   <ul id="admin-nav" class="dropdown-content">
   % for (@$items) {
