@@ -62,11 +62,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = Mojolicious::Plugin::StaticShare
 NAME_SYM = Mojolicious_Plugin_StaticShare
-VERSION = 0.060
+VERSION = 0.061
 VERSION_MACRO = VERSION
-VERSION_SYM = 0_060
+VERSION_SYM = 0_061
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 0.060
+XS_VERSION = 0.061
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -764,7 +764,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = Mojolicious-Plugin-StaticShare
-DISTVNAME = Mojolicious-Plugin-StaticShare-0.060
+DISTVNAME = Mojolicious-Plugin-StaticShare-0.061
 
 
 # --- MakeMaker macro section:
@@ -1019,7 +1019,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  perl: '\''5.014'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'resources:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  repository: git://github.com/mche/Mojolicious-Plugin-StaticShare.git' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: '\''0.060'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: '\''0.061'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'x_serialization_backend: '\''CPAN::Meta::YAML version 0.018'\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
@@ -1072,7 +1072,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '         "web" : "https://github.com/mche/Mojolicious-Plugin-StaticShare"' >> META_new.json
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "0.060",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "0.061",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 2.27400_02"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
@@ -1382,7 +1382,7 @@ testdb_static :: static pure_all
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Mojolicious-Plugin-StaticShare" VERSION="0.060">' > Mojolicious-Plugin-StaticShare.ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Mojolicious-Plugin-StaticShare" VERSION="0.061">' > Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>browse, upload, copy, move, delete, edit, rename static files and dirs.</ABSTRACT>' >> Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>ÐÐ¸ÑÐ°Ð¸Ð» Ð§Ðµ (Mikhail Che) &lt;mche[-at-]cpan.org&gt;</AUTHOR>' >> Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Mojolicious-Plugin-StaticShare.ppd
