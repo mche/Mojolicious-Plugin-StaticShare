@@ -25,6 +25,7 @@ push @{app->renderer->paths}, "$CONF->{'админка папка'}/$CONF->{'ш�
 #~ my $pid = $$;
 my $pid;# = eval {path($CONF->{mojo}{hypnotoad}{pid_file})->slurp} || warn;
 my @nav = (
+  ['/'=> '/'],
   ['/админ корень/'=>$CONF->{'админка адрес'}],
   ['/абсолютный корень/'=>"/абсолютный корень"],
   map(["топик /$_/" =>"/$_" ], @shares),
@@ -99,7 +100,7 @@ __DATA__
 @@ admin-nav.html.ep
 <nav class="chip card green-forest lighten-3" style="position:absolute; right:0.5rem;">
   <a class="dropdown-button btn-flat white-text" style="padding: 0 0.5rem;" data-activates="admin-nav" href="javascript:" style="">
-    <svg xmlns="http://www.w3.org/2000/svg" class="white-fill" style="height:1.5rem;" viewBox="0 0 30 30"><use xlink:href="/static-share/fonts/icons.svg#menu" /></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon white-fill" style="height:1.5rem;" viewBox="0 0 30 30"><use xlink:href="/static-share/fonts/icons.svg#menu" /></svg>
     <span>админ</span>
   </a>
   <ul id="admin-nav" class="dropdown-content">

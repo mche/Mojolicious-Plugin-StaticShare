@@ -62,8 +62,11 @@ $h5-fontsize: 1.2rem;
 }
 
 #footer {
-  text-align:right;
-  color: lightgray;
+  /***text-align:right;
+  color: lightgray;***/
+  position: fixed;
+  right: 0.33rem;
+  bottom: 0.33rem;
   font-size: 0.51rem;
 }
 
