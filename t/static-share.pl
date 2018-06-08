@@ -3,8 +3,8 @@ use Mojo::File qw(path);
 use Mojo::Path;
 use Mojo::Util qw(decode);
 
-my $CONF = do './static-share.conf.pl';
-#~ my $CONF = do './t/static-share.my.pl';
+#~ my $CONF = do './static-share.conf.pl';
+my $CONF = do './t/static-share.my.pl';
   #~ 'файл топиков'=> 'static-share.dirs.txt', # в 'админка папка'
   #~ 'админка адрес'=>'/админ',
   #~ 'админка папка'=>'/mnt/sda',
