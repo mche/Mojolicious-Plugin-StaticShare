@@ -2,6 +2,7 @@ use Mojolicious::Lite;
 use Mojo::File qw(path);
 use Mojo::Path;
 use Mojo::Util qw(decode);
+use lib qw(lib);
 
 #~ my $CONF = do './static-share.conf.pl';
 my $CONF = do './t/static-share.my.pl';
@@ -86,9 +87,9 @@ get '/logout' => sub {
 app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$_", root_url=>"/$_", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav,  public_uploads=>1,)
   for @shares;
 # этот маршрут последним!
-app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$CONF->{'корень папка'}", root_url=>"/", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, public_uploads=>1,);
+app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$CONF->{'корень папка'}", root_url=>"/", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, public_uploads=>1, max_upload_size=>0);
 
-$ENV{MOJO_MAX_MESSAGE_SIZE}=0;
+#~ $ENV{MOJO_MAX_MESSAGE_SIZE}=0;
 app->config($CONF->{mojo})
    ->secrets($CONF->{mojo}{secrets})
    ->start;

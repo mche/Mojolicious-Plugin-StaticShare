@@ -60,14 +60,22 @@ sub post {
   
   my $file_path = $c->stash('file_path');
   
-  if ($c->is_admin && (my $dir = $c->param('dir'))) {
-    return $c->new_dir($file_path, $dir);
-  } elsif ($c->is_admin && (my $rename = $c->param('rename'))) {
-    return $c->rename($file_path, $rename);
-  } elsif ($c->is_admin && (my $delete = $c->param('delete[]') && $c->every_param('delete[]'))) {
-    return $c->delete($file_path, $delete);
-  } elsif ($c->is_admin && defined(my $edit = $c->param('edit'))) {
-    return $c->_edit($file_path, $edit);
+  if (my $dir = $c->param('dir')) {
+    return $c->new_dir($file_path, $dir)
+      if $c->is_admin;
+    return $c->render(json=>{error=>$c->i18n('you cant create dir')});
+  } elsif (my $rename = $c->param('rename')) {
+    return $c->rename($file_path, $rename)
+      if $c->is_admin;
+    return $c->render(json=>{error=>$c->i18n('you cant rename')});
+  } elsif (my $delete = $c->param('delete[]') && $c->every_param('delete[]')) {
+    return $c->delete($file_path, $delete)
+      if $c->is_admin;
+    return $c->render(json=>{error=>$c->i18n('you cant delete')});
+  } elsif (defined (my $edit = $c->param('edit'))) {
+    return $c->_edit($file_path, $edit)
+      if $c->is_admin;
+    return $c->render(json=>{error=>$c->i18n('you cant edit')});
   }
   
   return $c->render(json=>{error=>$c->i18n('target directory not found')})
@@ -81,8 +89,8 @@ sub post {
     unless -w $file_path;
   #~ $c->req->max_message_size(0);
   # Check file size
-  return $c->render(json=>{error=>$c->i18n('upload is too big')}, status=>417)
-    if $c->req->is_limit_exceeded;
+  #~ return $c->render(json=>{error=>$c->i18n('upload is too big')}, status=>417)
+    #~ if $c->req->is_limit_exceeded;
 
   my $file = $c->req->upload('file')
     or return $c->render(json=>{error=>$c->i18n('Where is your upload file?')});
