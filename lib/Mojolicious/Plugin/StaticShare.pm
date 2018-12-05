@@ -32,6 +32,7 @@ has routes_names => sub {
   my $self = shift;
   return [$self." ROOT GET (#1)", $self." ROOT POST (#2)", $self." PATH GET (#3)", $self." PATH POST (#4)"];
 };
+has debug => sub { shift->config->{debug} // $ENV{StaticShare_DEBUG} };
 
 
 sub register {# none magic
@@ -179,7 +180,7 @@ sub _patch_emit_chunk {
       my $route = $match->endpoint
         || return;
       
-      warn "TX CHUNK ROUTE: ", $route->name;# eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
+      #~ warn "TX CHUNK ROUTE: ", $route->name;# eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
       $tx->req->max_message_size($self->max_upload_size)
         if $route->name eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]
       # TODO admin session
