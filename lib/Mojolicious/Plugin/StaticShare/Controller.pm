@@ -89,8 +89,8 @@ sub post {
     unless -w $file_path;
   #~ $c->req->max_message_size(0);
   # Check file size
-  #~ return $c->render(json=>{error=>$c->i18n('upload is too big')}, status=>417)
-    #~ if $c->req->is_limit_exceeded;
+  return $c->render(json=>{error=>$c->i18n('upload is too big')}, status=>417)
+    if $c->req->is_limit_exceeded;
 
   my $file = $c->req->upload('file')
     or return $c->render(json=>{error=>$c->i18n('Where is your upload file?')});

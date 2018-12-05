@@ -55,7 +55,7 @@ my $admin_access = sub {
 
 # правильный порядок маршрутов!
 app->plugin("StaticShare", root_dir=>'/', root_url=>'/абсолютный корень', admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, access=>$admin_access,);
-my (undef, $adm_plugin) = app->plugin("StaticShare", root_dir=>$CONF->{'админка папка'}, root_url=>$CONF->{'админка адрес'}, admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, access=>$admin_access,);
+my (undef, $adm_plugin) = app->plugin("StaticShare", root_dir=>$CONF->{'админка папка'}, root_url=>$CONF->{'админка адрес'}, admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, access=>$admin_access, max_upload_size=>0);
 
 
 get '/выключить' => sub {
@@ -87,7 +87,7 @@ get '/logout' => sub {
 app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$_", root_url=>"/$_", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav,  public_uploads=>1,)
   for @shares;
 # этот маршрут последним!
-app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$CONF->{'корень папка'}", root_url=>"/", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, public_uploads=>1, max_upload_size=>0);
+app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$CONF->{'корень папка'}", root_url=>"/", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, public_uploads=>1);
 
 #~ $ENV{MOJO_MAX_MESSAGE_SIZE}=0;
 app->config($CONF->{mojo})

@@ -179,7 +179,7 @@ sub _patch_emit_chunk {
       my $route = $match->endpoint
         || return;
       
-      #~ warn "TX CHUNK ROUTE: ", ($route->name eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
+      warn "TX CHUNK ROUTE: ", $route->name;# eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
       $tx->req->max_message_size($self->max_upload_size)
         if $route->name eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]
       # TODO admin session
