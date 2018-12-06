@@ -193,10 +193,9 @@ sub _hook_chunk {
       my $route = $match->endpoint
         || return;
       
-      # eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
       $tx->req->max_message_size($self->max_upload_size)
         if (($route->name eq $self->routes_names->[2]) || ($route->name eq $self->routes_names->[3]))
-          && $host && $tx->req->headers->host =~ /$host/;
+          && $host && $tx->req->headers->host =~ /$host/; # Хост ловится только так, в $url нет(
       # TODO admin session
       
     });
@@ -291,6 +290,13 @@ Can copy, move, delete, rename and edit content of files/dirs.
 Append param C<< admin=<admin_pass> option >> to any url inside B<root_url> requests (see below).
 
 =head1 OPTIONS
+
+=head2 host
+
+  host => 'local', # mean =~ /local/
+  host => qr/fobar\.com$/, 
+
+String or regexp C< qr// >. Allow routing for given host.
 
 =head2 root_dir
 
