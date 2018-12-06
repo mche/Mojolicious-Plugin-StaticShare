@@ -6,16 +6,6 @@ use lib qw(lib);
 
 #~ my $CONF = do './static-share.conf.pl';
 my $CONF = do './t/static-share.my.pl';
-  #~ 'файл топиков'=> 'static-share.dirs.txt', # в 'админка папка'
-  #~ 'админка адрес'=>'/админ',
-  #~ 'админка папка'=>'/mnt/sda',
-  #~ 'админка пароль'=>'**********',
-  #~ 'шаблоны папка'=>'шаблоны',# в 'админка папка' '/mnt/sda/шаблоны'
-  #~ 'корень папка'=>'корень',
-  #~ mojo=>{
-    #~ hypnotoad => {listen => ["http://*:80"], pid_file => "/home/guest/hypnotoad.pid", workers000 => 1,},
-    #~ secrets=>['*************']
-  #~ },
 system('touch', "$CONF->{'админка папка'}/$CONF->{'файл топиков'}");
 #~ my $shares = path(__FILE__)->sibling("$CONF->{'админка папка'}/$CONF->{'файл топиков'}");
 my $shares = path("$CONF->{'админка папка'}/$CONF->{'файл топиков'}");
@@ -23,8 +13,7 @@ my @shares = map {decode('UTF-8', $_)} grep {!/^\s*#/} split /\n+/, $shares->slu
 push @{app->renderer->paths}, "$CONF->{'админка папка'}/$CONF->{'шаблоны папка'}"
   if $CONF->{'шаблоны папка'};
 
-#~ my $pid = $$;
-my $pid;# = eval {path($CONF->{mojo}{hypnotoad}{pid_file})->slurp} || warn;
+my $pid;
 my @nav = (
   ['/'=> '/'],
   ['/админ корень/'=>$CONF->{'админка адрес'}],
@@ -87,7 +76,7 @@ get '/logout' => sub {
 app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$_", root_url=>"/$_", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav,  public_uploads=>1,)
   for @shares;
 # этот маршрут последним!
-app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$CONF->{'корень папка'}", root_url=>"/", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, public_uploads=>1, debug=>1,);
+app->plugin("StaticShare", root_dir=>"$CONF->{'админка папка'}/$CONF->{'корень папка'}", root_url=>"/", admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, public_uploads=>1, debug=>0,);
 
 #~ $ENV{MOJO_MAX_MESSAGE_SIZE}=0;
 app->config($CONF->{mojo})

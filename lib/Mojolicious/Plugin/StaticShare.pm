@@ -7,8 +7,8 @@ use Mojo::Util;# qw(decode);
 
 my $PKG = __PACKAGE__;
 
-has [qw(app)] => undef, weak => 1;
-has [qw(config)];# => undef, weak => 1;
+#~ has [qw()] => undef, weak => 1;
+has [qw(app config)];# => undef, weak => 1;
 has root_url => sub { Mojo::Path->new(shift->config->{root_url})->leading_slash(1)->trailing_slash(1) };
 has root_dir => sub { Mojo::Path->new(shift->config->{root_dir} // '.')->trailing_slash(1) };
 has admin_pass => sub { shift->config->{admin_pass} };
@@ -28,7 +28,9 @@ has re_pod => sub { qr{[.]p(?:od|m|l)$} };
 has re_html => sub { qr{[.]html?$} };
 has mime => sub { Mojolicious::Types->new };
 has max_upload_size => sub { shift->config->{max_upload_size} };
-has routes_names => sub {
+#separate routes store for matching without conflicts
+has routes   => sub { Mojolicious::Routes->new }; # для max_upload_size
+has routes_names => sub {# тоже для max_upload_size
   my $self = shift;
   return [$self." ROOT GET (#1)", $self." ROOT POST (#2)", $self." PATH GET (#3)", $self." PATH POST (#4)"];
 };
@@ -60,7 +62,10 @@ sub register {# none magic
   $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self, )->name($names->[2]);#;
   $r->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self, )->name($names->[3]);#;
   
-  
+  # only POST uploads
+  $self->routes->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self, )->name($names->[1])
+    and $self->routes->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self, )->name($names->[3])
+    if defined $self->max_upload_size;
   
   path($self->config->{root_dir})->make_path
     unless !$self->config->{root_dir} || -e $self->config->{root_dir};
@@ -75,8 +80,6 @@ sub register {# none magic
   # PATCH EMIT CHUNK
   $self->_patch_emit_chunk()
     if defined $self->max_upload_size;
-  
-  #~ warn $self, Mojo::Util::dumper($self->config);
   
   return ($app, $self);
 }
@@ -145,8 +148,40 @@ sub is_admin {# as helper
   return $sess->{StaticShare} && $sess->{StaticShare}{admin};
 }
 
+my $patched;
 sub _patch_emit_chunk {
   my $self = shift;
+  
+  _patch_chunk() unless $patched++;
+  
+  #~ my $r1 = $self->app->routes->lookup($self->routes_names->[1]);
+  #~ warn  'POST ROUTE #2', $r1;
+  #~ my $r2 = $self->app->routes->lookup($self->routes_names->[3]);
+  #~ warn  'POST ROUTE #4', $r2;
+  
+  $self->app->hook(after_build_tx => sub {
+    my ($tx, $app) = @_;
+      $tx->once('chunk'=>sub {
+      my ($tx, $chunk) = @_;
+      return unless $tx->req->method =~ /PUT|POST/;
+      my $url = $tx->req->url->to_abs;
+      my $match = Mojolicious::Routes::Match->new(root => $self->routes);
+      # Mojolicious::Controller->new
+      $match->find(undef, {method => $tx->req->method, path => $tx->req->url->path->to_route,});# websocket => $ws
+      my $route = $match->endpoint
+        || return;
+      
+      #~ warn "TX CHUNK ROUTE: ", $route->name;# eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
+      $tx->req->max_message_size($self->max_upload_size)
+        if $route->name eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]
+      # TODO admin session
+      
+    });
+  });
+  
+}
+
+sub _patch_chunk {
   
   Mojo::Util::monkey_patch 'Mojo::Transaction::HTTP', 'server_read' => sub {
     my ($self, $chunk) = @_;
@@ -164,31 +199,9 @@ sub _patch_emit_chunk {
     
   };
   
-  #~ my $r1 = $self->app->routes->lookup($self->routes_names->[1]);
-  #~ warn  'POST ROUTE #2', $r1;
-  #~ my $r2 = $self->app->routes->lookup($self->routes_names->[3]);
-  #~ warn  'POST ROUTE #4', $r2;
-  
-  $self->app->hook(after_build_tx => sub {
-    my ($tx, $app) = @_;
-      $tx->once('chunk'=>sub {
-      my ($tx, $chunk) = @_;
-      return unless $tx->req->method =~ /PUT|POST/;
-      my $url = $tx->req->url->to_abs;
-      my $match = Mojolicious::Routes::Match->new(root => $self->app->routes);
-      $match->find(undef, {method => $tx->req->method, path => $tx->req->url->path->to_route,});# websocket => $ws
-      my $route = $match->endpoint
-        || return;
-      
-      #~ warn "TX CHUNK ROUTE: ", $route->name;# eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
-      $tx->req->max_message_size($self->max_upload_size)
-        if $route->name eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]
-      # TODO admin session
-      
-    });
-  });
-  
 }
+
+our $VERSION = '0.071';
 
 ##############################################
 package __internal__::Markdown;
@@ -208,7 +221,7 @@ sub new {
 
 sub parse { my $self = shift; no strict 'refs'; ($self->{pkg}.'::markdown')->(@_); }
 
-our $VERSION = '0.070';
+
 =pod
 
 =encoding utf8
@@ -225,7 +238,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete, edit, ren
 
 =head1 VERSION
 
-0.070
+0.071
 
 =head1 SYNOPSIS
 
