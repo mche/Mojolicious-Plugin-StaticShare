@@ -4,6 +4,7 @@ use Mojo::File qw(path);
 use Mojolicious::Types;
 use Mojo::Path;
 use Mojo::Util;# qw(decode);
+use Scalar::Util 'weaken';
 
 my $PKG = __PACKAGE__;
 
@@ -78,7 +79,7 @@ sub register {# none magic
     unless $self->app->renderer->helpers->{'pod_to_html'} && ($self->render_pod // '') eq 0 ;
   
   # PATCH EMIT CHUNK
-  $self->_patch_emit_chunk()
+  $self->_hook_chunk()
     if defined $self->max_upload_size;
   
   return ($app, $self);
@@ -149,16 +150,12 @@ sub is_admin {# as helper
 }
 
 my $patched;
-sub _patch_emit_chunk {
+sub _hook_chunk {
   my $self = shift;
   
-  _patch_chunk() unless $patched++;
+  _patch_emit_chunk() unless $patched++;
   
-  #~ my $r1 = $self->app->routes->lookup($self->routes_names->[1]);
-  #~ warn  'POST ROUTE #2', $r1;
-  #~ my $r2 = $self->app->routes->lookup($self->routes_names->[3]);
-  #~ warn  'POST ROUTE #4', $r2;
-  
+  weaken $self;
   $self->app->hook(after_build_tx => sub {
     my ($tx, $app) = @_;
       $tx->once('chunk'=>sub {
@@ -181,7 +178,7 @@ sub _patch_emit_chunk {
   
 }
 
-sub _patch_chunk {
+sub _patch_emit_chunk {
   
   Mojo::Util::monkey_patch 'Mojo::Transaction::HTTP', 'server_read' => sub {
     my ($self, $chunk) = @_;
