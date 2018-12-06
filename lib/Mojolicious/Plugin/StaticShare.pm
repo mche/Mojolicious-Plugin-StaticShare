@@ -12,6 +12,7 @@ has qw(app) => undef, weak => 1;
 has qw(config);# => undef, weak => 1;
 has root_url => sub { Mojo::Path->new(shift->config->{root_url})->leading_slash(1)->trailing_slash(1) };
 has root_dir => sub { Mojo::Path->new(shift->config->{root_dir} // '.')->trailing_slash(1) };
+has host => sub { shift->config->{host} };
 has admin_pass => sub { shift->config->{admin_pass} };
 has access => sub { shift->config->{access} };
 has public_uploads => sub { !! shift->config->{public_uploads} };
@@ -56,16 +57,20 @@ sub register {# none magic
   
   # ROUTING 4 routes
   my $route = $self->root_url->clone->merge('*pth');#"$args->{root_url}/*pth";
-  my $r = $app->routes;
   my $names = $self->routes_names;
-  $r->get($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', pth=>'', plugin=>$self, )->name($names->[0]);#$PKG
-  $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self, )->name($names->[1]);#;
-  $r->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self, )->name($names->[2]);#->name("$PKG ROOT POST");
-  $r->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self, )->name($names->[3]);#;
+  $self->_make_route(routes => $app->routes, action => 'get', path => $self->root_url->to_route, name => $names->[0], pth => '', host => $self->host, )
+    ->_make_route(routes => $app->routes, action => 'get', path => $route->to_route, name => $names->[1], host => $self->host,)
+    ->_make_route(routes => $app->routes, action => 'post', path => $self->root_url->to_route, name => $names->[2], pth => '', host => $self->host,)
+    ->_make_route(routes => $app->routes, action => 'post', path => $route->to_route, name => $names->[3], host => $self->host,);
+  #~ $r->get($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', pth=>'', plugin=>$self, )->name($names->[0]);#$PKG
+  #~ $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self, )->name($names->[1]);#;
+  #~ $r->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self, )->name($names->[2]);#->name("$PKG ROOT POST");
+  #~ $r->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self, )->name($names->[3]);#;
+  
   
   # only POST uploads
-  $self->routes->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self, )->name($names->[2])
-    and $self->routes->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self, )->name($names->[3])
+  $self->_make_route(routes => $self->routes, action => 'post', path => $self->root_url->to_route, name => $names->[2], pth => '')# без host!
+    ->_make_route(routes => $self->routes, action => 'post', path => $route->to_route, name => $names->[3])
     if defined $self->max_upload_size;
   
   path($self->config->{root_dir})->make_path
@@ -83,6 +88,19 @@ sub register {# none magic
     if defined $self->max_upload_size;
   
   return ($app, $self);
+}
+
+sub _make_route {
+  my ($self) = shift;
+  my $arg = ref $_[0] ? shift : {@_};
+  weaken $self;
+  my $action = $arg->{action};
+  my $r = $arg->{routes}->$action($arg->{path});
+  $r->to(namespace=>$PKG, controller=>"Controller", action=>$arg->{action}, defined $arg->{pth} ? (pth=>$arg->{pth}) : (), plugin=>$self, );
+  $r->name($arg->{name});
+  $r->over(host => $arg->{host})
+    if $arg->{host};
+  return $self;
 }
 
 my %loc = (
@@ -163,14 +181,22 @@ sub _hook_chunk {
       return unless $tx->req->method =~ /PUT|POST/;
       my $url = $tx->req->url->to_abs;
       my $match = Mojolicious::Routes::Match->new(root => $self->routes);
-      # Mojolicious::Controller->new
-      $match->find(undef, {method => $tx->req->method, path => $tx->req->url->path->to_route,});# websocket => $ws
+      #~ weaken $tx;
+      #~ weaken $app;
+      #~ Mojolicious::Controller->new(app=>$app, tx=>$tx)
+      my $host = $self->host;
+      $match->find(undef, {method => $tx->req->method, path => $url->path->to_route});# websocket => $ws
+      $app->log->debug("TX ONCE CHUNK check path: [".$url->path->to_route."]",
+        "match route: ". (($match->endpoint && $match->endpoint->name) || 'none'),
+        $host ? ("match host: ". $tx->req->headers->host =~ /$host/) : ()  #, Mojo::Util::dumper($url)
+      ) if $self->debug;
       my $route = $match->endpoint
         || return;
       
-      #~ warn "TX CHUNK ROUTE: ", $route->name;# eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
+      # eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
       $tx->req->max_message_size($self->max_upload_size)
-        if ($route->name eq $self->routes_names->[2]) || ($route->name eq $self->routes_names->[3])
+        if (($route->name eq $self->routes_names->[2]) || ($route->name eq $self->routes_names->[3]))
+          && $host && $tx->req->headers->host =~ /$host/;
       # TODO admin session
       
     });
@@ -198,7 +224,7 @@ sub _patch_emit_chunk {
   
 }
 
-our $VERSION = '0.073';
+our $VERSION = '0.074';
 
 ##############################################
 package __internal__::Markdown;
@@ -235,7 +261,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete, edit, ren
 
 =head1 VERSION
 
-0.073
+0.074
 
 =head1 SYNOPSIS
 

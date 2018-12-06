@@ -44,7 +44,7 @@ my $admin_access = sub {
 
 # правильный порядок маршрутов!
 app->plugin("StaticShare", root_dir=>'/', root_url=>'/абсолютный корень', admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, access=>$admin_access,);
-my (undef, $adm_plugin) = app->plugin("StaticShare", root_dir=>$CONF->{'админка папка'}, root_url=>$CONF->{'админка адрес'}, admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, access=>$admin_access, max_upload_size=>0);
+my (undef, $adm_plugin) = app->plugin("StaticShare", root_dir=>$CONF->{'админка папка'}, root_url=>$CONF->{'админка адрес'}, admin_pass=>$CONF->{'админка пароль'}, admin_nav=>$nav, access=>$admin_access, max_upload_size=>0, host=>qr'local', debug=>1,);
 
 
 get '/выключить' => sub {
