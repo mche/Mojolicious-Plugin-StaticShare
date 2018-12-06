@@ -321,7 +321,7 @@ Admin password (be sure https) for admin tasks. None defaults.
 
   admin_pass => '$%^!!9nes--', # 
 
-Signin to admin interface C< https://myhost/my/share/foo/bar?admin=$%^!!9nes-- >
+Sign into admin interface by pass param B<admin> to shares paths C< https://<...>?admin=$%^!!9nes-- >
 
 =head2 render_dir
 
@@ -412,13 +412,13 @@ Boolean to disable/enable uploads for public users. Defaults to undef (disable).
 
   max_upload_size=>0, # unlimited POST
 
-Numeric value limiting uploads size for route.
-WARN-EXPIRIMENTAL patching of L<Mojo::Transaction::HTTP#server_read>
-for emit chunk event.
+Numeric value limiting uploads size for route. Defaults to Mojolicious setting.
+EXPIRIMENTAL patching of the L<Mojo::Transaction::HTTP#server_read>
+for emit B<chunk> event.
 
 See also L<Mojolicious#max_request_size>, L<Mojolicious#build_tx>.
 
-=head1 Extended markdown & pod
+=head1 Extended MARKDOWN & POD
 
 You can place attributes like:
 
@@ -430,12 +430,12 @@ You can place attributes like:
 
 to markup elements as below.
 
-In markdown:
+In MARKDOWN:
 
   # {#foo123 .class1 .class2 padding: 0 0.5rem;} Header 1
   {.brown-text} brown paragraph text ...
 
-In pod:
+In POD:
 
   =head2 {.class1.blue-text border-bottom: 1px dotted;} Header 2
   
@@ -454,7 +454,7 @@ Register plugin in L<Mojolicious> application.
 
 =head1 MULTI PLUGIN
 
-A possible:
+Yep, possible:
 
   # Mojolicious
   $app->plugin('StaticShare', <options-1>)
