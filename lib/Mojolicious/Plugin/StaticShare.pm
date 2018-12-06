@@ -170,7 +170,7 @@ sub _hook_chunk {
       
       #~ warn "TX CHUNK ROUTE: ", $route->name;# eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
       $tx->req->max_message_size($self->max_upload_size)
-        if $route->name eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]
+        if ($route->name eq $self->routes_names->[1]) || ($route->name eq $self->routes_names->[3])
       # TODO admin session
       
     });
@@ -198,7 +198,7 @@ sub _patch_emit_chunk {
   
 }
 
-our $VERSION = '0.071';
+our $VERSION = '0.072';
 
 ##############################################
 package __internal__::Markdown;
@@ -235,7 +235,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete, edit, ren
 
 =head1 VERSION
 
-0.071
+0.072
 
 =head1 SYNOPSIS
 
@@ -378,9 +378,13 @@ Boolean to disable/enable uploads for public users. Defaults to undef (disable).
 
 =head2 max_upload_size
 
-  max_upload_size=>0, # unlimited
+  max_upload_size=>0, # unlimited POST
 
-Numeric value limiting uploads size for route. See L<Mojolicious#max_request_size>, L<Mojolicious#build_tx>.
+Numeric value limiting uploads size for route.
+WARN-EXPIRIMENTAL patching of L<Mojo::Transaction::HTTP#server_read>
+for emit chunk event.
+
+See also L<Mojolicious#max_request_size>, L<Mojolicious#build_tx>.
 
 =head1 Extended markdown & pod
 
