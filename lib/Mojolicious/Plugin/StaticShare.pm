@@ -33,7 +33,7 @@ has max_upload_size => sub { shift->config->{max_upload_size} };
 has routes   => sub { Mojolicious::Routes->new }; # для max_upload_size
 has routes_names => sub {# тоже для max_upload_size
   my $self = shift;
-  return [$self." ROOT GET (#1)", $self." ROOT POST (#2)", $self." PATH GET (#3)", $self." PATH POST (#4)"];
+  return [$self." ROOT GET (#1)", $self." PATH GET (#2)", $self." ROOT POST (#3)", $self." PATH POST (#4)"];
 };
 has debug => sub { shift->config->{debug} // $ENV{StaticShare_DEBUG} };
 
@@ -59,12 +59,12 @@ sub register {# none magic
   my $r = $app->routes;
   my $names = $self->routes_names;
   $r->get($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', pth=>'', plugin=>$self, )->name($names->[0]);#$PKG
-  $r->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self, )->name($names->[1]);#->name("$PKG ROOT POST");
-  $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self, )->name($names->[2]);#;
+  $r->get($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'get', plugin=>$self, )->name($names->[1]);#;
+  $r->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self, )->name($names->[2]);#->name("$PKG ROOT POST");
   $r->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self, )->name($names->[3]);#;
   
   # only POST uploads
-  $self->routes->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self, )->name($names->[1])
+  $self->routes->post($self->root_url->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', pth=>'', plugin=>$self, )->name($names->[2])
     and $self->routes->post($route->to_route)->to(namespace=>$PKG, controller=>"Controller", action=>'post', plugin=>$self, )->name($names->[3])
     if defined $self->max_upload_size;
   
@@ -170,7 +170,7 @@ sub _hook_chunk {
       
       #~ warn "TX CHUNK ROUTE: ", $route->name;# eq $self->routes_names->[1] || $route->name eq $self->routes_names->[3]);#Mojo::Util::dumper($url);, length($chunk)
       $tx->req->max_message_size($self->max_upload_size)
-        if ($route->name eq $self->routes_names->[1]) || ($route->name eq $self->routes_names->[3])
+        if ($route->name eq $self->routes_names->[2]) || ($route->name eq $self->routes_names->[3])
       # TODO admin session
       
     });
@@ -198,7 +198,7 @@ sub _patch_emit_chunk {
   
 }
 
-our $VERSION = '0.072';
+our $VERSION = '0.073';
 
 ##############################################
 package __internal__::Markdown;
@@ -235,7 +235,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete, edit, ren
 
 =head1 VERSION
 
-0.072
+0.073
 
 =head1 SYNOPSIS
 
