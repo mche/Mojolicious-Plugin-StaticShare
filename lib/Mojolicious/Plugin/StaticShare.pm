@@ -8,8 +8,8 @@ use Scalar::Util 'weaken';
 
 my $PKG = __PACKAGE__;
 
-#~ has [qw()] => undef, weak => 1;
-has [qw(app config)];# => undef, weak => 1;
+has qw(app) => undef, weak => 1;
+has qw(config);# => undef, weak => 1;
 has root_url => sub { Mojo::Path->new(shift->config->{root_url})->leading_slash(1)->trailing_slash(1) };
 has root_dir => sub { Mojo::Path->new(shift->config->{root_dir} // '.')->trailing_slash(1) };
 has admin_pass => sub { shift->config->{admin_pass} };
