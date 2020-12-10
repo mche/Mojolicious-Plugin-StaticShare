@@ -98,7 +98,7 @@ sub _make_route {
   my $r = $arg->{routes}->$action($arg->{path});
   $r->to(namespace=>$PKG, controller=>"Controller", action=>$arg->{action}, defined $arg->{pth} ? (pth=>$arg->{pth}) : (), plugin=>$self, );
   $r->name($arg->{name});
-  $r->over(host => $arg->{host})
+  $r->requires(host => $arg->{host})
     if $arg->{host};
   return $self;
 }
@@ -444,7 +444,7 @@ In POD:
 =head1 METHODS
 
 L<Mojolicious::Plugin::StaticShare> inherits all methods from
-L<Mojolicious::Plugin> and implements the following new ones.
+parent L<Mojolicious::Plugin> and implements the following new ones.
 
 =head2 register
 
@@ -457,14 +457,15 @@ Register plugin in L<Mojolicious> application.
 Yep, possible:
 
   # Mojolicious
-  $app->plugin('StaticShare', <options-1>)
-           ->plugin('StaticShare', <options-2>); # and so on ...
+  $app->config(...)
+           ->plugin('StaticShare', ...)
+           ->plugin('StaticShare', ...); # and so on ...
   
   # Mojolicious::Lite
   app->config(...)
-         ->plugin('StaticShare', <options-1>)
-         ->plugin('StaticShare', <options-2>) # and so on ...
-         ...
+         ->plugin('StaticShare', ...)
+         ->plugin('StaticShare', ...) # and so on ...
+
 
 =head1 UTF-8
 
