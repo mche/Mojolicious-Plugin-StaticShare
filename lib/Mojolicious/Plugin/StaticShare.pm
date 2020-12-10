@@ -223,7 +223,7 @@ sub _patch_emit_chunk {
   
 }
 
-our $VERSION = '0.074';
+our $VERSION = '0.075';
 
 ##############################################
 package __internal__::Markdown;
@@ -260,7 +260,7 @@ Mojolicious::Plugin::StaticShare - browse, upload, copy, move, delete, edit, ren
 
 =head1 VERSION
 
-0.074
+0.075
 
 =head1 SYNOPSIS
 

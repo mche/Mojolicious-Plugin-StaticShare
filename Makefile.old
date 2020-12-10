@@ -1,7 +1,7 @@
 # This Makefile is for the Mojolicious::Plugin::StaticShare extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 7.24 (Revision: 72400) from the contents of
+# 7.36 (Revision: 73600) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
@@ -20,7 +20,7 @@
 #     MIN_PERL_VERSION => q[5.014]
 #     NAME => q[Mojolicious::Plugin::StaticShare]
 #     PL_FILES => {  }
-#     PREREQ_PM => { HTTP::AcceptLanguage=>q[0.02], Mojolicious=>q[7.36], Test::More=>q[0], Time::Piece=>q[1.31] }
+#     PREREQ_PM => { HTTP::AcceptLanguage=>q[0.02], Mojolicious=>q[8.67], Test::More=>q[0], Time::Piece=>q[1.31] }
 #     TEST_REQUIRES => {  }
 #     VERSION_FROM => q[lib/Mojolicious/Plugin/StaticShare.pm]
 #     dist => { COMPRESS=>q[gzip -9f], SUFFIX=>q[gz] }
@@ -143,9 +143,9 @@ PERM_DIR = 755
 PERM_RW = 644
 PERM_RWX = 755
 
-MAKEMAKER   = /home/guest/perl5/perlbrew/perls/perl-5.26.1/lib/5.26.1/ExtUtils/MakeMaker.pm
-MM_VERSION  = 7.24
-MM_REVISION = 72400
+MAKEMAKER   = /home/guest/perl5/perlbrew/perls/perl-5.26.1/lib/site_perl/5.26.1/ExtUtils/MakeMaker.pm
+MM_VERSION  = 7.36
+MM_REVISION = 73600
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -194,8 +194,7 @@ PERL_ARCHIVEDEP    =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = README.pod \
-	lib/Mojolicious/Plugin/PODRenderer.pm \
+TO_INST_PM = lib/Mojolicious/Plugin/PODRenderer.pm \
 	lib/Mojolicious/Plugin/StaticShare.pm \
 	lib/Mojolicious/Plugin/StaticShare/Controller.pm \
 	lib/Mojolicious/Plugin/StaticShare/Templates.pm \
@@ -704,7 +703,7 @@ TO_INST_PM = README.pod \
 
 
 # --- MakeMaker platform_constants section:
-MM_Unix_VERSION = 7.24
+MM_Unix_VERSION = 7.36
 PERL_MALLOC_DEF = -DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc
 
 
@@ -1010,7 +1009,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'configure_requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  ExtUtils::MakeMaker: '\''0'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'dynamic_config: 1' >> META_new.yml
-	$(NOECHO) $(ECHO) 'generated_by: '\''ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150010'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'generated_by: '\''ExtUtils::MakeMaker version 7.36, CPAN::Meta::Converter version 2.150010'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'license: perl' >> META_new.yml
 	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  url: http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
@@ -1022,7 +1021,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '    - inc' >> META_new.yml
 	$(NOECHO) $(ECHO) 'requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  HTTP::AcceptLanguage: '\''0.02'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) '  Mojolicious: '\''7.36'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Mojolicious: '\''8.67'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Time::Piece: '\''1.31'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  perl: '\''5.014'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'resources:' >> META_new.yml
@@ -1037,13 +1036,13 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      "ÐÐ¸ÑÐ°Ð¸Ð» Ð§Ðµ (Mikhail Che) <mche[-at-]cpan.org>"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
 	$(NOECHO) $(ECHO) '   "dynamic_config" : 1,' >> META_new.json
-	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150010",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 7.36, CPAN::Meta::Converter version 2.150010",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "license" : [' >> META_new.json
 	$(NOECHO) $(ECHO) '      "perl_5"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
 	$(NOECHO) $(ECHO) '   "meta-spec" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",' >> META_new.json
-	$(NOECHO) $(ECHO) '      "version" : "2"' >> META_new.json
+	$(NOECHO) $(ECHO) '      "version" : 2' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "name" : "Mojolicious-Plugin-StaticShare",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "no_index" : {' >> META_new.json
@@ -1066,7 +1065,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      "runtime" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '            "HTTP::AcceptLanguage" : "0.02",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "Mojolicious" : "7.36",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Mojolicious" : "8.67",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Time::Piece" : "1.31",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "perl" : "5.014"' >> META_new.json
 	$(NOECHO) $(ECHO) '         }' >> META_new.json
@@ -1081,7 +1080,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "version" : "0.074",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 2.27400_02"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 4.04"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -1396,7 +1395,7 @@ ppd :
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '        <PERLCORE VERSION="5,014,0,0" />' >> Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="HTTP::AcceptLanguage" VERSION="0.02" />' >> Mojolicious-Plugin-StaticShare.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Mojolicious::" VERSION="7.36" />' >> Mojolicious-Plugin-StaticShare.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Mojolicious::" VERSION="8.67" />' >> Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Time::Piece" VERSION="1.31" />' >> Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-5.26" />' >> Mojolicious-Plugin-StaticShare.ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> Mojolicious-Plugin-StaticShare.ppd
@@ -1408,7 +1407,6 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  'README.pod' '$(INST_LIB)/Mojolicious/Plugin/README.pod' \
 	  'lib/Mojolicious/Plugin/PODRenderer.pm' 'blib/lib/Mojolicious/Plugin/PODRenderer.pm' \
 	  'lib/Mojolicious/Plugin/StaticShare.pm' 'blib/lib/Mojolicious/Plugin/StaticShare.pm' \
 	  'lib/Mojolicious/Plugin/StaticShare/Controller.pm' 'blib/lib/Mojolicious/Plugin/StaticShare/Controller.pm' \
